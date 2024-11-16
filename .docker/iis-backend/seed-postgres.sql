@@ -45,7 +45,7 @@ CREATE TABLE group_posts (
     post_ID INT NOT NULL,      -- Foreign key referencing posts
     datum DATE NOT NULL,       -- Any additional attributes
     PRIMARY KEY (group_name, post_ID),  -- Composite primary key
-    FOREIGN KEY (group_ID) REFERENCES groups(group_name) ON DELETE CASCADE,
+    FOREIGN KEY (group_name) REFERENCES groups(group_name) ON DELETE CASCADE,
     FOREIGN KEY (post_ID) REFERENCES posts(ID) ON DELETE CASCADE
 );
 
