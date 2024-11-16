@@ -17,7 +17,7 @@ CREATE TABLE posts (
     mediafile VARCHAR(255),
     description TEXT,
     location VARCHAR(255),
-    availability BOOLEAN DEFAULT TRUE,
+    availability VARCHAR(8) CHECK (availability in ('public', 'private', 'group')) DEFAULT 'public',
     FOREIGN KEY (user_ID) REFERENCES users(ID) ON DELETE CASCADE
 );
 
@@ -42,8 +42,7 @@ CREATE TABLE user_groups (
 
 -- Group_Post Table (Many-to-Many: Groups and Posts)
 CREATE TABLE group_posts (
-    jmeno VARCHAR(100) NOT NULL,
-    ID INT NOT NULL,
+    group_name VARCHAR(100) NOT NULL,
     datum DATE NOT NULL,
     PRIMARY KEY (ID),
     FOREIGN KEY (ID) REFERENCES posts(ID) ON DELETE CASCADE
@@ -52,7 +51,6 @@ CREATE TABLE group_posts (
 -- Comments Table
 CREATE TABLE comments (
     ID SERIAL PRIMARY KEY,
-    post_ID INT NOT NULL,
     content TEXT NOT NULL,
     datetime TIMESTAMP NOT NULL,
     FOREIGN KEY (post_ID) REFERENCES posts(ID) ON DELETE CASCADE
