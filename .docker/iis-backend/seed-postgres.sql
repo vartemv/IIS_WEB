@@ -25,6 +25,7 @@ CREATE TABLE posts (
 CREATE TABLE groups (
     group_name VARCHAR(100) PRIMARY KEY NOT NULL,
     pocet INT DEFAULT 0,
+    owner INT NOT NULL,
     datum DATE NOT NULL
 );
 
@@ -63,7 +64,7 @@ CREATE TABLE comments (
 CREATE TABLE reactions (
     ID SERIAL PRIMARY KEY,
     post_ID INT NOT NULL,
-    reaction_type VARCHAR(10) CHECK (reaction_type IN ('Like', 'Love', 'Angry', 'Sad', 'Wow')) NOT NULL,
+    amount INT,
     FOREIGN KEY (post_ID) REFERENCES posts(ID) ON DELETE CASCADE
 );
 
