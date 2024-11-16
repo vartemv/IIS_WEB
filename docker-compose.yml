@@ -1,0 +1,34 @@
+services:
+  backend:
+    container_name: iis_cont_be
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_DB: iis
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: artem
+    ports:
+      - "5435:5432"
+    volumes:
+      - .docker/iis-backend/seed-postgres.sql:/docker-entrypoint-initdb.d/init.sql
+      - postgres_data_container:/var/lib/postgresql/data
+
+  application:
+    container_name: iis_cont_fe
+    image: node:lts-alpine
+    ports:
+        - "3000:3000"
+    volumes:
+        - ./src/iis_cont_fe:/home/node/code
+    working_dir: /home/node/code/
+    depends_on:
+        - backend
+    environment:
+        - HOST=0.0.0.0
+        - CHOKIDAR_USEPOLLING=true
+        - CHOKIDAR_INTERVAL=100
+    tty: true
+    command: "npm run dev"
+
+volumes:
+  postgres_data_container:
