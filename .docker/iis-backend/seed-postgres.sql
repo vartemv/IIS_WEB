@@ -17,14 +17,13 @@ CREATE TABLE posts (
     mediafile VARCHAR(255),
     description TEXT,
     location VARCHAR(255),
-    availability VARCHAR(8) CHECK (availability in ('public', 'private', 'group')) DEFAULT 'public',
+    availability BOOLEAN DEFAULT TRUE,
     FOREIGN KEY (user_ID) REFERENCES users(ID) ON DELETE CASCADE
 );
 
 -- Groups Table
 CREATE TABLE groups (
-    ID SERIAL PRIMARY KEY,
-    jmeno VARCHAR(100) NOT NULL,
+    group_name VARCHAR(100) PRIMARY KEY NOT NULL,
     pocet INT DEFAULT 0,
     datum DATE NOT NULL
 );
@@ -32,25 +31,29 @@ CREATE TABLE groups (
 -- User_Group Table (Many-to-Many: Users and Groups)
 CREATE TABLE user_groups (
     id_of_user INT NOT NULL,
-    id_of_group INT NOT NULL,
+    group_name VARCHAR(100) NOT NULL,
     status VARCHAR(10) CHECK (status IN ('Active', 'Pending', 'Banned')) DEFAULT 'Active',
     datum DATE NOT NULL,
-    PRIMARY KEY (id_of_user, id_of_group),
+    PRIMARY KEY (id_of_user, group_name),
     FOREIGN KEY (id_of_user) REFERENCES users(ID) ON DELETE CASCADE,
-    FOREIGN KEY (id_of_group) REFERENCES groups(ID) ON DELETE CASCADE
+    FOREIGN KEY (group_name) REFERENCES groups(group_name) ON DELETE CASCADE
 );
 
 -- Group_Post Table (Many-to-Many: Groups and Posts)
 CREATE TABLE group_posts (
-    group_name VARCHAR(100) NOT NULL,
-    datum DATE NOT NULL,
-    PRIMARY KEY (ID),
-    FOREIGN KEY (ID) REFERENCES posts(ID) ON DELETE CASCADE
+    group_name VARCHAR(100) NOT NULL,     -- Foreign key referencing groups
+    post_ID INT NOT NULL,      -- Foreign key referencing posts
+    datum DATE NOT NULL,       -- Any additional attributes
+    PRIMARY KEY (group_name, post_ID),  -- Composite primary key
+    FOREIGN KEY (group_ID) REFERENCES groups(group_name) ON DELETE CASCADE,
+    FOREIGN KEY (post_ID) REFERENCES posts(ID) ON DELETE CASCADE
 );
+
 
 -- Comments Table
 CREATE TABLE comments (
     ID SERIAL PRIMARY KEY,
+    post_ID INT NOT NULL,
     content TEXT NOT NULL,
     datetime TIMESTAMP NOT NULL,
     FOREIGN KEY (post_ID) REFERENCES posts(ID) ON DELETE CASCADE
