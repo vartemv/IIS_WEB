@@ -10,7 +10,7 @@ export const useAuth = () => {
 
   const refresh = () => {
     let existingUser = null;
-    const getFromCookie = async () => (existingUser = getCookie("user"));
+    const getFromCookie = async () => (existingUser = await getCookie("user"));
     getFromCookie();
 
     if (existingUser) {
