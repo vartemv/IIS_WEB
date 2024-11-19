@@ -6,7 +6,7 @@ export async function GET(req: NextRequest) {
   const token = req.cookies.get("user_token");
 
   if (!token) {
-    return NextResponse.json({ success: false, message: "No token provided" }, { status: 401 });
+    return NextResponse.json({ success: false, message: "No token provided" }, { status: 301 });
   }
 
   const answer = TokenService.verify(token.value)
