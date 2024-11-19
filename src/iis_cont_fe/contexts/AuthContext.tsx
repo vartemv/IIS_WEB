@@ -22,22 +22,18 @@ export const AuthProvider = ({ children }: Props) => {
     const { getCookie } = useCookie();
 
     useEffect(() => {
-        if (!user) {
-            const getFromCookie = async () => {
-                const existingUser = await getCookie("user");
-
-                if (existingUser) {
-                    try {
-                        setUser(JSON.parse(existingUser));
-                    } catch (e) {
-                        console.log(e);
-                    }
-                }
-            };
-            getFromCookie();
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [user]);
+        const loadUserFromCookie = async () => {
+            const response = await fetch("/api/auth/refresh", { credentials: "include" });
+            const data = await response.json();
+    
+            if (data.success) {
+              setUser(data.data);
+            } else {
+              setUser(null);
+            }
+        };
+        loadUserFromCookie();
+      }, []);
 
     return (
         <AuthContext.Provider value={{ user, setUser }}>

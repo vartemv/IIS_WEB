@@ -1,11 +1,10 @@
 export type TUser = {
     email: string;
-    firstName: string;
-    lastName: string;
+    profileName: string;
   };
   
   export type AuthUser = {
-    token: string;
+    role: string;
     user: TUser;
   };
   
@@ -29,3 +28,12 @@ export type TUser = {
     data?: AuthUser;
     success?: boolean;
   };
+
+  export type DecodedToken = {
+    user: string;
+    email: string;
+    role: string;
+    iat: number;
+    exp: number;
+  };
+  

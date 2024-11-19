@@ -1,13 +1,8 @@
 import { NextResponse } from 'next/server';
 import prisma from 'db';
-
-const getCurrentDateString = () => {
-	const date = new Date();
-	const year = date.getFullYear();
-	const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
-	const day = String(date.getDate()).padStart(2, '0');
-	return `${year}-${month}-${day}T00:00:00.000Z`;
-};
+import { AuthUser } from '@/utils/types/auth'; 
+import { DateProcessor } from '@/app/utils/date';
+import { TokenService } from '@/app/utils/token';
 
 export async function POST(req: Request) {
   console.log("into post")
@@ -24,7 +19,7 @@ export async function POST(req: Request) {
       const first_name = firstName;
       const last_name = lastName;
       const hash_password = password;
-      const sign_up_date = getCurrentDateString();
+      const sign_up_date = DateProcessor.getCurrentDateString();
 
       const newUser = await prisma.users.create({
         data: {
@@ -36,11 +31,31 @@ export async function POST(req: Request) {
           email, // Ideally, hash the password before storing
         },
       });
-  
-      return NextResponse.json(
-        {data:{token: "Tester", user: {email: email, firstName: first_name, lastName: last_name}}, success: true, message: "User created succesfully"}, 
-        {status: 201} 
-      );
+      
+      const token = TokenService.create({user: profile_name, email: email, role: "User"});
+
+      const return_data : AuthUser = {
+        role: "user",
+        user: {
+          email: email,
+          profileName: profile_name
+        }
+      }
+
+      const response = NextResponse.json({
+        success: true,
+        data: return_data,
+        message: "User created successfully",
+      });
+
+      response.cookies.set("user_token", token, {
+        httpOnly: true,
+        secure: true,
+        maxAge: 60*60,
+        path: '/'
+      })
+
+      return response;
     } catch (error) {
       console.log(` ${error} Error in POST handler:`);
       return NextResponse.json({ error: 'Failed to create user' }, { status: 500 });
