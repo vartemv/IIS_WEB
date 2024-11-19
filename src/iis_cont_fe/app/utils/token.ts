@@ -2,8 +2,13 @@ import { DecodedToken } from '@/utils/types/auth';
 import jwt from 'jsonwebtoken';
 
 export const TokenService = {
-    create(payload: object, secret: string = "Test", expiresIn: string = '72h') {
-        return jwt.sign(payload, "secret", { expiresIn });
+    create(payload: object, expiresIn: string = '72h') {
+        const secret = process.env.USER_SALT;
+        if(!secret){
+          console.log("Env doesn't work")
+          return jwt.sign(payload, "tester", { expiresIn });
+        }
+        return jwt.sign(payload, secret, { expiresIn });
       },
       verify(token: string, secret: string = "Default") {
         try {

@@ -16,7 +16,6 @@ const Login = () => {
     register(values)
       .then((data) => {
         if (data?.success) {
-          // Add any code you want to execute after successful login
             router.push("/info"); // Redirect to the homepage (or any other page)
         } else {
           console.log(data.message); // Handle error or failed login
