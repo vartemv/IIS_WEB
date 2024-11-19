@@ -19,7 +19,7 @@ export async function POST(req: Request) {
         return NextResponse.json({ error: 'Email and password are required' }, { status: 400 });
       }
 
-      console.log(body)
+      // console.log(body)
   
       const first_name = firstName;
       const last_name = lastName;
@@ -32,11 +32,15 @@ export async function POST(req: Request) {
           last_name,
           profile_name,
           sign_up_date,
-          hash_password, // Ideally, hash the password before storing
+          hash_password,
+          email, // Ideally, hash the password before storing
         },
       });
   
-      return NextResponse.json(newUser, { status: 201 });
+      return NextResponse.json(
+        {data:{token: "Tester", user: {email: email, firstName: first_name, lastName: last_name}}, success: true, message: "User created succesfully"}, 
+        {status: 201} 
+      );
     } catch (error) {
       console.log(` ${error} Error in POST handler:`);
       return NextResponse.json({ error: 'Failed to create user' }, { status: 500 });

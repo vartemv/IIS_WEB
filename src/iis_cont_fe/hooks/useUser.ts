@@ -7,7 +7,8 @@ export const useUser = () => {
   const { user, setUser } = useContext(AuthContext);
   const { setCookie, removeCookie } = useCookie();
 
-  const addUser = (user: AuthUser) => {    
+  const addUser = (user: AuthUser) => { 
+    console.log("Adding user")   
     setUser(user);
     setCookie("user", JSON.stringify(user));
   };

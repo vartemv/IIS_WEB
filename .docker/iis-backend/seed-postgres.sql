@@ -6,6 +6,7 @@ CREATE TABLE users (
     profile_name VARCHAR(50) UNIQUE NOT NULL,
     sign_up_date DATE NOT NULL,
     hash_password VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
     role VARCHAR(10) CHECK (role IN ('Admin', 'Mod', 'Rep', 'User')) DEFAULT 'User'
 );
 

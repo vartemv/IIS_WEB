@@ -10,16 +10,14 @@ const Login = () => {
   const router = useRouter(); // For navigation after successful login
 
   const handleSubmit = (values: TRegister) => {
-    console.log(values);
+    // console.log(values);
 
     // Call the login function from useAuth
     register(values)
       .then((data) => {
         if (data?.success) {
           // Add any code you want to execute after successful login
-          setTimeout(() => {
-            router.push("/"); // Redirect to the homepage (or any other page)
-          }, 1000);
+            router.push("/info"); // Redirect to the homepage (or any other page)
         } else {
           console.log(data.message); // Handle error or failed login
         }

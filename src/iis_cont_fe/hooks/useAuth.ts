@@ -23,11 +23,16 @@ export const useAuth = () => {
   };
 
   const register = async (creds: TRegister) => {
-    console.log("Register")
+    // console.log("Register")
     return await axios
       .post(`/api/auth/user/`, creds)
       .then((res) => {
-        if (res.data?.data && res.data.data?.token) addUser(res.data.data);
+        console.log("In axios")
+        console.log(res.data.data)
+        if (res.data?.data && res.data.data?.token) {
+          console.log("adding user")
+          addUser(res.data.data)
+        };
         return res.data as AuthResponse;
       })
       .catch((err) => {
