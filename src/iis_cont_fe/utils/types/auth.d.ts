@@ -29,11 +29,12 @@ export type TUser = {
     success?: boolean;
   };
 
-  export type DecodedToken = {
+  export type JWTPayload ={}
+
+  export interface DecodedToken extends JWTPayload  {
     user: string;
     email: string;
     role: string;
     iat: number;
-    exp: number;
   };
   

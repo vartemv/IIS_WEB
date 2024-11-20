@@ -1,18 +1,21 @@
 import { DecodedToken } from '@/utils/types/auth';
-import jwt from 'jsonwebtoken';
+import { SignJWT, jwtVerify } from 'jose';
 
 export const TokenService = {
-    create(payload: object, expiresIn: string = '72h') {
-        const secret = process.env.USER_SALT;
-        if(!secret){
-          console.log("Env doesn't work")
-          return jwt.sign(payload, "tester", { expiresIn });
-        }
-        return jwt.sign(payload, secret, { expiresIn });
+    async create(payload: object, expiresIn: string = '72h') {
+      const secret = new TextEncoder().encode(process.env.USER_SALT || 'tester');
+      const token = await new SignJWT({payload}) // details to  encode in the token
+      .setProtectedHeader({ alg: 'HS256' }) // algorithm
+      .setIssuedAt() // token expiration time, e.g., "1 day"
+      .setExpirationTime(expiresIn)
+      .sign(secret); // secretKey generated from previous step
+      return token;
       },
-      verify(token: string, secret: string = "Default") {
+      async verify(token: string) {
         try {
-          return jwt.verify(token, "secret") as DecodedToken;
+          const secret = new TextEncoder().encode(process.env.USER_SALT || 'tester');
+          const { payload } = await jwtVerify(token, secret);
+          return payload.payload as DecodedToken;
         } catch (err) {
           console.error("Token verification error:", err);
           return null;

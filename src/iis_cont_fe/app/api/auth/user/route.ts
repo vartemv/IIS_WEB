@@ -32,7 +32,7 @@ export async function POST(req: Request) {
         },
       });
       
-      const token = TokenService.create({user: profile_name, email: email, role: "User"});
+      const token = await TokenService.create({user: profile_name, email: email, role: "User"});
 
       const return_data : AuthUser = {
         role: "user",
