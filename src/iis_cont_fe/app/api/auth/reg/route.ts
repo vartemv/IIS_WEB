@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import prisma from 'db';
+import { PasswordProcessor } from '@/app/utils/crypt';
 import { AuthUser } from '@/utils/types/auth'; 
 import { DateProcessor } from '@/app/utils/date';
 import { TokenService } from '@/app/utils/token';
@@ -14,21 +15,23 @@ export async function POST(req: Request) {
         return NextResponse.json({ error: 'Email and password are required' }, { status: 400 });
       }
 
-      // console.log(body)
+      console.log(body)
   
       const first_name = firstName;
       const last_name = lastName;
-      const hash_password = password;
+      const hash_password = await PasswordProcessor.hashPassword(password);
       const sign_up_date = DateProcessor.getCurrentDateString();
 
-      const newUser = await prisma.users.create({
+      console.log ("Creating user");
+
+      await prisma.users.create({
         data: {
           first_name,
           last_name,
           profile_name,
           sign_up_date,
           hash_password,
-          email, // Ideally, hash the password before storing
+          email,
         },
       });
       

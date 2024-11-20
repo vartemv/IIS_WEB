@@ -2,13 +2,13 @@ import { DecodedToken } from '@/utils/types/auth';
 import { SignJWT, jwtVerify } from 'jose';
 
 export const TokenService = {
-    async create(payload: object, expiresIn: string = '72h') {
+    async create(payload: object, expiresIn: string = '24h') {
       const secret = new TextEncoder().encode(process.env.USER_SALT || 'tester');
       const token = await new SignJWT({payload}) // details to  encode in the token
       .setProtectedHeader({ alg: 'HS256' }) // algorithm
-      .setIssuedAt() // token expiration time, e.g., "1 day"
+      .setIssuedAt()
       .setExpirationTime(expiresIn)
-      .sign(secret); // secretKey generated from previous step
+      .sign(secret); 
       return token;
       },
       async verify(token: string) {

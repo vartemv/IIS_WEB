@@ -92,7 +92,7 @@ model users {
   profile_name  String        @unique @db.VarChar(50)
   sign_up_date  DateTime      @db.Date
   hash_password String        @db.VarChar(255)
-  email         String        @db.VarChar(255)
+  email         String        @unique @db.VarChar(255)
   role          String?       @default("User") @db.VarChar(10)
   posts         posts[]
   user_groups   user_groups[]

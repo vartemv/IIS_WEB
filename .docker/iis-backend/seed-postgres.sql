@@ -6,7 +6,7 @@ CREATE TABLE users (
     profile_name VARCHAR(50) UNIQUE NOT NULL,
     sign_up_date DATE NOT NULL,
     hash_password VARCHAR(255) NOT NULL,
-    email VARCHAR(255) NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
     role VARCHAR(10) CHECK (role IN ('Admin', 'Mod', 'Rep', 'User')) DEFAULT 'User'
 );
 
@@ -86,7 +86,7 @@ CREATE TABLE post_tags (
 -- Populate Users Table
 INSERT INTO users (first_name, last_name, profile_name, sign_up_date, hash_password, role)
 VALUES
-    ('Alice', 'Smith', 'alice_s', '2023-01-15', 'hashed_password_1', 'Admin'),
+    ('Erwin', 'Smith', 'admin', '1930-10-14', 'hashed_password_1', 'Admin'),
     ('Bob', 'Johnson', 'bobby_j', '2023-02-20', 'hashed_password_2', 'Mod'),
     ('Charlie', 'Brown', 'charlie_b', '2023-03-10', 'hashed_password_3', 'User'),
     ('Diana', 'Prince', 'wonder_d', '2023-04-05', 'hashed_password_4', 'User');

@@ -6,21 +6,17 @@ import useCookie from "./useCookie";
 export const useAuth = () => {
   const { user, addUser, removeUser } = useUser();
 
-  const { getCookie } = useCookie();
-
   const refresh = () => {
     fetch('api/auth/refresh');
   };
 
   const register = async (creds: TRegister) => {
     return await axios
-      .post(`/api/auth/user/`, creds)
-      
+      .post(`/api/auth/reg/`, creds)
       .then((res) => {
         console.log(res);
-        if (res.data?.data) {
+        if (res.data?.data)
           addUser(res.data.data)
-        };
         return res.data as AuthResponse;
       })
       .catch((err) => {
@@ -32,9 +28,10 @@ export const useAuth = () => {
 
   const login = async (creds: TLogin) => {
     return await axios
-      .get(`api/auth/user/`)
+      .post(`api/auth/login/`, creds)
       .then((res) => {
-        if (res.data?.data && res.data.data?.token) addUser(res.data.data);
+        if (res.data?.data) 
+          addUser(res.data.data);
         return res.data as AuthResponse;
       })
       .catch((err) => {
