@@ -84,12 +84,12 @@ CREATE TABLE post_tags (
 );
 
 -- Populate Users Table
-INSERT INTO users (first_name, last_name, profile_name, sign_up_date, hash_password, role)
+INSERT INTO users (first_name, last_name, profile_name, sign_up_date, hash_password, email, role)
 VALUES
-    ('Erwin', 'Smith', 'admin', '1930-10-14', 'hashed_password_1', 'Admin'),
-    ('Bob', 'Johnson', 'bobby_j', '2023-02-20', 'hashed_password_2', 'Mod'),
-    ('Charlie', 'Brown', 'charlie_b', '2023-03-10', 'hashed_password_3', 'User'),
-    ('Diana', 'Prince', 'wonder_d', '2023-04-05', 'hashed_password_4', 'User');
+    ('Erwin', 'Smith', 'admin', '1930-10-14', '$2a$10$uKM0rWYrHkOgC3dS71Y7P..Nr7OOntYyttoKn0ynHGm1EF41Fgfzq', 'paradise@gmail.com' ,'Admin'),
+    ('Bob', 'Johnson', 'bobby_j', '2023-02-20', 'hashed_password_2', 'test1@gmail.com' ,'Mod'),
+    ('Charlie', 'Brown', 'charlie_b', '2023-03-10', 'hashed_password_3', 'test2@gmail.com','User'),
+    ('Diana', 'Prince', 'wonder_d', '2023-04-05', 'hashed_password_4', 'test3@gmail.com','User');
 
 -- Populate Posts Table
 INSERT INTO posts (user_ID, datetime, mediafile, description, location, availability)
