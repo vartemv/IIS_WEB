@@ -88,7 +88,7 @@ INSERT INTO users (first_name, last_name, profile_name, sign_up_date, hash_passw
 VALUES
     ('Erwin', 'Smith', 'admin', '1930-10-14', '$2a$10$uKM0rWYrHkOgC3dS71Y7P..Nr7OOntYyttoKn0ynHGm1EF41Fgfzq', 'paradise@gmail.com' ,'Admin'),
     ('Bob', 'Johnson', 'bobby_j', '2023-02-20', 'hashed_password_2', 'test1@gmail.com' ,'Mod'),
-    ('Charlie', 'Brown', 'charlie_b', '2023-03-10', 'hashed_password_3', '$2a$10$SH2w1o.hwPjHa4BuDwpisOzKhLv36e0LNkCnZDcKWFi.8nWtDuqfm','User'),
+    ('Charlie', 'Brown', 'charlie_b', '2023-03-10', '$2a$10$SH2w1o.hwPjHa4BuDwpisOzKhLv36e0LNkCnZDcKWFi.8nWtDuqfm', 'test@gmil','User'),
     ('Diana', 'Prince', 'wonder_d', '2023-04-05', 'hashed_password_4', 'test3@gmail.com','User');
 
 -- Populate Posts Table

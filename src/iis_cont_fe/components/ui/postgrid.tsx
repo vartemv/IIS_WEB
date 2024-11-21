@@ -2,6 +2,7 @@ import React from "react";
 
 interface Post {
   image: string;
+  author: string;
   caption: string;
 }
 

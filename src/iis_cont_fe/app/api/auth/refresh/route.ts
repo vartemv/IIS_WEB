@@ -31,5 +31,7 @@ export async function GET(req: NextRequest) {
     message: "User created successfully",
   });
 
+  
+
   return response;
 }

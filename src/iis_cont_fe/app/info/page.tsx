@@ -20,14 +20,7 @@ import PostGrid from "../../components/ui/postgrid";
 export default function TextareaDemo() {
     const { user } = useUser();
     const posts = [
-      { image: "https://via.placeholder.com/300", caption: "Post 1" },
-      { image: "https://via.placeholder.com/300", caption: "Post 2" },
-      { image: "https://via.placeholder.com/400", caption: "Post 3" },
-      { image: "https://via.placeholder.com/300", caption: "Post 4" },
-      { image: "https://via.placeholder.com/300", caption: "Post 4" },
-      { image: "https://via.placeholder.com/400", caption: "Post 4" },
-      { image: "https://via.placeholder.com/500", caption: "Post 4" },
-      { image: "https://via.placeholder.com/300", caption: "Post 4" },
+      { image: "https://via.placeholder.com/300", caption: "Post 1", author: "Test" }
     ];
     // return <ResizablePanelGroup direction="horizontal">
     //             <ResizablePanel> Cookie-user: <pre>{JSON.stringify(user, undefined, 4)}</pre> </ResizablePanel>

@@ -27,7 +27,9 @@ export const AuthProvider = ({ children }: Props) => {
             const data = await response.json();
     
             if (data.success) {
+            console.log(data.data)
               setUser(data.data);
+              
             } else {
               setUser(null);
             }
