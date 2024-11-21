@@ -1,7 +1,6 @@
 import { useUser } from "./useUser";
 import axios from "axios";
 import { AuthResponse, TLogin, TRegister } from "@/utils/types/auth";
-import useCookie from "./useCookie";
 
 export const useAuth = () => {
   const { user, addUser, removeUser } = useUser();
@@ -14,7 +13,6 @@ export const useAuth = () => {
     return await axios
       .post(`/api/auth/reg/`, creds)
       .then((res) => {
-        console.log(res);
         if (res.data?.data)
           addUser(res.data.data)
         return res.data as AuthResponse;

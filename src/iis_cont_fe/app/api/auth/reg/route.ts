@@ -6,7 +6,6 @@ import { DateProcessor } from '@/app/utils/date';
 import { TokenService } from '@/app/utils/token';
 
 export async function POST(req: Request) {
-  console.log("into post")
     try {
       const body = await req.json();
       const { firstName, lastName, profile_name, email, password } = body;
@@ -14,15 +13,11 @@ export async function POST(req: Request) {
       if  ( !profile_name || !email || !password) {
         return NextResponse.json({ error: 'Email and password are required' }, { status: 400 });
       }
-
-      console.log(body)
   
       const first_name = firstName;
       const last_name = lastName;
       const hash_password = await PasswordProcessor.hashPassword(password);
       const sign_up_date = DateProcessor.getCurrentDateString();
-
-      console.log ("Creating user");
 
       await prisma.users.create({
         data: {
