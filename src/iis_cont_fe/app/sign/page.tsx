@@ -96,7 +96,7 @@ const Sign_in = () => {
                 </div>
               </CardContent>
               <CardFooter>
-                <Button onClick={handleLoginSubmit} >Login</Button>
+                <Button variant = {"default"} onClick={handleLoginSubmit} >Login</Button>
               </CardFooter>
             </Card>
           </TabsContent>
@@ -131,7 +131,7 @@ const Sign_in = () => {
                 </div>
               </CardContent>
               <CardFooter>
-                <Button onClick={handleRegisterSubmit} type="submit">Register</Button>
+                <Button variant = {"default"} onClick={handleRegisterSubmit} type="submit">Register</Button>
               </CardFooter>
             </Card>
           </TabsContent>
