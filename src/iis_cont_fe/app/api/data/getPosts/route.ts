@@ -28,11 +28,19 @@ export async function GET(req: NextRequest)
         profile_name: user,
       }
     });
+
+    if(!user_data){
+      const response =  NextResponse.json({message: "User doesn't exist" }, { status: 400 });
+      response.headers.set("Cache-Control", "no-store");
+      return response;
+    }
+
     const posts = await prisma.posts.findMany({
       where: {
         user_id: user_data?.id,
       },
     });
+    
     
     const response = NextResponse.json({
         success: true,
