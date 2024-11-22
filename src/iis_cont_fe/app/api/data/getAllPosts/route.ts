@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import { TokenService } from "@/app/utils/token";
 import prisma from 'db';
 
 export async function GET(req: NextRequest) {
@@ -13,12 +12,18 @@ export async function GET(req: NextRequest) {
             tags: true,
           },
         },
-        comments: true,
+        comments: {
+          include: {
+            users: { // alias for related user details
+              select: {
+                photo: true,
+              },
+            },
+          },
+        },
         reactions: true,
       },
     });
-  
-
 
     const response = NextResponse.json({
       success: true,

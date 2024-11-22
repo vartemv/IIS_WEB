@@ -4,6 +4,7 @@ CREATE TABLE users (
     first_name VARCHAR(50) NOT NULL,
     last_name VARCHAR(50) NOT NULL,
     profile_name VARCHAR(50) UNIQUE NOT NULL,
+    photo TEXT DEFAULT NULL,
     sign_up_date DATE NOT NULL,
     hash_password VARCHAR(255) NOT NULL,
     email VARCHAR(255) UNIQUE NOT NULL,
@@ -58,7 +59,8 @@ CREATE TABLE comments (
     content TEXT NOT NULL,
     author TEXT NOT NULL,
     datetime TIMESTAMP NOT NULL,
-    FOREIGN KEY (post_ID) REFERENCES posts(ID) ON DELETE CASCADE
+    FOREIGN KEY (post_ID) REFERENCES posts(ID) ON DELETE CASCADE,
+    FOREIGN KEY (author) REFERENCES users(profile_name) ON DELETE CASCADE
 );
 
 -- Create Reactions Table
@@ -85,29 +87,112 @@ CREATE TABLE post_tags (
 );
 
 CREATE INDEX idx_post_tags_post_id ON post_tags (post_ID);
+
 CREATE INDEX idx_reactions_post_id ON reactions (post_ID);
+
 CREATE INDEX idx_comments_post_id ON comments (post_ID);
+
 CREATE INDEX idx_comments_post_id_datetime ON comments (post_ID, datetime);
+
 CREATE INDEX idx_reactions_post_id_amount ON reactions (post_ID, amount);
+CREATE INDEX idx_comments_author ON comments (author);
 
 -- Populate Users Table
-INSERT INTO users (first_name, last_name, profile_name, sign_up_date, hash_password, email, role)
+INSERT INTO
+    users (
+        first_name,
+        last_name,
+        profile_name,
+        sign_up_date,
+        hash_password,
+        email,
+        role
+    )
 VALUES
-    ('Erwin', 'Smith', 'admin', '1930-10-14', '$2a$10$uKM0rWYrHkOgC3dS71Y7P..Nr7OOntYyttoKn0ynHGm1EF41Fgfzq', 'paradise@gmail.com' ,'Admin'),
-    ('Bob', 'Johnson', 'bobby_j', '2023-02-20', 'hashed_password_2', 'test1@gmail.com' ,'Mod'),
-    ('Charlie', 'Brown', 'charlie_b', '2023-03-10', '$2a$10$SH2w1o.hwPjHa4BuDwpisOzKhLv36e0LNkCnZDcKWFi.8nWtDuqfm', 'test@gmil','User'),
-    ('Diana', 'Prince', 'wonder_d', '2023-04-05', 'hashed_password_4', 'test3@gmail.com','User');
+    (
+        'Erwin',
+        'Smith',
+        'admin',
+        '1930-10-14',
+        '$2a$10$uKM0rWYrHkOgC3dS71Y7P..Nr7OOntYyttoKn0ynHGm1EF41Fgfzq',
+        'paradise@gmail.com',
+        'Admin'
+    ),
+    (
+        'Bob',
+        'Johnson',
+        'bobby_j',
+        '2023-02-20',
+        'hashed_password_2',
+        'test1@gmail.com',
+        'Mod'
+    ),
+    (
+        'Charlie',
+        'Brown',
+        'charlie_b',
+        '2023-03-10',
+        '$2a$10$SH2w1o.hwPjHa4BuDwpisOzKhLv36e0LNkCnZDcKWFi.8nWtDuqfm',
+        'test@gmil',
+        'User'
+    ),
+    (
+        'Diana',
+        'Prince',
+        'wonder_d',
+        '2023-04-05',
+        'hashed_password_4',
+        'test3@gmail.com',
+        'User'
+    );
 
 -- Populate Posts Table
-INSERT INTO posts (user_ID, datetime, mediafile, description, location, availability)
+INSERT INTO
+    posts (
+        user_ID,
+        datetime,
+        mediafile,
+        description,
+        location,
+        availability
+    )
 VALUES
-    (1, '2023-05-10 10:00:00', 'image1.jpg', 'A sunny day in the park.', 'Central Park, NYC', TRUE),
-    (2, '2023-05-11 14:30:00', 'image2.jpg', 'Had a great coffee today.', 'Starbucks, LA', TRUE),
-    (3, '2023-05-12 18:45:00', NULL, 'Just finished a 5K run!', 'San Francisco', TRUE),
-    (4, '2023-05-13 09:20:00', 'video1.mp4', 'Check out this cool skate trick!', 'Venice Beach', TRUE);
+    (
+        1,
+        '2023-05-10 10:00:00',
+        'image1.jpg',
+        'A sunny day in the park.',
+        'Central Park, NYC',
+        TRUE
+    ),
+    (
+        2,
+        '2023-05-11 14:30:00',
+        'image2.jpg',
+        'Had a great coffee today.',
+        'Starbucks, LA',
+        TRUE
+    ),
+    (
+        3,
+        '2023-05-12 18:45:00',
+        NULL,
+        'Just finished a 5K run!',
+        'San Francisco',
+        TRUE
+    ),
+    (
+        4,
+        '2023-05-13 09:20:00',
+        'video1.mp4',
+        'Check out this cool skate trick!',
+        'Venice Beach',
+        TRUE
+    );
 
 -- Populate Groups Table
-INSERT INTO groups (group_name, pocet, owner, datum)
+INSERT INTO
+    groups (group_name, pocet, owner, datum)
 VALUES
     ('Nature Lovers', 50, 1, '2023-01-01'),
     ('Coffee Enthusiasts', 30, 2, '2023-02-01'),
@@ -115,7 +200,8 @@ VALUES
     ('Skaters Club', 15, 4, '2023-04-01');
 
 -- Populate User_Groups Table
-INSERT INTO user_groups (id_of_user, group_name, status, datum)
+INSERT INTO
+    user_groups (id_of_user, group_name, status, datum)
 VALUES
     (1, 'Nature Lovers', 'Active', '2023-01-15'),
     (2, 'Coffee Enthusiasts', 'Active', '2023-02-20'),
@@ -125,7 +211,8 @@ VALUES
     (4, 'Coffee Enthusiasts', 'Banned', '2023-05-01');
 
 -- Populate Group_Posts Table
-INSERT INTO group_posts (group_name, post_ID, datum)
+INSERT INTO
+    group_posts (group_name, post_ID, datum)
 VALUES
     ('Nature Lovers', 1, '2023-05-10'),
     ('Coffee Enthusiasts', 2, '2023-05-11'),
@@ -133,15 +220,37 @@ VALUES
     ('Skaters Club', 4, '2023-05-13');
 
 -- Populate Comments Table
-INSERT INTO comments (post_ID, content, datetime, author)
+INSERT INTO
+    comments (post_ID, content, datetime, author)
 VALUES
-    (1, 'Beautiful photo!', '2023-05-10 10:30:00', 'bobby_j'),
-    (2, 'I love that place too!', '2023-05-11 15:00:00', 'charlie_b'),
-    (3, 'Great job on the run!', '2023-05-12 19:00:00', 'wonder_d'),
-    (4, 'Awesome trick!', '2023-05-13 09:45:00', 'wonder_d');
+    (
+        1,
+        'Beautiful photo!',
+        '2023-05-10 10:30:00',
+        'bobby_j'
+    ),
+    (
+        2,
+        'I love that place too!',
+        '2023-05-11 15:00:00',
+        'charlie_b'
+    ),
+    (
+        3,
+        'Great job on the run!',
+        '2023-05-12 19:00:00',
+        'wonder_d'
+    ),
+    (
+        4,
+        'Awesome trick!',
+        '2023-05-13 09:45:00',
+        'wonder_d'
+    );
 
 -- Populate Reactions Table
-INSERT INTO reactions (post_ID, amount)
+INSERT INTO
+    reactions (post_ID, amount)
 VALUES
     (1, 10),
     (2, 15),
@@ -149,7 +258,8 @@ VALUES
     (4, 20);
 
 -- Populate Tags Table
-INSERT INTO tags (Name)
+INSERT INTO
+    tags (Name)
 VALUES
     ('Nature'),
     ('Coffee'),
@@ -158,10 +268,17 @@ VALUES
     ('Photography');
 
 -- Populate Post_Tags Table
-INSERT INTO post_tags (post_ID, tag_ID)
+INSERT INTO
+    post_tags (post_ID, tag_ID)
 VALUES
-    (1, 1), -- Post 1 tagged as 'Nature'
-    (1, 5), -- Post 1 tagged as 'Photography'
-    (2, 2), -- Post 2 tagged as 'Coffee'
-    (3, 3), -- Post 3 tagged as 'Running'
-    (4, 4); -- Post 4 tagged as 'Skating'
+    (1, 1),
+    -- Post 1 tagged as 'Nature'
+    (1, 5),
+    -- Post 1 tagged as 'Photography'
+    (2, 2),
+    -- Post 2 tagged as 'Coffee'
+    (3, 3),
+    -- Post 3 tagged as 'Running'
+    (4, 4);
+
+-- Post 4 tagged as 'Skating'

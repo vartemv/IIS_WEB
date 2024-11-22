@@ -18,7 +18,7 @@ export const usePosts = () => {
                 return res.data;
             })
             .catch((err) => {
-                return { success: false, data: null, message: "Failed to fetch posts." };
+                return { success: false, data: null, message: "Failed to fetch post." };
             });
     }
 
