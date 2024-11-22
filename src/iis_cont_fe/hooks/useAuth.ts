@@ -24,17 +24,6 @@ export const useAuth = () => {
       });
   };
 
-  const get_user_post = async (profile_name: string) => {
-    return await axios
-    .get(`/api/data/getPosts?user=${profile_name}`)
-    .then((res) => {
-        return res.data;
-    })
-    .catch((err) => {
-      return { success: false, data: null, message: "Failed to fetch posts." };
-    });
-  }
-
   const login = async (creds: TLogin) => {
     return await axios
       .post(`api/auth/login/`, creds)
@@ -54,5 +43,5 @@ export const useAuth = () => {
     removeUser();
   };
 
-  return { user, login, register, logout, refresh, get_user_post };
+  return { user, login, register, logout, refresh};
 };

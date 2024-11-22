@@ -16,12 +16,12 @@ import { Input } from "@/components/ui/input"
 import { Separator } from "@/components/ui/separator"
 import PostGrid from "@/components/ui/postgrid";
 import { useEffect, useState } from "react";
-import { useAuth } from "@/hooks/useAuth";
 import { useParams } from "next/navigation";
+import { usePosts } from "@/hooks/usePosts";
 
 function Profile(){
     const {user} = useParams();
-    const{get_user_post} = useAuth();
+    const{get_user_post} = usePosts();
     const[post_data, setPosts] = useState([]);
     
     useEffect(() => {
