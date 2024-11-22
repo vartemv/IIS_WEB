@@ -31,7 +31,9 @@ export const useAuth = () => {
         return res.data;
     })
     .catch((err) => {
+      console.log("Error");
       console.log(err);
+      return "smth"
     });
   }
 

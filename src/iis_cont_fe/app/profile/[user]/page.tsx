@@ -1,6 +1,5 @@
 'use client';
 import { useUser } from "@/hooks/useUser";
-import axios from "axios";
 import Link from "next/link"
 import {
   NavigationMenu,
@@ -15,19 +14,20 @@ import {
 import { navigationMenuTriggerStyle } from "@/components/ui/navigation-menu"
 import { Input } from "@/components/ui/input"
 import { Separator } from "@/components/ui/separator"
-import PostGrid from "../../components/ui/postgrid";
+import PostGrid from "@/components/ui/postgrid";
 import { useEffect, useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
+import { useParams } from "next/navigation";
 
-const Profile = () => {
-    const{user} = useUser();
+function Profile(){
+    const {user} = useParams();
     const{get_data} = useAuth();
     const[post_data, setPosts] = useState([]);
     
     useEffect(() => {
-      if(user){
-        get_data(user.user.profileName).then((data)=>{
-          console.log(data.data);
+      if(user && !Array.isArray(user)){
+        get_data(user).then((data)=>{
+          console.log(data.data)
         });
       }
       }, [user]);
@@ -39,9 +39,6 @@ const Profile = () => {
     const posts = [
         { image: "https://via.placeholder.com/300", caption: "Post 1", author:"test" }
       ];
-      // return <ResizablePanelGroup direction="horizontal">
-      //             <ResizablePanel> Cookie-user: <pre>{JSON.stringify(user, undefined, 4)}</pre> </ResizablePanel>
-      //         </ResizablePanelGroup>
       return (<>
         <NavigationMenu>
           <NavigationMenuList>

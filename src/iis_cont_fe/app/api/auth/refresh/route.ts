@@ -4,15 +4,19 @@ import { AuthUser } from '@/utils/types/auth';
 
 export async function GET(req: NextRequest) {
   const token = req.cookies.get("user_token");
-
+  
   if (!token) {
-    return NextResponse.json({ success: false, data:null, message: "No token provided" }, { status: 301 });
+    const response = NextResponse.json({ success: false, data:null, message: "No token provided" }, { status: 301 });
+    response.headers.set("Cache-Control", "no-store");
+    return response;
   }
 
   const answer = await TokenService.verify(token.value)
 
   if (!answer){
-    return NextResponse.json({ success: false, message: "Invalid token" }, { status: 403 });
+    const response =  NextResponse.json({ success: false, message: "Invalid token" }, { status: 403 });
+    response.headers.set("Cache-Control", "no-store");
+    return response;
   }
 
   const {user, email, role, id} = answer;
