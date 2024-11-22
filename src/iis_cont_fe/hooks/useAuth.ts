@@ -24,6 +24,17 @@ export const useAuth = () => {
       });
   };
 
+  const get_data = async (profile_name: string) => {
+    return await axios
+    .get(`/api/data/getPosts?user=${profile_name}`)
+    .then((res) => {
+        return res.data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  }
+
   const login = async (creds: TLogin) => {
     return await axios
       .post(`api/auth/login/`, creds)
@@ -43,5 +54,5 @@ export const useAuth = () => {
     removeUser();
   };
 
-  return { user, login, register, logout, refresh };
+  return { user, login, register, logout, refresh, get_data };
 };

@@ -1,6 +1,7 @@
 export type TUser = {
     email: string;
     profileName: string;
+    id: number;
   };
   
   export type AuthUser = {
@@ -35,6 +36,7 @@ export type TUser = {
     user: string;
     email: string;
     role: string;
+    id: number;
     iat: number;
   };
   

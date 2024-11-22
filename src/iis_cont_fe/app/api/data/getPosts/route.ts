@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { TokenService } from "@/app/utils/token";
+import prisma from 'db';
 
 export async function GET(req: NextRequest)
 {
@@ -9,25 +10,39 @@ export async function GET(req: NextRequest)
         return NextResponse.json({ success: false, data:null, message: "No token provided" }, { status: 301 });
       }
     
-      const answer = await TokenService.verify(token.value)
+      const sender = await TokenService.verify(token.value)
     
-      if (!answer){
+      if (!sender){
         return NextResponse.json({ success: false, data:null, message: "Invalid token" }, { status: 403 });
       }
 
     const { searchParams } = new URL(req.url);
+    let user = "";
     if(searchParams){
-        const user = searchParams.get("user");
-        console.log(`User is ${user}`)
+        user = searchParams.get("user") ?? "";
     }
 
-    const response_answer = {data: "smth"};
+    try{
+    const user_data = await prisma.users.findUnique({
+      where: {
+        profile_name: user,
+      }
+    });
+    const posts = await prisma.posts.findMany({
+      where: {
+        user_id: user_data?.id,
+      },
+    });
     
     const response = NextResponse.json({
         success: true,
-        data: response_answer,
-        message: "User created successfully",
+        data: posts,
+        message: "Posts retrieved successfully",
       });
-
       return response;
+  }
+  catch(e){
+    console.log(e);
+    return new NextResponse();
+  }
 };

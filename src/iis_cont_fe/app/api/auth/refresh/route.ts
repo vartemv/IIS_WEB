@@ -15,11 +15,12 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ success: false, message: "Invalid token" }, { status: 403 });
   }
 
-  const {user, email, role} = answer;
+  const {user, email, role, id} = answer;
 
   const response_answer : AuthUser = {
     role: role,
     user: {
+      id: id,
       email: email,
       profileName: user
     }

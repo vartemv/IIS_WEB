@@ -29,12 +29,24 @@ export async function POST(req: Request) {
           email,
         },
       });
+
+      const result = await prisma.users.findUnique({
+        where: {
+          email: email,
+        },
+      });
+
+      let user_id = 0;
+      if(result){
+        user_id = result.id;
+      }
       
-      const token = await TokenService.create({user: profile_name, email: email, role: "User"});
+      const token = await TokenService.create({user: profile_name, email: email, role: "User", id: user_id});
 
       const return_data : AuthUser = {
         role: "user",
         user: {
+          id: user_id,
           email: email,
           profileName: profile_name
         }

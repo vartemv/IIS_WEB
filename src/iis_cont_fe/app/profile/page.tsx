@@ -1,5 +1,6 @@
 'use client';
 import { useUser } from "@/hooks/useUser";
+import axios from "axios";
 import Link from "next/link"
 import {
   NavigationMenu,
@@ -15,21 +16,25 @@ import { navigationMenuTriggerStyle } from "@/components/ui/navigation-menu"
 import { Input } from "@/components/ui/input"
 import { Separator } from "@/components/ui/separator"
 import PostGrid from "../../components/ui/postgrid";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useAuth } from "@/hooks/useAuth";
 
 const Profile = () => {
     const{user} = useUser();
-    console.log(user);
-
+    const{get_data} = useAuth();
+    const[post_data, setPosts] = useState([]);
+    
     useEffect(() => {
-        const get_data = async () => {
-            const response = await fetch(`/api/data/getPosts?user=${user?.user.profileName}`,{
-                method: "GET"
-            });
-            
-        }
-        get_data();
-      }, []);
+      if(user){
+        get_data(user.user.profileName).then((data)=>{
+          console.log(data.data);
+        });
+      }
+      }, [user]);
+
+      if(!user){
+        return <p>Loading user...</p>; 
+      }
 
     const posts = [
         { image: "https://via.placeholder.com/300", caption: "Post 1", author:"test" }
@@ -43,7 +48,7 @@ const Profile = () => {
             <NavigationMenuItem>
               <Link href="/docs" legacyBehavior passHref>
                 <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                  Home
+                Home
                 </NavigationMenuLink>
               </Link>
             </NavigationMenuItem>
@@ -68,7 +73,7 @@ const Profile = () => {
         <Separator className="my-4" />
       </div>
       <main className="p-4">
-          <PostGrid posts={posts} />
+          <PostGrid posts={post_data} />
     </main>
       </>)
 
