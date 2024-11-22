@@ -16,18 +16,37 @@ import { navigationMenuTriggerStyle } from "@/components/ui/navigation-menu"
 import { Input } from "@/components/ui/input"
 import { Separator } from "@/components/ui/separator"
 import PostGrid from "../../components/ui/postgrid";
+import Navbar from "../../components/ui/navbar";
 
 export default function TextareaDemo() {
     const { user } = useUser();
     const posts = [
-      { image: "https://via.placeholder.com/300", caption: "Post 1", author: "Test" }
+      { id: 1, image: "https://via.placeholder.com/300", caption: "Post 0", author: "Test" },
+      { id: 2, image: "https://via.placeholder.com/300", caption: "Post 1", author: "Test" },
+      { id: 3, image: "https://via.placeholder.com/300", caption: "Post 2", author: "Test" },
+      { id: 4, image: "https://via.placeholder.com/400", caption: "Post 3", author: "Test" },
+      { id: 5, image: "https://via.placeholder.com/300", caption: "Post 4", author: "Test" },
+      { id: 6, image: "https://via.placeholder.com/300", caption: "Post 4", author: "Test" },
+      { id: 7, image: "https://via.placeholder.com/400", caption: "Post 4", author: "Test" },
+      { id: 8, image: "https://via.placeholder.com/500", caption: "Post 4", author: "Test" },
+      { id: 9, image: "https://via.placeholder.com/300", caption: "Post 4", author: "Test" },
     ];
     // return <ResizablePanelGroup direction="horizontal">
     //             <ResizablePanel> Cookie-user: <pre>{JSON.stringify(user, undefined, 4)}</pre> </ResizablePanel>
     //         </ResizablePanelGroup>
     return (<>
+    {/* <Navbar /> */}
       <NavigationMenu>
         <NavigationMenuList>
+        <NavigationMenuItem>
+            <Link href="/docs" legacyBehavior passHref className="text-xl font-bold text-white">
+              <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                <p className="text-xl font-bold">
+                  FITstagram
+                  </p>
+              </NavigationMenuLink>
+            </Link>
+          </NavigationMenuItem>
           <NavigationMenuItem>
             <Link href="/docs" legacyBehavior passHref>
               <NavigationMenuLink className={navigationMenuTriggerStyle()}>
@@ -63,8 +82,8 @@ export default function TextareaDemo() {
       </div>
     </div>
     <main className="p-4">
-        {/* Pass the posts to PostGrid */}
-        <PostGrid posts={posts} />
+      {/* Pass the posts to PostGrid */}
+      <PostGrid posts={posts} />
       </main>
     </>)
   
