@@ -5,7 +5,6 @@ import { PasswordProcessor } from '@/app/utils/crypt';
 import { AuthUser } from '@/utils/types/auth';
 
 export async function POST(req: Request) {
-  console.log("into login")
     try {
       const body = await req.json();
       const {email , password } = body;

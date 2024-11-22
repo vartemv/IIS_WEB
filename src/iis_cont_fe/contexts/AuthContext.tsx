@@ -23,7 +23,6 @@ export const AuthProvider = ({ children }: Props) => {
 
     useEffect(() => {
         const loadUserFromCookie = async () => {
-            console.log("REfresh auth");
             
             const response = await fetch("/api/auth/refresh", { credentials: "include" });
             const data = await response.json();
