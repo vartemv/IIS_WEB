@@ -28,7 +28,7 @@ export const useAuth = () => {
     return await axios
       .post(`api/auth/login/`, creds)
       .then((res) => {
-        if (res.data?.data) 
+        if (res.data?.data)
           addUser(res.data.data);
         return res.data as AuthResponse;
       })
@@ -43,5 +43,5 @@ export const useAuth = () => {
     removeUser();
   };
 
-  return { user, login, register, logout, refresh};
+  return { user, login, register, logout, refresh };
 };
