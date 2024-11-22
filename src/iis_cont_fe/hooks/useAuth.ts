@@ -24,24 +24,11 @@ export const useAuth = () => {
       });
   };
 
-  const get_data = async (profile_name: string) => {
-    return await axios
-    .get(`/api/data/getPosts?user=${profile_name}`)
-    .then((res) => {
-        return res.data;
-    })
-    .catch((err) => {
-      console.log("Error");
-      console.log(err);
-      return "smth"
-    });
-  }
-
   const login = async (creds: TLogin) => {
     return await axios
       .post(`api/auth/login/`, creds)
       .then((res) => {
-        if (res.data?.data) 
+        if (res.data?.data)
           addUser(res.data.data);
         return res.data as AuthResponse;
       })
@@ -56,5 +43,5 @@ export const useAuth = () => {
     removeUser();
   };
 
-  return { user, login, register, logout, refresh, get_data };
+  return { user, login, register, logout, refresh };
 };

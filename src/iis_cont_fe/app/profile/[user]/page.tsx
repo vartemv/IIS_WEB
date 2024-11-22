@@ -16,63 +16,63 @@ import { Input } from "@/components/ui/input"
 import { Separator } from "@/components/ui/separator"
 import PostGrid from "@/components/ui/postgrid";
 import { useEffect, useState } from "react";
-import { useAuth } from "@/hooks/useAuth";
 import { useParams } from "next/navigation";
+import { usePosts } from "@/hooks/usePosts";
 
-function Profile(){
-    const {user} = useParams();
-    const{get_data} = useAuth();
-    const[post_data, setPosts] = useState([]);
-    
-    useEffect(() => {
-      if(user && !Array.isArray(user)){
-        get_data(user).then((data)=>{
-          console.log(data.data)
-        });
-      }
-      }, [user]);
+function Profile() {
+  const { user } = useParams();
+  const { get_user_post } = usePosts();
+  const [post_data, setPosts] = useState([]);
 
-      if(!user){
-        return <p>Loading user...</p>; 
-      }
+  useEffect(() => {
+    if (user && !Array.isArray(user)) {
+      get_user_post(user).then((data) => {
+        console.log(data.data)
+      });
+    }
+  }, [user]);
 
-    const posts = [
-        { image: "https://via.placeholder.com/300", caption: "Post 1", author:"test" }
-      ];
-      return (<>
-        <NavigationMenu>
-          <NavigationMenuList>
-            <NavigationMenuItem>
-              <Link href="/docs" legacyBehavior passHref>
-                <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                Home
-                </NavigationMenuLink>
-              </Link>
-            </NavigationMenuItem>
-            <NavigationMenuItem>
-              <Link href="/docs" legacyBehavior passHref>
-                <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                  Create Post
-                </NavigationMenuLink>
-              </Link>
-            </NavigationMenuItem>
-            <NavigationMenuItem>
-              <Link href="/docs" legacyBehavior passHref>
-                <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                  Create Group
-                </NavigationMenuLink>
-              </Link>
-            </NavigationMenuItem>
-          </NavigationMenuList>
-          <Input type="search" placeholder="Search"/>
-        </NavigationMenu>
-        <div>
-        <Separator className="my-4" />
-      </div>
-      <main className="p-4">
-          <PostGrid posts={post_data} />
+  if (!user) {
+    return <p>Loading user...</p>;
+  }
+
+  const posts = [
+    { image: "https://via.placeholder.com/300", caption: "Post 1", author: "test" }
+  ];
+  return (<>
+    <NavigationMenu>
+      <NavigationMenuList>
+        <NavigationMenuItem>
+          <Link href="/docs" legacyBehavior passHref>
+            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+              Home
+            </NavigationMenuLink>
+          </Link>
+        </NavigationMenuItem>
+        <NavigationMenuItem>
+          <Link href="/docs" legacyBehavior passHref>
+            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+              Create Post
+            </NavigationMenuLink>
+          </Link>
+        </NavigationMenuItem>
+        <NavigationMenuItem>
+          <Link href="/docs" legacyBehavior passHref>
+            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+              Create Group
+            </NavigationMenuLink>
+          </Link>
+        </NavigationMenuItem>
+      </NavigationMenuList>
+      <Input type="search" placeholder="Search" />
+    </NavigationMenu>
+    <div>
+      <Separator className="my-4" />
+    </div>
+    <main className="p-4">
+      <PostGrid posts={post_data} />
     </main>
-      </>)
+  </>)
 
 };
 
