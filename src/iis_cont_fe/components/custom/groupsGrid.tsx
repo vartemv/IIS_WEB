@@ -12,6 +12,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Group } from "@/utils/types/fe_types";
+import NavigationMenuComponent from "../ui/navbarmain";
 
 interface ModalProps {
   group: Group;
@@ -64,7 +65,7 @@ interface GroupGridProps {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center">
       <div className="bg-white rounded-lg p-6 max-w-md w-full relative">
-        
+      
         <button
           className="absolute top-3 right-3 text-gray-500 hover:text-black"
           onClick={onClose}

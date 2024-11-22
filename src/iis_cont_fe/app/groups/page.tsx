@@ -27,8 +27,8 @@ export default function TextareaDemo() {
     //         </ResizablePanelGroup>
     return (<>
         <div>
-            {/* <Navbar /> */}
-            <NavigationMenuComponent />
+            <Navbar />
+            {/* <NavigationMenuComponent /> */}
         </div>
         <div>
             <Separator className="my-4" />
