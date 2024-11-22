@@ -14,10 +14,12 @@ import { Label } from "@/components/ui/label"
 
 interface Post {
   id: number;
-  image: string;
-  author: string;
-  caption: string;
-  // ALL POST INFO: title, comments, etc.
+  user_id: number;
+  mediafile: string;
+  description: string;
+  location: string;
+  datetime: string;
+  availability: boolean;
 }
 
 interface ModalProps {
@@ -48,12 +50,13 @@ interface PostGridProps {
             onClick={() => handlePhotoClick(post)}
             >
             <img
-              src={post.image}
-              alt={post.caption}
+              // src={post.mediafile}
+              src={'https://via.placeholder.com/300'}
+              alt={post.description}
               className="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-105"
             />
             <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white text-sm p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-              {post.caption}
+              {post.description}
             </div>
           </div>
           
@@ -80,8 +83,9 @@ interface PostGridProps {
 
         {/* Photo */}
         <img
-          src={post.image}
-          // alt={post.title}
+          // src={post.mediafile}
+          src={'https://via.placeholder.com/300'}
+          alt={post.description}
           className="w-full h-64 object-cover rounded-md mb-4"
         />
 
