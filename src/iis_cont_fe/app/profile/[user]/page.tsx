@@ -21,12 +21,12 @@ import { useParams } from "next/navigation";
 
 function Profile(){
     const {user} = useParams();
-    const{get_data} = useAuth();
+    const{get_user_post} = useAuth();
     const[post_data, setPosts] = useState([]);
     
     useEffect(() => {
       if(user && !Array.isArray(user)){
-        get_data(user).then((data)=>{
+        get_user_post(user).then((data)=>{
           console.log(data.data)
         });
       }

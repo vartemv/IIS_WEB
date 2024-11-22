@@ -22,7 +22,7 @@ export async function GET(req: NextRequest)
         user = searchParams.get("user") ?? "";
     }
 
-    try{
+  try{
     const user_data = await prisma.users.findUnique({
       where: {
         profile_name: user,

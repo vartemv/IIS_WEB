@@ -24,7 +24,7 @@ export const useAuth = () => {
       });
   };
 
-  const get_data = async (profile_name: string) => {
+  const get_user_post = async (profile_name: string) => {
     return await axios
     .get(`/api/data/getPosts?user=${profile_name}`)
     .then((res) => {
@@ -54,5 +54,5 @@ export const useAuth = () => {
     removeUser();
   };
 
-  return { user, login, register, logout, refresh, get_data };
+  return { user, login, register, logout, refresh, get_user_post };
 };
