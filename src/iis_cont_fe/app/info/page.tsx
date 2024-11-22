@@ -1,18 +1,7 @@
 'use client';
 
 import { useUser } from "@/hooks/useUser"
-import Link from "next/link"
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuIndicator,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-  NavigationMenuViewport,
-} from "@/components/ui/navigation-menu"
-import { navigationMenuTriggerStyle } from "@/components/ui/navigation-menu"
+import NavigationMenuComponent from "@/components/ui/navbarmain";
 import { Input } from "@/components/ui/input"
 import { Separator } from "@/components/ui/separator"
 import PostGrid from "../../components/ui/postgrid";
@@ -35,42 +24,10 @@ export default function TextareaDemo() {
     //             <ResizablePanel> Cookie-user: <pre>{JSON.stringify(user, undefined, 4)}</pre> </ResizablePanel>
     //         </ResizablePanelGroup>
     return (<>
-    {/* <Navbar /> */}
-      <NavigationMenu>
-        <NavigationMenuList>
-        <NavigationMenuItem>
-            <Link href="/docs" legacyBehavior passHref className="text-xl font-bold text-white">
-              <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                <p className="text-xl font-bold">
-                  FITstagram
-                  </p>
-              </NavigationMenuLink>
-            </Link>
-          </NavigationMenuItem>
-          <NavigationMenuItem>
-            <Link href="/docs" legacyBehavior passHref>
-              <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                Home
-              </NavigationMenuLink>
-            </Link>
-          </NavigationMenuItem>
-          <NavigationMenuItem>
-            <Link href="/docs" legacyBehavior passHref>
-              <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                Create Post
-              </NavigationMenuLink>
-            </Link>
-          </NavigationMenuItem>
-          <NavigationMenuItem>
-            <Link href="/docs" legacyBehavior passHref>
-              <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                Create Group
-              </NavigationMenuLink>
-            </Link>
-          </NavigationMenuItem>
-        </NavigationMenuList>
-        <Input type="search" placeholder="Search"/>
-      </NavigationMenu>
+    <div>
+      {/* <Navbar /> */}
+      <NavigationMenuComponent />
+    </div>
       <div>
       <Separator className="my-4" />
       <div className="flex h-5 items-center space-x-4 text-sm">
