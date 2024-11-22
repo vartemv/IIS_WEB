@@ -56,6 +56,7 @@ CREATE TABLE comments (
     ID SERIAL PRIMARY KEY,
     post_ID INT NOT NULL,
     content TEXT NOT NULL,
+    author TEXT NOT NULL,
     datetime TIMESTAMP NOT NULL,
     FOREIGN KEY (post_ID) REFERENCES posts(ID) ON DELETE CASCADE
 );
@@ -82,6 +83,12 @@ CREATE TABLE post_tags (
     FOREIGN KEY (post_ID) REFERENCES posts(ID) ON DELETE CASCADE,
     FOREIGN KEY (tag_ID) REFERENCES tags(ID) ON DELETE CASCADE
 );
+
+CREATE INDEX idx_post_tags_post_id ON post_tags (post_ID);
+CREATE INDEX idx_reactions_post_id ON reactions (post_ID);
+CREATE INDEX idx_comments_post_id ON comments (post_ID);
+CREATE INDEX idx_comments_post_id_datetime ON comments (post_ID, datetime);
+CREATE INDEX idx_reactions_post_id_amount ON reactions (post_ID, amount);
 
 -- Populate Users Table
 INSERT INTO users (first_name, last_name, profile_name, sign_up_date, hash_password, email, role)
@@ -127,12 +134,12 @@ VALUES
     ('Skaters Club', 4, '2023-05-13');
 
 -- Populate Comments Table
-INSERT INTO comments (post_ID, content, datetime)
+INSERT INTO comments (post_ID, content, datetime, author)
 VALUES
-    (1, 'Beautiful photo!', '2023-05-10 10:30:00'),
-    (2, 'I love that place too!', '2023-05-11 15:00:00'),
-    (3, 'Great job on the run!', '2023-05-12 19:00:00'),
-    (4, 'Awesome trick!', '2023-05-13 09:45:00');
+    (1, 'Beautiful photo!', '2023-05-10 10:30:00', 'bobby_j'),
+    (2, 'I love that place too!', '2023-05-11 15:00:00', 'charlie_b'),
+    (3, 'Great job on the run!', '2023-05-12 19:00:00', 'wonder_d'),
+    (4, 'Awesome trick!', '2023-05-13 09:45:00', 'wonder_d');
 
 -- Populate Reactions Table
 INSERT INTO reactions (post_ID, amount)

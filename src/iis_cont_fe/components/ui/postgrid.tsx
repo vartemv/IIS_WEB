@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { SocialPost } from "@/components/custom/postwindow"
 
 interface Post {
   id: number;
@@ -71,28 +72,17 @@ interface PostGridProps {
 
   const Modal: React.FC<ModalProps> = ({ post , onClose }) => {
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center">
-      <div className="bg-white rounded-lg p-6 max-w-md w-full relative">
-        {/* Close button */}
-        <button
-          className="absolute top-3 right-3 text-gray-500 hover:text-black"
+    // <div className="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center">
+      // <div className="bg-white max-w-md w-full relative">
+      <div className="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center">
+          <div className="bg-white w-full max-w-4xl flex relative">
+      <button
           onClick={onClose}
+          className="absolute top-2 left-2 text-black bg-gray-200 rounded-full p-2 hover:bg-gray-300"
         >
-          ✖
+          ✕
         </button>
-
-        {/* Photo */}
-        <img
-          // src={post.mediafile}
-          src={'https://via.placeholder.com/300'}
-          alt={post.description}
-          className="w-full h-64 object-cover rounded-md mb-4"
-        />
-
-        {/* <h2 className="text-xl font-semibold">{post.title}</h2> */}
-        {/* <p className="text-gray-700 mt-2">{post.description}</p> */}
-        <h2 className="text-xl font-semibold">POST INFO</h2>
-        <p className="text-gray-700 mt-2">TODO ALL THIS</p>
+        <SocialPost />
       </div>
     </div>
   );
