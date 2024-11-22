@@ -7,10 +7,17 @@ export async function GET(req: NextRequest) {
 
     let posts;
     posts = await prisma.posts.findMany({
-        where: {
-            availability: true,
+      include: {
+        post_tags: {
+          include: {
+            tags: true,
+          },
         },
+        comments: true,
+        reactions: true,
+      },
     });
+  
 
 
     const response = NextResponse.json({
