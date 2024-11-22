@@ -50,7 +50,7 @@ export default function TextareaDemo() {
         <div>Source</div>
       </div>
     </div>
-    <main className="p-4">
+    <main className="p-1">
       {/* Pass the posts to PostGrid */}
       <PostGrid posts={post_data} />
       </main>

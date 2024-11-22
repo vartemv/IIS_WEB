@@ -12,16 +12,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { SocialPost } from "@/components/custom/postwindow"
-
-interface Post {
-  id: number;
-  user_id: number;
-  mediafile: string;
-  description: string;
-  location: string;
-  datetime: string;
-  availability: boolean;
-}
+import { Post, Comment, Reaction, PostTag, Tag } from "@/utils/types/fe_types";
 
 interface ModalProps {
   post: Post;
