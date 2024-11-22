@@ -1,22 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
-import { TokenService } from "@/app/utils/token";
 import prisma from 'db';
 
 export async function GET(req: NextRequest) {
   try {
-
-    let posts;
-    posts = await prisma.posts.findMany({
-        where: {
-            availability: true,
-        },
-    });
-
+    console.log("Hello");
+    let groups;
+    groups = await prisma.groups.findMany();
 
     const response = NextResponse.json({
       success: true,
-      data: posts,
-      message: "Posts retrieved successfully",
+      data: groups,
+      message: "Groups retrieved successfully",
     });
     return response;
   }
