@@ -22,7 +22,6 @@ export async function GET(req: NextRequest) {
     }
 
     try {
-
         const groupPosts = await prisma.group_posts.findMany({
             where: {
                 group_name: group,

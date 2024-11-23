@@ -20,7 +20,12 @@ export async function GET(req: NextRequest) {
     const groups = await prisma.groups.findMany({
       where:{
         owner: sender.id 
-      }
+      },
+      include:{users: {
+        select: {
+          profile_name: true,
+        },
+      },}
     });
 
     const response = NextResponse.json({

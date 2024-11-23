@@ -19,6 +19,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { usePosts } from "@/hooks/usePosts";
 import Navbar from "@/components/ui/navbar";
+import CenteredAvatar from "@/components/custom/profileBox";
 
 function Profile() {
   const { group } = useParams();
@@ -42,8 +43,9 @@ function Profile() {
   ];
   return (<>
     <Navbar/>
+    <CenteredAvatar/>
     <div>
-      <Separator className="my-4" />
+      <Separator className="my-1" />
     </div>
     <main className="p-4">
       <PostGrid posts={post_data} />
