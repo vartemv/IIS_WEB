@@ -41,7 +41,7 @@ export const useGroups = () => {
             return res.data;
         })
         .catch((err) => {
-            return { success: false, data: null, message: "Failed to retrieve my groups." };
+            return { success: false, data: null, message: "Failed to retrieve in groups." };
         })
     }
 
