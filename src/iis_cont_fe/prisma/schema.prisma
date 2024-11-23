@@ -35,9 +35,11 @@ model group_posts {
 model groups {
   group_name  String        @id @db.VarChar(100)
   pocet       Int?          @default(0)
+  photo       String?
   owner       Int
   datum       DateTime      @db.Date
   group_posts group_posts[]
+  users       users         @relation(fields: [owner], references: [id], onDelete: NoAction, onUpdate: NoAction)
   user_groups user_groups[]
 }
 
@@ -106,6 +108,7 @@ model users {
   email         String        @unique @db.VarChar(255)
   role          String?       @default("User") @db.VarChar(10)
   comments      comments[]
+  groups        groups[]
   posts         posts[]
   user_groups   user_groups[]
 }

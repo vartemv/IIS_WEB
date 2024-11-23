@@ -1,25 +1,11 @@
 import React from 'react';
-
-import {
-  Sheet,
-  SheetClose,
-  SheetContent,
-  SheetDescription,
-  SheetFooter,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import { useState } from 'react';
 import { useUser } from '@/hooks/useUser';
+import { useGroups } from '@/hooks/useGroups';
 
 const Navbar: React.FC = () => {
   const {user} = useUser();
   const homePath = `/profile/${user?.user.profileName}`;
-  const [name, setName] = useState("");
   return (
     <nav className="flex justify-between items-center bg-gray-800 text-white p-4">
       <div className="flex-shrink-0">
@@ -35,34 +21,6 @@ const Navbar: React.FC = () => {
             </a>
           </li>
           <li>
-            <Sheet>
-              <SheetTrigger asChild>
-                <a className="text-white hover:underline">
-                  Create Group
-                </a>
-              </SheetTrigger>
-              <SheetContent>
-                <SheetHeader>
-                  <SheetTitle>Create new group</SheetTitle>
-                  <SheetDescription>
-                    Create your own FITgroup
-                  </SheetDescription>
-                </SheetHeader>
-                <div className="grid gap-4 py-4">
-                  <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="name" className="text-right">
-                      Name
-                    </Label>
-                    <Input id="name" value={name} onChange={(e) => setName(e.target.value)} className="col-span-3" />
-                  </div>
-                </div>
-                <SheetFooter>
-                  <SheetClose asChild>
-                    <Button type="submit">Create group</Button>
-                  </SheetClose>
-                </SheetFooter>
-              </SheetContent>
-            </Sheet>
           </li>
           <li>
             <a href="/groups" className="text-white hover:underline">

@@ -27,8 +27,10 @@ CREATE TABLE posts (
 CREATE TABLE groups (
     group_name VARCHAR(100) PRIMARY KEY NOT NULL,
     pocet INT DEFAULT 0,
+    photo TEXT,
     owner INT NOT NULL,
-    datum DATE NOT NULL
+    datum DATE NOT NULL,
+    FOREIGN KEY (owner) REFERENCES users(ID)
 );
 
 -- Create User_Groups Table (Many-to-Many: Users and Groups)
@@ -195,7 +197,7 @@ INSERT INTO
     groups (group_name, pocet, owner, datum)
 VALUES
     ('Nature Lovers', 50, 1, '2023-01-01'),
-    ('Coffee Enthusiasts', 30, 2, '2023-02-01'),
+    ('Coffee Enthusiasts', 30, 1, '2023-02-01'),
     ('Runners United', 20, 3, '2023-03-01'),
     ('Skaters Club', 15, 4, '2023-04-01');
 
@@ -203,12 +205,12 @@ VALUES
 INSERT INTO
     user_groups (id_of_user, group_name, status, datum)
 VALUES
-    (1, 'Nature Lovers', 'Active', '2023-01-15'),
-    (2, 'Coffee Enthusiasts', 'Active', '2023-02-20'),
+    (2, 'Nature Lovers', 'Pending', '2023-01-15'),
+    (2, 'Coffee Enthusiasts', 'Pending', '2023-02-20'),
     (3, 'Runners United', 'Pending', '2023-03-10'),
     (4, 'Skaters Club', 'Active', '2023-04-05'),
     (3, 'Nature Lovers', 'Active', '2023-03-15'),
-    (4, 'Coffee Enthusiasts', 'Banned', '2023-05-01');
+    (4, 'Coffee Enthusiasts', 'Pending', '2023-05-01');
 
 -- Populate Group_Posts Table
 INSERT INTO

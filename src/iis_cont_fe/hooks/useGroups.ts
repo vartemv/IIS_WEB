@@ -14,7 +14,13 @@ export const useGroups = () => {
 
     const create_group = async (group_name: string) => {
         return await axios
-        .post(`/api/group/createGroup`, group_name)
+        .post(`/api/group/createGroup`, {group_name})
+        .then((res)=>{
+            return res.data;
+        })
+        .catch((err) => {
+            return { success: false, data: null, message: "Failed to create group." };
+        })
     }
 
     return { get_all_groups, create_group };
