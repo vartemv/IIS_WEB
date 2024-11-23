@@ -57,7 +57,6 @@ export default function TextareaDemo() {
     return (<>
         <div>
             <Navbar />
-            {/* <NavigationMenuComponent /> */}
         </div>
 
         <Sheet>

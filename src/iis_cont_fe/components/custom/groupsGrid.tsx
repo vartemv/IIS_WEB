@@ -1,18 +1,7 @@
 import React, {useState} from "react";
-import { Button } from "@/components/ui/button"
-import {
-  Dialog,
-  DialogContent,
-//   DialogDescription,
-//   DialogFooter,
-//   DialogHeader,
-//   DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import { Group } from "@/utils/types/fe_types";
 import NavigationMenuComponent from "../ui/navbarmain";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useRouter } from "next/navigation";
 
 interface ModalProps {
@@ -38,21 +27,16 @@ interface GroupGridProps {
     return (
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
         {groups.map((group, index) => (
-          <div
-            key={index}
-            className="relative overflow-hidden rounded-lg bg-gray-200 group"
-            onClick={() => handlePhotoClick(group)}
-            >
-            <img
-              // src={post.mediafile}
-              src={'https://via.placeholder.com/300'}
-              alt={group.group_name}
-              className="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-105"
-            />
-            <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white text-sm p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-              {group.group_name}
-            </div>
+          <div key={index} className="flex items-center gap-4">
+          <Avatar className="hidden h-9 w-9 sm:flex">
+            <AvatarImage src="https://picsum.photos/seed/picsum/200/300" alt="Avatar" />
+            <AvatarFallback>JL</AvatarFallback>
+          </Avatar>
+          <div className="grid gap-1">
+            <p className="text-sm font-bold leading-none">Jackson Lee</p>
+            <p className="text-sm text-muted-foreground">jackson.lee@email.com</p>
           </div>
+        </div>
           
         ))}
 
