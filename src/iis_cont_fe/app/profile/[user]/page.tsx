@@ -32,7 +32,7 @@ function Profile() {
         setPosts(data.data)
       });
     }
-  }, [user]);
+  }, []);
 
   if (!user) {
     return <p>Loading user...</p>;

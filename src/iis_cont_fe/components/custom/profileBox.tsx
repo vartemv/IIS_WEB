@@ -19,6 +19,7 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { Separator } from "@/components/ui/separator"
 import { useGroups } from '@/hooks/useGroups';
 import { GroupInfo, GroupUser } from '@/utils/types/fe_types';
+import { CSSProperties } from 'react';
 
 const tags = Array.from({ length: 50 }).map(
     (_, i, a) => `v1.2.0-beta.${a.length - i}`
@@ -32,8 +33,8 @@ interface CenteredAvatarProps {
 const CenteredAvatar: React.FC<CenteredAvatarProps> = ({ users, group }) => {
     return (
         <>
-            <div >
-                <Avatar className="hidden h-9 w-9 sm:flex">
+            <div style={styles.container}>
+                <Avatar className="hidden h-28 w-28 sm:flex">
                     <AvatarImage src="https://picsum.photos/seed/picsum/200/300" alt="Avatar" />
                     <AvatarFallback>JL</AvatarFallback>
                 </Avatar>
@@ -65,7 +66,7 @@ const CenteredAvatar: React.FC<CenteredAvatarProps> = ({ users, group }) => {
                     </DropdownMenuContent>
                 </DropdownMenu>
             </div>
-            <div >
+            <div style={styles.secondDropdownContainer}>
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                         <Button variant="outline">Users: {group.pocet}</Button>
@@ -98,29 +99,28 @@ const CenteredAvatar: React.FC<CenteredAvatarProps> = ({ users, group }) => {
     );
 };
 
-const styles = {
+const styles: {[key: string]: CSSProperties} = {
     container: {
         display: 'flex',
         justifyContent: 'center',
         flexDirection: 'column',
         alignItems: 'center',
-        height: '100px',
-        border: '2px solid #3498db',
         position: 'relative',
+        gap: '10px',
+        height: '200px',
     },
     avatarContainer: {
         display: 'flex',
-        flexDirection: 'column', // Stacks Avatar and first dropdown vertically
+        flexDirection: 'column',
         alignItems: 'center',
         position: 'relative',
-        marginBottom: '10px', // Spacing between avatar and dropdown
     },
-     secondDropdownContainer: {
-        position: 'absolute', // Make this dropdown appear to the right of the first one
-        top: '0',  // Aligns with the top of the avatar
-        left: '120px',  // Adjust this value to set the distance from the first dropdown (and avatar)
-        zIndex: 10, // Ensures it doesn't get overlapped by other elements
-    }
+    secondDropdownContainer: {
+        position: 'absolute',
+        top: '100px',
+        right: '120px', // Adjust distance to the right of the avatar
+        zIndex: 10,
+    },
 };
 
 export default CenteredAvatar;

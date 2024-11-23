@@ -10,7 +10,6 @@ import { useEffect, useState } from "react";
 import { usePosts } from "@/hooks/usePosts";
 
 export default function TextareaDemo() {
-    const { user } = useUser();
     const { get_all_posts } = usePosts();
     const [post_data, setPosts] = useState([]);
 
@@ -19,7 +18,7 @@ export default function TextareaDemo() {
       console.log(data.data)
       setPosts(data.data)
     });
-  }, [user]);
+  }, []);
 
     const posts = [
       { id: 1, image: "https://via.placeholder.com/300", caption: "Post 0", author: "Test" },
