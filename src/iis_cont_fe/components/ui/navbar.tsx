@@ -14,21 +14,24 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useState } from 'react';
+import { useUser } from '@/hooks/useUser';
 
 const Navbar: React.FC = () => {
+  const {user} = useUser();
+  const homePath = `/profile/${user?.user.profileName}`;
   const [name, setName] = useState("Pedro Duarte");
   const [username, setUsername] = useState("@peduarte");
   return (
     <nav className="flex justify-between items-center bg-gray-800 text-white p-4">
       <div className="flex-shrink-0">
-        <a href="/" className="text-xl font-bold text-white">
+        <a href="/info" className="text-xl font-bold text-white">
           FITstagram
         </a>
       </div>
       <div className="flex-grow">
         <ul className="flex space-x-4 justify-center list-none m-0 p-0">
           <li>
-            <a href="/info" className="text-white hover:underline">
+            <a href={homePath} className="text-white hover:underline">
               Home
             </a>
           </li>
@@ -36,7 +39,7 @@ const Navbar: React.FC = () => {
             <Sheet>
               <SheetTrigger asChild>
                 <a className="text-white hover:underline">
-                  Create Post
+                  Create Group
                 </a>
               </SheetTrigger>
               <SheetContent>
