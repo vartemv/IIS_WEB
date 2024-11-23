@@ -16,6 +16,7 @@ export interface Group {
     comments: Comment[];
     post_tags: PostTag[];
     reactions: Reaction[];
+    users: {profile_name: string, photo: string}
   }
   
   interface Comment {

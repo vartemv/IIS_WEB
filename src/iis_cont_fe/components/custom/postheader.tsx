@@ -14,11 +14,11 @@ export const PostHeader: React.FC<{ post: Post }> = ({ post }) => (
       <div className="flex items-center gap-4">
         <img
           loading="lazy"
+          // src={post.users.profile_name}
           src="https://cdn.builder.io/api/v1/image/assets/TEMP/102e7422fd1c50853b0be3dc7486ed3da3bc6ee5799b80aff3e03a8b53ce67ae?apiKey=9822d2f548184319a14eb0b77089634c&"
           className="w-12 h-12 rounded-full object-cover"
         />
-        {/* <span className="text-lg font-semibold">{post.authorName}</span> */}
-        <span className="text-lg font-semibold">Petr</span>
+        <span className="text-lg font-semibold">{post.users.profile_name}</span>
       </div>
 
       {/* Right side: Location and Timestamp */}
@@ -27,6 +27,7 @@ export const PostHeader: React.FC<{ post: Post }> = ({ post }) => (
         <div className="flex items-center gap-2">
           <img
             loading="lazy"
+            // TODO location icon
             src="https://cdn.builder.io/api/v1/image/assets/TEMP/3f3015d7142edfce35dd12b8a537f40a71bcf75bc66ac19696401101f0395090?apiKey=9822d2f548184319a14eb0b77089634c&"
             alt=""
             className="w-5 h-5"
