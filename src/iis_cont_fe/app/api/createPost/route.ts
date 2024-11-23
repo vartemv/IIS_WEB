@@ -2,8 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import prisma from 'db';
 import { TokenService } from "@/app/utils/token";
 
-
-
 export async function POST(req: NextRequest) {
     const token = req.cookies.get("user_token");
     if (!token) {
@@ -17,7 +15,7 @@ export async function POST(req: NextRequest) {
 
     try {
         const body = await req.json();
-        const { mediafile, description, location, availability } = body;
+        const { mediafile, description, location, availability, tags } = body;
 
         const newPost = await prisma.posts.create({
             data: {
@@ -26,9 +24,31 @@ export async function POST(req: NextRequest) {
                 mediafile,
                 description,
                 location,
-                availability: availability === 'true',
+                availability: availability === 'TRUE', // Convert to boolean
             },
         });
+
+        // Handle tags
+        if (tags && tags.length > 0) {
+            for (const tag of tags) {
+                let tagRecord = await prisma.tags.findFirst({
+                    where: { name: tag },
+                });
+
+                if (!tagRecord) {
+                    tagRecord = await prisma.tags.create({
+                        data: { name: tag },
+                    });
+                }
+
+                await prisma.post_tags.create({
+                    data: {
+                        post_id: newPost.id,
+                        tag_id: tagRecord.id,
+                    },
+                });
+            }
+        }
 
         return NextResponse.json({ success: true, data: newPost, message: "Post created successfully" });
     } catch (error) {

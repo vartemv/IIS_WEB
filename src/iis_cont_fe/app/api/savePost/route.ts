@@ -16,11 +16,10 @@ export async function POST(req: Request) {
 
     if (!fs.existsSync(uploadDir)) {
       await mkdir(uploadDir, { recursive: true });
-
     }
 
     const buffer = Buffer.from(await file.arrayBuffer());
-    // const buffer = Buffer.from(await file.toString);
+    
     if(!buffer){
       console.log("buffer bad")
       return NextResponse.json({ error: "Buffer error" }, { status: 500 });
@@ -51,3 +50,4 @@ export async function POST(req: Request) {
     }, { status: 500 });
   }
 }
+
