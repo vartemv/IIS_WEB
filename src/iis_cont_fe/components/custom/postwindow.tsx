@@ -1,6 +1,7 @@
 import * as React from "react";
-import { Comment } from "./comments";
+import { CommentPart } from "./comments";
 import { PostHeader } from "./postheader";
+import { Post } from "@/utils/types/fe_types";
 
 const comments = [
   {
@@ -45,16 +46,16 @@ const comments = [
   }
 ];
 
-export const SocialPost: React.FC = () => {
+export const SocialPost: React.FC<{post: Post}> = ({post}) => {
   return (
     <div className="flex w-full">
       {/* Left: Photo */}
       <div className="flex-shrink-0 w-1/2 max-w-md">
         <img
           loading="lazy"
-        //   src="https://cdn.builder.io/api/v1/image/assets/TEMP/6b91db5a538fb19689b4564d5a070fe82a3c46a5c9122245402ef32533a623ac?apiKey=9822d2f548184319a14eb0b77089634c&"
+          // src={post.mediafile}
           src="https://via.placeholder.com/600"
-          alt="Silly frog photograph"
+          alt={post.description}
           className="object-cover w-full h-full"
         />
       </div>
@@ -62,19 +63,12 @@ export const SocialPost: React.FC = () => {
       {/* Right: Post Info */}
       <div className="flex flex-col w-1/2 p-4">
         {/* Post Header */}
-        <PostHeader
-          title="Silly frog"
-          authorName="Petr"
-          authorAvatarSrc="https://cdn.builder.io/api/v1/image/assets/TEMP/102e7422fd1c50853b0be3dc7486ed3da3bc6ee5799b80aff3e03a8b53ce67ae?apiKey=9822d2f548184319a14eb0b77089634c&"
-          location="Forest"
-          locationIconSrc="https://cdn.builder.io/api/v1/image/assets/TEMP/3f3015d7142edfce35dd12b8a537f40a71bcf75bc66ac19696401101f0395090?apiKey=9822d2f548184319a14eb0b77089634c&"
-          timestamp="1 hour ago"
-        />
+        <PostHeader post={post}/>
 
         {/* Comments Section */}
         <div className="flex flex-col gap-4 overflow-y-auto max-h-96 my-4">
-          {comments.map((comment, index) => (
-            <Comment key={index} {...comment} />
+          {post.comments.map((comment ,index) => (
+            <CommentPart key={index} comment={comment} />
           ))}
         </div>
 

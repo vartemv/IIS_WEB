@@ -30,20 +30,20 @@ export default function TextareaDemo() {
             <Navbar />
             {/* <NavigationMenuComponent /> */}
         </div>
-        <div>
-            <Separator className="my-4" />
-            <div className="flex h-5 items-center space-x-4 text-sm">
-                <div>Blog</div>
-                <Separator orientation="vertical" />
-                <div>Docs</div>
-                <Separator orientation="vertical" />
-                <div>Source</div>
-            </div>
-        </div>
-        <main className="p-4">
-            {/* Pass the posts to PostGrid */}
+        {/* <main className="p-4">
+            {/* Pass the posts to PostGrid
             <GroupGrid groups={group_data} />
-        </main>
+        </main> */}
+        <div className="text-2xl font-semibold leading-none tracking-tight">
+            My Groups
+        </div>
+        <div className="text-2xl font-semibold leading-none tracking-tight">
+            Groups I'm in
+        </div>
+        <div className="text-2xl font-semibold leading-none tracking-tight">
+            Groups
+        </div>
+        <GroupGrid groups={group_data}/>
     </>)
 
 }

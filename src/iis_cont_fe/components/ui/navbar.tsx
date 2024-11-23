@@ -14,21 +14,23 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useState } from 'react';
+import { useUser } from '@/hooks/useUser';
 
 const Navbar: React.FC = () => {
-  const [name, setName] = useState("Pedro Duarte");
-  const [username, setUsername] = useState("@peduarte");
+  const {user} = useUser();
+  const homePath = `/profile/${user?.user.profileName}`;
+  const [name, setName] = useState("");
   return (
     <nav className="flex justify-between items-center bg-gray-800 text-white p-4">
       <div className="flex-shrink-0">
-        <a href="/" className="text-xl font-bold text-white">
+        <a href="/info" className="text-xl font-bold text-white">
           FITstagram
         </a>
       </div>
       <div className="flex-grow">
         <ul className="flex space-x-4 justify-center list-none m-0 p-0">
           <li>
-            <a href="/info" className="text-white hover:underline">
+            <a href={homePath} className="text-white hover:underline">
               Home
             </a>
           </li>
@@ -36,14 +38,14 @@ const Navbar: React.FC = () => {
             <Sheet>
               <SheetTrigger asChild>
                 <a className="text-white hover:underline">
-                  Create Post
+                  Create Group
                 </a>
               </SheetTrigger>
               <SheetContent>
                 <SheetHeader>
-                  <SheetTitle>Edit profile</SheetTitle>
+                  <SheetTitle>Create new group</SheetTitle>
                   <SheetDescription>
-                    Make changes to your profile here. Click save when you're done.
+                    Create your own FITgroup
                   </SheetDescription>
                 </SheetHeader>
                 <div className="grid gap-4 py-4">
@@ -53,16 +55,10 @@ const Navbar: React.FC = () => {
                     </Label>
                     <Input id="name" value={name} onChange={(e) => setName(e.target.value)} className="col-span-3" />
                   </div>
-                  <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="username" className="text-right">
-                      Username
-                    </Label>
-                    <Input id="username" value={username} onChange={(e) => setName(e.target.value)} className="col-span-3" />
-                  </div>
                 </div>
                 <SheetFooter>
                   <SheetClose asChild>
-                    <Button type="submit">Save changes</Button>
+                    <Button type="submit">Create group</Button>
                   </SheetClose>
                 </SheetFooter>
               </SheetContent>

@@ -1,10 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import { TokenService } from "@/app/utils/token";
 import prisma from 'db';
 
 export async function GET(req: NextRequest) {
   try {
-
     let posts;
     posts = await prisma.posts.findMany({
       include: {
@@ -13,12 +11,24 @@ export async function GET(req: NextRequest) {
             tags: true,
           },
         },
-        comments: true,
+        comments: {
+          include: {
+            users: { // alias for related user details
+              select: {
+                photo: true,
+              },
+            },
+          },
+        },
+        users:{
+          select:{
+            profile_name: true,
+            photo: true,
+          }
+        },
         reactions: true,
       },
     });
-  
-
 
     const response = NextResponse.json({
       success: true,

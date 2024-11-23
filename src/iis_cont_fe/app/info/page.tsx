@@ -23,22 +23,17 @@ export default function TextareaDemo() {
 
     const posts = [
       { id: 1, image: "https://via.placeholder.com/300", caption: "Post 0", author: "Test" },
-      { id: 2, image: "https://via.placeholder.com/300", caption: "Post 1", author: "Test" },
+      { id: 2, image: "https://via.placeholder.com/600", caption: "Post 1", author: "Test" },
       { id: 3, image: "https://via.placeholder.com/300", caption: "Post 2", author: "Test" },
       { id: 4, image: "https://via.placeholder.com/400", caption: "Post 3", author: "Test" },
-      { id: 5, image: "https://via.placeholder.com/300", caption: "Post 4", author: "Test" },
-      { id: 6, image: "https://via.placeholder.com/300", caption: "Post 4", author: "Test" },
-      { id: 7, image: "https://via.placeholder.com/400", caption: "Post 4", author: "Test" },
-      { id: 8, image: "https://via.placeholder.com/500", caption: "Post 4", author: "Test" },
-      { id: 9, image: "https://via.placeholder.com/300", caption: "Post 4", author: "Test" },
+      { id: 5, image: "https://via.placeholder.com/400", caption: "Post 4", author: "Test" }
     ];
     // return <ResizablePanelGroup direction="horizontal">
     //             <ResizablePanel> Cookie-user: <pre>{JSON.stringify(user, undefined, 4)}</pre> </ResizablePanel>
     //         </ResizablePanelGroup>
     return (<>
     <div>
-      {/* <Navbar /> */}
-      <NavigationMenuComponent />
+      <Navbar />
     </div>
       <div>
       <Separator className="my-4" />
@@ -50,7 +45,7 @@ export default function TextareaDemo() {
         <div>Source</div>
       </div>
     </div>
-    <main className="p-4">
+    <main className="p-1">
       {/* Pass the posts to PostGrid */}
       <PostGrid posts={post_data} />
       </main>
