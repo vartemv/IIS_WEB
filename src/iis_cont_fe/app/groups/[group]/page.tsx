@@ -28,8 +28,7 @@ function Profile() {
   useEffect(() => {
     if (group && !Array.isArray(group)) {
         get_group_posts(group).then((data) => {
-        console.log(data.data)
-        setPosts(data.data)
+        setPosts(data.data ? data.data : [])
       });
     }
   }, [group]);

@@ -13,6 +13,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Group } from "@/utils/types/fe_types";
 import NavigationMenuComponent from "../ui/navbarmain";
+import { useRouter } from "next/navigation";
 
 interface ModalProps {
   group: Group;
@@ -27,10 +28,11 @@ interface GroupGridProps {
 
     const [selectedPost, setSelectedPost] = useState<Group | null>(null); // Store selected post data
     const [isModalOpen, setIsModalOpen] = useState(false); // Track modal visibility
+    const router = useRouter();
 
     const handlePhotoClick = (group: Group) => {
       setSelectedPost(group); // Set the clicked post as the selected post
-      
+      router.push(`groups/${group.group_name}`);
     };
 
     return (
