@@ -27,7 +27,11 @@ export async function GET(req: NextRequest) {
                 group_name: group,
             },
             include: {
-                posts: true, // Include post details
+                posts: {
+                    include: {
+                        comments: true,
+                    },
+                },
             },
         });
 
