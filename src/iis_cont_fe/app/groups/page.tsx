@@ -28,7 +28,6 @@ export default function TextareaDemo() {
     return (<>
         <div>
             <Navbar />
-            {/* <NavigationMenuComponent /> */}
         </div>
         {/* <main className="p-4">
             {/* Pass the posts to PostGrid
