@@ -20,29 +20,30 @@ interface GroupGridProps {
     const router = useRouter();
 
     const handlePhotoClick = (group: Group) => {
-      setSelectedPost(group); // Set the clicked post as the selected post
+      // setSelectedPost(group); // Set the clicked post as the selected post
       router.push(`groups/${group.group_name}`);
     };
 
     return (
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
         {groups.map((group, index) => (
-          <div key={index} className="flex items-center gap-4">
-          <Avatar className="hidden h-9 w-9 sm:flex">
+          <div key={index} onClick={() => handlePhotoClick(group)} className="flex items-center space-x-4 rounded-md border p-2 max-w-[400px] bg-gray-200">
+          <Avatar className="hidden h-20 w-20 sm:flex">
+            {/* <AvatarImage src={group.photo} alt="Avatar" /> */}
             <AvatarImage src="https://picsum.photos/seed/picsum/200/300" alt="Avatar" />
             <AvatarFallback>JL</AvatarFallback>
           </Avatar>
           <div className="grid gap-1">
-            <p className="text-sm font-bold leading-none">Jackson Lee</p>
-            <p className="text-sm text-muted-foreground">jackson.lee@email.com</p>
+            <p className="text-lg font-bold leading-none">{group.group_name}</p>
+            <p className="text-base text-muted-foreground">{group.users.profile_name}</p>
           </div>
         </div>
           
         ))}
 
-        {isModalOpen && selectedPost && (
+        {/* {isModalOpen && selectedPost && (
           <Modal group={selectedPost} onClose={() => setIsModalOpen(false)} />
-        )}
+        )} */}
       </div>
     );
   };

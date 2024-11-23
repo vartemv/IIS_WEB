@@ -1,8 +1,10 @@
 export interface Group {
     group_name: string;
     pocet: number;
-    owner: string;
+    owner: number;
     datum: Date;
+    photo: string;
+    users: {profile_name: string}
   }
 
   interface Post {

@@ -33,14 +33,20 @@ export default function TextareaDemo() {
 
     useEffect(() => {
         get_all_groups().then((data) => {
+            console.log("ALL GROUPS");
+            console.log(data.data);
             setGroups(data.data)
         });
 
         get_all_my_groups().then((data)=>{
+            console.log("MY GROUPS");
+            console.log(data.data);
             setMyGroups(data.data);
         });
 
         get_all_in_groups().then((data)=>{
+            console.log("GROUPS I AM IN");
+            console.log(data.data);
             setInGroups(data.data);
         });
 
