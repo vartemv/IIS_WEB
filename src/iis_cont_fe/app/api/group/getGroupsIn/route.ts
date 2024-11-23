@@ -36,7 +36,7 @@ export async function GET(req: NextRequest) {
 
       const result = groups.map(userGroup => ({
         group_name: userGroup.groups.group_name,
-        users: userGroup.groups.users.profile_name,
+        users:{ profile_name: userGroup.groups.users.profile_name},
         photo: userGroup.groups.photo,
         pocet: userGroup.groups.pocet,
         datum: userGroup.groups.datum,
