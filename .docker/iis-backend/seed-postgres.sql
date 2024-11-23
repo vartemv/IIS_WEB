@@ -29,7 +29,8 @@ CREATE TABLE groups (
     pocet INT DEFAULT 0,
     photo TEXT,
     owner INT NOT NULL,
-    datum DATE NOT NULL
+    datum DATE NOT NULL,
+    FOREIGN KEY (owner) REFERENCES users(ID)
 );
 
 -- Create User_Groups Table (Many-to-Many: Users and Groups)

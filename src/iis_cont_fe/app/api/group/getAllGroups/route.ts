@@ -4,8 +4,16 @@ import prisma from 'db';
 export async function GET(req: NextRequest) {
   try {
     console.log("Hello");
-    let groups;
-    groups = await prisma.groups.findMany();
+
+    const groups = await prisma.groups.findMany({
+      include: {
+        users: {
+          select: {
+            profile_name: true,
+          },
+        },
+      },
+    });
 
     const response = NextResponse.json({
       success: true,
