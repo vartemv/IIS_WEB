@@ -27,6 +27,7 @@ CREATE TABLE posts (
 CREATE TABLE groups (
     group_name VARCHAR(100) PRIMARY KEY NOT NULL,
     pocet INT DEFAULT 0,
+    photo TEXT,
     owner INT NOT NULL,
     datum DATE NOT NULL
 );

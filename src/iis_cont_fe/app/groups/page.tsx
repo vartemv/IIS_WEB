@@ -1,8 +1,20 @@
 'use client';
 
+import {
+    Sheet,
+    SheetClose,
+    SheetContent,
+    SheetDescription,
+    SheetFooter,
+    SheetHeader,
+    SheetTitle,
+    SheetTrigger,
+} from "@/components/ui/sheet"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
 import { useUser } from "@/hooks/useUser"
 import NavigationMenuComponent from "@/components/ui/navbarmain";
-import { Input } from "@/components/ui/input"
 import { Separator } from "@/components/ui/separator"
 import PostGrid from "../../components/ui/postgrid";
 import Navbar from "../../components/ui/navbar";
@@ -13,15 +25,32 @@ import { Group } from "@/utils/types/fe_types";
 import { useGroups } from "@/hooks/useGroups";
 
 export default function TextareaDemo() {
-    const { get_all_groups } = useGroups();
+    const { get_all_groups, create_group } = useGroups();
     const [group_data, setGroups] = useState<Group[]>([]);
+    const [name, setName] = useState("");
 
     useEffect(() => {
         get_all_groups().then((data) => {
-            console.log(data)
             setGroups(data.data)
         });
     }, []);
+
+    const handleCreateGroup = async () => {
+        if (!name) return; // Avoid submitting if name is empty
+
+        const response = await create_group(name); // Call the create_group function
+
+        if (response.success) {
+            // If the group is created successfully, refresh the groups
+            get_all_groups().then((data) => {
+                setGroups(data.data); // Update the group list after creating a new group
+            });
+        } else {
+            console.error("Failed to create group:", response.message);
+        }
+
+        setName(""); // Clear the input after creating a group
+    };
     // return <ResizablePanelGroup direction="horizontal">
     //             <ResizablePanel> Cookie-user: <pre>{JSON.stringify(user, undefined, 4)}</pre> </ResizablePanel>
     //         </ResizablePanelGroup>
@@ -30,10 +59,38 @@ export default function TextareaDemo() {
             <Navbar />
             {/* <NavigationMenuComponent /> */}
         </div>
-        {/* <main className="p-4">
-            {/* Pass the posts to PostGrid
-            <GroupGrid groups={group_data} />
-        </main> */}
+
+        <Sheet>
+            <SheetTrigger asChild>
+                <button
+                    className="absolute top-2 right-4 bg-blue-500 text-white rounded-full p-2 text-xl hover:bg-blue-600 transition-colors"
+                    aria-label="Create group"
+                >
+                    +
+                </button>
+            </SheetTrigger>
+            <SheetContent>
+                <SheetHeader>
+                    <SheetTitle>Create new group</SheetTitle>
+                    <SheetDescription>
+                        Create your own FITgroup
+                    </SheetDescription>
+                </SheetHeader>
+                <div className="grid gap-4 py-4">
+                    <div className="grid grid-cols-4 items-center gap-4">
+                        <Label htmlFor="name" className="text-right">
+                            Name
+                        </Label>
+                        <Input id="name" value={name} onChange={(e) => setName(e.target.value)} className="col-span-3" />
+                    </div>
+                </div>
+                <SheetFooter>
+                    <SheetClose asChild>
+                        <Button onClick= {()=>handleCreateGroup()}type="submit">Create group</Button>
+                    </SheetClose>
+                </SheetFooter>
+            </SheetContent>
+        </Sheet>
         <div className="text-2xl font-semibold leading-none tracking-tight">
             My Groups
         </div>
@@ -43,7 +100,7 @@ export default function TextareaDemo() {
         <div className="text-2xl font-semibold leading-none tracking-tight">
             Groups
         </div>
-        <GroupGrid groups={group_data}/>
+        <GroupGrid groups={group_data} />
     </>)
 
 }
