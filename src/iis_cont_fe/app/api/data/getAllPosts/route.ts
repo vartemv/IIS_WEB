@@ -23,6 +23,7 @@ export async function GET(req: NextRequest) {
         users:{
           select:{
             profile_name: true,
+            photo: true,
           }
         },
         reactions: true,
