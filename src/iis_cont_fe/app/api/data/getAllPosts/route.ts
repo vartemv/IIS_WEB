@@ -3,7 +3,6 @@ import prisma from 'db';
 
 export async function GET(req: NextRequest) {
   try {
-
     let posts;
     posts = await prisma.posts.findMany({
       include: {
@@ -20,6 +19,11 @@ export async function GET(req: NextRequest) {
               },
             },
           },
+        },
+        users:{
+          select:{
+            profile_name: true,
+          }
         },
         reactions: true,
       },

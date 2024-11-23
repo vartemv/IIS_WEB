@@ -43,6 +43,7 @@ export default function TextareaDemo() {
         <div className="text-2xl font-semibold leading-none tracking-tight">
             Groups
         </div>
+        <GroupGrid groups={group_data}/>
     </>)
 
 }

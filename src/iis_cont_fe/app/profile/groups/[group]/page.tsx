@@ -21,21 +21,21 @@ import { usePosts } from "@/hooks/usePosts";
 import Navbar from "@/components/ui/navbar";
 
 function Profile() {
-  const { user } = useParams();
-  const { get_user_post } = usePosts();
+  const { group } = useParams();
+  const { get_group_posts } = usePosts();
   const [post_data, setPosts] = useState([]);
 
   useEffect(() => {
-    if (user && !Array.isArray(user)) {
-      get_user_post(user).then((data) => {
+    if (group && !Array.isArray(group)) {
+        get_group_posts(group).then((data) => {
         console.log(data.data)
         setPosts(data.data)
       });
     }
-  }, [user]);
+  }, [group]);
 
-  if (!user) {
-    return <p>Loading user...</p>;
+  if (!group) {
+    return <p>Loading group...</p>;
   }
 
   const posts = [

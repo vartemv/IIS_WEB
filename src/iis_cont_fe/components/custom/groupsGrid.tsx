@@ -30,7 +30,7 @@ interface GroupGridProps {
 
     const handlePhotoClick = (group: Group) => {
       setSelectedPost(group); // Set the clicked post as the selected post
-      setIsModalOpen(true);  // Open the modal
+      
     };
 
     return (

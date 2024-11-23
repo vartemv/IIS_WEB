@@ -54,7 +54,7 @@ export async function GET(req: NextRequest) {
 
     const response = NextResponse.json({
       success: true,
-      data: posts,
+      data: {post:posts},
       message: "Posts retrieved successfully",
     });
     return response;
