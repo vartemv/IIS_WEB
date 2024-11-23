@@ -8,24 +8,26 @@ export async function GET(req: NextRequest) {
 
     const token = req.cookies.get("user_token");
     if (!token) {
-        return NextResponse.json({ success: false, data: null, message: "No token provided" }, { status: 301 });
+      return NextResponse.json({ success: false, data: null, message: "No token provided" }, { status: 301 });
     }
 
     const sender = await TokenService.verify(token.value)
 
     if (!sender) {
-        return NextResponse.json({ success: false, data: null, message: "Invalid token" }, { status: 403 });
+      return NextResponse.json({ success: false, data: null, message: "Invalid token" }, { status: 403 });
     }
 
     const groups = await prisma.groups.findMany({
-      where:{
-        owner: sender.id 
+      where: {
+        owner: sender.id
       },
-      include:{users: {
-        select: {
-          profile_name: true,
+      include: {
+        users: {
+          select: {
+            profile_name: true,
+          },
         },
-      },}
+      }
     });
 
     const response = NextResponse.json({
