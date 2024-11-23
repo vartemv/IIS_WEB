@@ -66,6 +66,7 @@ model posts {
   post_tags    post_tags[]
   users        users         @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
   reactions    reactions[]
+  user_posts   user_posts[]
 }
 
 model reactions {
@@ -111,4 +112,14 @@ model users {
   groups        groups[]
   posts         posts[]
   user_groups   user_groups[]
+  user_posts    user_posts[]
+}
+
+model user_posts {
+  id_of_user Int
+  post_id    Int
+  users      users @relation(fields: [id_of_user], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  posts      posts @relation(fields: [post_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@id([id_of_user, post_id])
 }

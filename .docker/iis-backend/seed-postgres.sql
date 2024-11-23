@@ -54,6 +54,15 @@ CREATE TABLE group_posts (
     FOREIGN KEY (post_ID) REFERENCES posts(ID) ON DELETE CASCADE
 );
 
+-- Table for tracking which users have access to private posts of other users
+CREATE TABLE user_posts (
+    id_of_user INT NOT NULL,
+    post_ID INT NOT NULL,
+    PRIMARY KEY (id_of_user, post_ID),
+    FOREIGN KEY (id_of_user) REFERENCES users(ID) ON DELETE CASCADE,
+    FOREIGN KEY (post_ID) REFERENCES posts(ID) ON DELETE CASCADE
+);
+
 -- Create Comments Table
 CREATE TABLE comments (
     ID SERIAL PRIMARY KEY,
