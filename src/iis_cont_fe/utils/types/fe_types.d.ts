@@ -24,6 +24,11 @@ export interface Group {
     content: string;
     author: string;
     datetime: string;
+    users: CommentUsersPhoto;
+  }
+
+  interface CommentUsersPhoto {
+    photo: string;
   }
   
   interface PostTag {

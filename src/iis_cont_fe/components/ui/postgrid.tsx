@@ -1,18 +1,6 @@
 import React, {useState} from "react";
-import { Button } from "@/components/ui/button"
-import {
-  Dialog,
-  DialogContent,
-//   DialogDescription,
-//   DialogFooter,
-//   DialogHeader,
-//   DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import { SocialPost } from "@/components/custom/postwindow"
-import { Post, Comment, Reaction, PostTag, Tag } from "@/utils/types/fe_types";
+import { Post } from "@/utils/types/fe_types";
 
 interface ModalProps {
   post: Post;
@@ -35,9 +23,9 @@ interface PostGridProps {
 
     return (
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
-        {posts.map((post, index) => (
+        {posts.map((post) => (
           <div
-            key={index}
+            key={post.id}
             className="relative overflow-hidden rounded-lg bg-gray-200 group"
             onClick={() => handlePhotoClick(post)}
             >
@@ -66,14 +54,14 @@ interface PostGridProps {
     // <div className="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center">
       // <div className="bg-white max-w-md w-full relative">
       <div className="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center">
-          <div className="bg-white w-full max-w-4xl flex relative">
+          <div className="bg-white w-[900px] h-[600px] max-w-full flex relative">
       <button
           onClick={onClose}
           className="absolute top-2 left-2 text-black bg-gray-200 rounded-full p-2 hover:bg-gray-300"
         >
           ✕
         </button>
-        <SocialPost />
+        <SocialPost post={post} />
       </div>
     </div>
   );
