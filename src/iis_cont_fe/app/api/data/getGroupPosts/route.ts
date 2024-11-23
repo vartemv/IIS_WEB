@@ -30,6 +30,11 @@ export async function GET(req: NextRequest) {
                 posts: {
                     include: {
                         comments: true,
+                        users: {
+                            select: {
+                                profile_name: true,
+                            }
+                        }
                     },
                 },
             },
