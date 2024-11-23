@@ -207,10 +207,10 @@ INSERT INTO
 VALUES
     (2, 'Nature Lovers', 'Pending', '2023-01-15'),
     (2, 'Coffee Enthusiasts', 'Pending', '2023-02-20'),
-    (3, 'Runners United', 'Pending', '2023-03-10'),
+    (1, 'Runners United', 'Pending', '2023-03-10'),
     (4, 'Skaters Club', 'Active', '2023-04-05'),
-    (3, 'Nature Lovers', 'Active', '2023-03-15'),
-    (4, 'Coffee Enthusiasts', 'Pending', '2023-05-01');
+    (4, 'Nature Lovers', 'Active', '2023-03-15'),
+    (1, 'Coffee Enthusiasts', 'Pending', '2023-05-01');
 
 -- Populate Group_Posts Table
 INSERT INTO

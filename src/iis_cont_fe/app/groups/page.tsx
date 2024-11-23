@@ -27,6 +27,8 @@ import { useGroups } from "@/hooks/useGroups";
 export default function TextareaDemo() {
     const { get_all_groups, create_group } = useGroups();
     const [group_data, setGroups] = useState<Group[]>([]);
+    const [my_group_data, setMyGroups] = useState<Group[]>([]);
+    const [in_group_data, setInGroups] = useState<Group[]>([]);
     const [name, setName] = useState("");
 
     useEffect(() => {
@@ -93,9 +95,11 @@ export default function TextareaDemo() {
         <div className="text-2xl font-semibold leading-none tracking-tight">
             My Groups
         </div>
+        <GroupGrid groups={my_group_data} />
         <div className="text-2xl font-semibold leading-none tracking-tight">
             Groups I'm in
         </div>
+        <GroupGrid groups={in_group_data} />
         <div className="text-2xl font-semibold leading-none tracking-tight">
             Groups
         </div>
