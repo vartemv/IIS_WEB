@@ -23,5 +23,27 @@ export const useGroups = () => {
         })
     }
 
-    return { get_all_groups, create_group };
+    const get_all_my_groups = async () => {
+        return await axios
+        .get(`/api/group/getAllMyGroups`)
+        .then((res)=>{
+            return res.data;
+        })
+        .catch((err) => {
+            return { success: false, data: null, message: "Failed to retrieve my groups." };
+        })
+    }
+
+    const get_all_in_groups = async () => {
+        return await axios
+        .get(`/api/group/getGroupsIn`)
+        .then((res)=>{
+            return res.data;
+        })
+        .catch((err) => {
+            return { success: false, data: null, message: "Failed to retrieve my groups." };
+        })
+    }
+
+    return { get_all_groups, create_group, get_all_my_groups, get_all_in_groups };
 }
