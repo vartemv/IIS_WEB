@@ -3,7 +3,6 @@ import prisma from 'db';
 
 export async function GET(req: NextRequest) {
   try {
-    console.log("Hello");
 
     const groups = await prisma.groups.findMany({
       include: {

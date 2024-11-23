@@ -25,14 +25,25 @@ import { Group } from "@/utils/types/fe_types";
 import { useGroups } from "@/hooks/useGroups";
 
 export default function TextareaDemo() {
-    const { get_all_groups, create_group } = useGroups();
+    const { get_all_groups, create_group, get_all_my_groups, get_all_in_groups } = useGroups();
     const [group_data, setGroups] = useState<Group[]>([]);
+    const [my_group_data, setMyGroups] = useState<Group[]>([]);
+    const [in_group_data, setInGroups] = useState<Group[]>([]);
     const [name, setName] = useState("");
 
     useEffect(() => {
         get_all_groups().then((data) => {
             setGroups(data.data)
         });
+
+        get_all_my_groups().then((data)=>{
+            setMyGroups(data.data);
+        });
+
+        get_all_in_groups().then((data)=>{
+            setInGroups(data.data);
+        });
+
     }, []);
 
     const handleCreateGroup = async () => {
@@ -93,9 +104,11 @@ export default function TextareaDemo() {
         <div className="text-2xl font-semibold leading-none tracking-tight">
             My Groups
         </div>
+        <GroupGrid groups={my_group_data} />
         <div className="text-2xl font-semibold leading-none tracking-tight">
             Groups I'm in
         </div>
+        <GroupGrid groups={in_group_data} />
         <div className="text-2xl font-semibold leading-none tracking-tight">
             Groups
         </div>

@@ -54,6 +54,15 @@ CREATE TABLE group_posts (
     FOREIGN KEY (post_ID) REFERENCES posts(ID) ON DELETE CASCADE
 );
 
+-- Table for tracking which users have access to private posts of other users
+CREATE TABLE user_posts (
+    id_of_user INT NOT NULL,
+    post_ID INT NOT NULL,
+    PRIMARY KEY (id_of_user, post_ID),
+    FOREIGN KEY (id_of_user) REFERENCES users(ID) ON DELETE CASCADE,
+    FOREIGN KEY (post_ID) REFERENCES posts(ID) ON DELETE CASCADE
+);
+
 -- Create Comments Table
 CREATE TABLE comments (
     ID SERIAL PRIMARY KEY,
@@ -207,10 +216,10 @@ INSERT INTO
 VALUES
     (2, 'Nature Lovers', 'Pending', '2023-01-15'),
     (2, 'Coffee Enthusiasts', 'Pending', '2023-02-20'),
-    (3, 'Runners United', 'Pending', '2023-03-10'),
+    (1, 'Runners United', 'Pending', '2023-03-10'),
     (4, 'Skaters Club', 'Active', '2023-04-05'),
-    (3, 'Nature Lovers', 'Active', '2023-03-15'),
-    (4, 'Coffee Enthusiasts', 'Pending', '2023-05-01');
+    (4, 'Nature Lovers', 'Active', '2023-03-15'),
+    (1, 'Coffee Enthusiasts', 'Pending', '2023-05-01');
 
 -- Populate Group_Posts Table
 INSERT INTO
