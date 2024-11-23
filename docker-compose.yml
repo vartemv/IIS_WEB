@@ -26,6 +26,7 @@ services:
     environment:
         - HOST=0.0.0.0
         - CHOKIDAR_USEPOLLING=true
+        - WATCHPACK_POLLING=true
         - CHOKIDAR_INTERVAL=100
     tty: true
     command: "npm run dev"
