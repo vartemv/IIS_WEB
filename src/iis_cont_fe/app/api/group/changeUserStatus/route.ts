@@ -29,23 +29,37 @@ export async function POST(req: NextRequest) {
             },
         });
 
-        if(! !!userIsOwner && (status === "Active" || status === "Banned") ){
+        if (! !!userIsOwner && (status === "Active" || status === "Refuse")) {
             return NextResponse.json({ success: false, data: null, message: "You are not the owner" }, { status: 403 });
         }
 
-        await prisma.user_groups.update({
-            where: {
-              id_of_user_group_name: {
-                id_of_user: user_id,
-                group_name: group_name,
-              },
-            },
-            data: {
-              status: status,
-            },
-          });
+        if (status === "Refuse") {
 
-        
+            await prisma.user_groups.delete({
+                where:{
+                    id_of_user_group_name:{ 
+                        id_of_user:user_id,
+                        group_name: group_name
+                    }
+                },
+            });
+
+        } else {
+
+            await prisma.user_groups.update({
+                where: {
+                    id_of_user_group_name: {
+                        id_of_user: user_id,
+                        group_name: group_name,
+                    },
+                },
+                data: {
+                    status: status,
+                },
+            });
+        }
+
+
 
         const response = NextResponse.json({
             success: true,

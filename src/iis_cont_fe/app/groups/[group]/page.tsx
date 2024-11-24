@@ -40,14 +40,12 @@ function Profile() {
       });
       get_all_users(group).then((data) => {
         setUsers(data.data ? data.data : [])
-        console.log(data.data)
       });
       get_group_info(group).then((data) => {
         setGroupInfo(data.data ? data.data : {})
       });
       get_Pgroup_info(group).then((data) => {
         setPGroupInfo(data.data ? data.data : {})
-        console.log(data.data)
       });
 
       

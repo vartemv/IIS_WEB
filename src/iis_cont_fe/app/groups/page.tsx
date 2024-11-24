@@ -35,19 +35,19 @@ export default function TextareaDemo() {
         get_all_groups().then((data) => {
             console.log("ALL GROUPS");
             console.log(data.data);
-            setGroups(data.data)
+            setGroups(data.data ? data.data : [])
         });
 
         get_all_my_groups().then((data)=>{
             console.log("MY GROUPS");
             console.log(data.data);
-            setMyGroups(data.data);
+            setMyGroups(data.data ? data.data : []);
         });
 
         get_all_in_groups().then((data)=>{
             console.log("GROUPS I AM IN");
             console.log(data.data);
-            setInGroups(data.data);
+            setInGroups(data.data ? data.data : []);
         });
 
     }, []);

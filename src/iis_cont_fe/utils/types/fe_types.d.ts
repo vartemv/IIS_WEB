@@ -64,3 +64,9 @@ export interface Group {
     owner: number;
     datum: Date;
   }
+
+  interface UserStatus {
+    user_id: number;
+    status: string;
+    group_name: string;
+  }
