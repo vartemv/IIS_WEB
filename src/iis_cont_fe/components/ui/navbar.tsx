@@ -1,7 +1,5 @@
 import React from 'react';
-import { useState } from 'react';
 import { useUser } from '@/hooks/useUser';
-import { useGroups } from '@/hooks/useGroups';
 
 const Navbar: React.FC = () => {
   const {user} = useUser();
@@ -28,17 +26,6 @@ const Navbar: React.FC = () => {
             </a>
           </li>
         </ul>
-      </div>
-      <div className="flex items-center space-x-4">
-        <a href="/cart" className="relative text-white">
-          <i className="fas fa-shopping-cart"></i>
-          <span className="absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2 bg-red-500 text-white rounded-full px-2 py-0.5 text-xs">
-            0
-          </span>
-        </a>
-        <a href="/account" className="text-white">
-          <i className="fas fa-user"></i>
-        </a>
       </div>
     </nav>
   );

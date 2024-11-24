@@ -53,8 +53,8 @@ export const SocialPost: React.FC<{post: Post}> = ({post}) => {
       <div className="flex-shrink-0 w-1/2 max-w-md">
         <img
           loading="lazy"
-          // src={post.mediafile}
-          src="https://via.placeholder.com/600"
+          src={post.mediafile}
+          // src="https://via.placeholder.com/600"
           alt={post.description}
           className="object-cover w-full h-full"
         />

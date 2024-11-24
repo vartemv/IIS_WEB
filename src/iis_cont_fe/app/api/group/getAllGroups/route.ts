@@ -49,9 +49,11 @@ export async function GET(req: NextRequest) {
       : null,
     }));
 
+    const filteredGroups = formattedGroups.filter(group => group.owner !== sender.id && group.user_status !== "Active");
+
     const response = NextResponse.json({
       success: true,
-      data: formattedGroups,
+      data: filteredGroups,
       message: "Groups retrieved successfully",
     });
     return response;

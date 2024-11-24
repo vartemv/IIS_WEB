@@ -51,8 +51,8 @@ interface GroupGridProps {
         {/* Left side: Avatar and Group Information */}
         <div className="flex items-center space-x-4">
           <Avatar className="hidden h-28 w-28 sm:flex">
-            {/* <AvatarImage src={group.photo} alt="Avatar" /> */}
-            <AvatarImage src="https://picsum.photos/seed/picsum/200/300" alt="Avatar" />
+            <AvatarImage src={group.photo} alt="Avatar" />
+            {/* <AvatarImage src="https://picsum.photos/seed/picsum/200/300" alt="Avatar" /> */}
             <AvatarFallback>JL</AvatarFallback>
           </Avatar>
           <div className="grid gap-1">
