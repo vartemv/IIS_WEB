@@ -1,25 +1,11 @@
 'use client';
 
-import {
-    Sheet,
-    SheetClose,
-    SheetContent,
-    SheetDescription,
-    SheetFooter,
-    SheetHeader,
-    SheetTitle,
-    SheetTrigger,
-} from "@/components/ui/sheet"
+import { Sheet, SheetClose, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { useUser } from "@/hooks/useUser"
-import NavigationMenuComponent from "@/components/ui/navbarmain";
-import { Separator } from "@/components/ui/separator"
-import PostGrid from "../../components/ui/postgrid";
 import Navbar from "../../components/ui/navbar";
 import { useEffect, useState } from "react";
-import { usePosts } from "@/hooks/usePosts";
 import GroupGrid from "@/components/custom/groupsGrid";
 import { Group } from "@/utils/types/fe_types";
 import { useGroups } from "@/hooks/useGroups";
@@ -107,15 +93,15 @@ export default function TextareaDemo() {
                 </SheetFooter>
             </SheetContent>
         </Sheet>
-        <div className="text-2xl font-semibold leading-none tracking-tight">
+        <div className="text-3xl font-bold leading-none tracking-tight pt-5 pl-5">
             My Groups
         </div>
         <GroupGrid groups={my_group_data} />
-        <div className="text-2xl font-semibold leading-none tracking-tight">
+        <div className="text-3xl font-bold leading-none tracking-tight pt-5 pl-5">
             Groups I'm in
         </div>
         <GroupGrid groups={in_group_data} />
-        <div className="text-2xl font-semibold leading-none tracking-tight">
+        <div className="text-3xl font-bold leading-none tracking-tight pt-5 pl-5">
             Groups
         </div>
         <GroupGrid groups={group_data} />

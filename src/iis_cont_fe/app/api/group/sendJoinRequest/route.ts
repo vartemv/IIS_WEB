@@ -32,16 +32,6 @@ export async function POST(req: NextRequest) {
                 }
             })
 
-            await prisma.groups.update({
-                where: {
-                    group_name: group_name, // The group_name for the group you want to update
-                },
-                data: {
-                    pocet: {
-                        increment: 1, // Increment the value of pocet by 1
-                    },
-                },
-            });
             return NextResponse.json({ success: true, data: null, message: "Request sent" }, { status: 200 });
         }
     catch (e) {
