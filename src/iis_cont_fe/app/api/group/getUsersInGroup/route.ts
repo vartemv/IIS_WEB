@@ -15,6 +15,7 @@ export async function GET(req: NextRequest) {
         const user_data = await prisma.user_groups.findMany({
             where: {
                 group_name: group,
+                status: "Active"
             }, include: {
                 users: {
                     select: {

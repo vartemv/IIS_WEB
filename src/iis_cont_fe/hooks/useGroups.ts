@@ -14,58 +14,69 @@ export const useGroups = () => {
 
     const create_group = async (group_name: string) => {
         return await axios
-        .post(`/api/group/createGroup`, {group_name})
-        .then((res)=>{
-            return res.data;
-        })
-        .catch((err) => {
-            return { success: false, data: null, message: "Failed to create group." };
-        })
+            .post(`/api/group/createGroup`, { group_name })
+            .then((res) => {
+                return res.data;
+            })
+            .catch((err) => {
+                return { success: false, data: null, message: "Failed to create group." };
+            })
     }
 
     const get_all_my_groups = async () => {
         return await axios
-        .get(`/api/group/getAllMyGroups`)
-        .then((res)=>{
-            return res.data;
-        })
-        .catch((err) => {
-            return { success: false, data: null, message: "Failed to retrieve my groups." };
-        })
+            .get(`/api/group/getAllMyGroups`)
+            .then((res) => {
+                return res.data;
+            })
+            .catch((err) => {
+                return { success: false, data: null, message: "Failed to retrieve my groups." };
+            })
     }
 
     const get_all_in_groups = async () => {
         return await axios
-        .get(`/api/group/getGroupsIn`)
-        .then((res)=>{
-            return res.data;
-        })
-        .catch((err) => {
-            return { success: false, data: null, message: "Failed to retrieve in groups." };
-        })
+            .get(`/api/group/getGroupsIn`)
+            .then((res) => {
+                return res.data;
+            })
+            .catch((err) => {
+                return { success: false, data: null, message: "Failed to retrieve in groups." };
+            })
     }
 
     const get_all_users = async (group_name: string) => {
         return await axios
-        .get(`/api/group/getUsersInGroup?group=${group_name}`)
-        .then((res)=>{
-            return res.data;
-        })
-        .catch((err) => {
-            return { success: false, data: null, message: "Failed to retrieve in groups." };
-        })
+            .get(`/api/group/getUsersInGroup?group=${group_name}`)
+            .then((res) => {
+                return res.data;
+            })
+            .catch((err) => {
+                return { success: false, data: null, message: "Failed to retrieve in groups." };
+            })
     }
 
     const get_group_info = async (group_name: string) => {
         return await axios
-        .get(`/api/group/getGroupInfo?group=${group_name}`)
-        .then((res)=>{
-            return res.data;
-        })
-        .catch((err) => {
-            return { success: false, data: null, message: "Failed to retrieve in groups." };
-        })
+            .get(`/api/group/getGroupInfo?group=${group_name}`)
+            .then((res) => {
+                return res.data;
+            })
+            .catch((err) => {
+                return { success: false, data: null, message: "Failed to retrieve in groups." };
+            })
     }
 
-    return { get_all_groups, create_group, get_all_my_groups, get_all_in_groups, get_all_users, get_group_info };
+    const get_Pgroup_info = async (group_name: string) => {
+        return await axios
+            .get(`/api/group/getPendingUsers?group=${group_name}`)
+            .then((res) => {
+                return res.data;
+            })
+            .catch((err) => {
+                return { success: false, data: null, message: "Failed to retrieve pending users." };
+            })
+    }
+
+    return { get_all_groups, create_group, get_all_my_groups, get_all_in_groups, get_all_users, get_group_info, get_Pgroup_info };
 }
