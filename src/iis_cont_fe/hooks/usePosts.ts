@@ -45,6 +45,20 @@ export const usePosts = () => {
             return { success: false, data: null, message: "Failed to fetch posts by tag." };
           });
       };
+
+      const post_comment = async (content: string, post_id: number) => {
+        try {
+            const response = await axios.post('/api/data/createComment', { content, post_id }, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            return response.data;
+        } catch (err) {
+            console.error("Error posting comment:", err);
+            return { success: false, data: null, message: "Failed to post comment." };
+        }
+    }
     
-      return { get_user_post, get_all_posts, get_group_posts, get_posts_by_tag };
+      return { get_user_post, get_all_posts, get_group_posts, get_posts_by_tag, post_comment};
 }
