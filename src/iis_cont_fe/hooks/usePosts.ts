@@ -45,6 +45,17 @@ export const usePosts = () => {
             return { success: false, data: null, message: "Failed to fetch posts by tag." };
           });
       };
+
+      const get_post_by_id = async (post_id: string) => {
+        return await axios
+            .get(`/api/data/getPost?id=${post_id}`)
+            .then((res) => {
+                return res.data;
+            })
+            .catch((err) => {
+                return { success: false, data: null, message: "Failed to fetch post." };
+            });
+    }
     
-      return { get_user_post, get_all_posts, get_group_posts, get_posts_by_tag };
+    return { get_user_post, get_all_posts, get_group_posts, get_posts_by_tag, get_post_by_id };
 }
