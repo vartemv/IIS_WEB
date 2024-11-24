@@ -20,6 +20,7 @@ import { Separator } from "@/components/ui/separator"
 import { useGroups } from '@/hooks/useGroups';
 import { GroupInfo, GroupUser } from '@/utils/types/fe_types';
 import { CSSProperties } from 'react';
+import { useEffect } from 'react';
 
 const tags = Array.from({ length: 50 }).map(
     (_, i, a) => `v1.2.0-beta.${a.length - i}`
@@ -32,6 +33,27 @@ interface CenteredAvatarProps {
 };
 
 const CenteredAvatar: React.FC<CenteredAvatarProps> = ({ users, group, pending_users }) => {
+    const {change_status} = useGroups();
+    const [pending_users_state, setPendingUsers] = useState<GroupUser[]>(pending_users);
+
+    useEffect(() => {
+        setPendingUsers(pending_users);
+    }, [pending_users]);
+
+    const handleChangeClick = async (user_id: number, group_name: string, status: string) => {
+        const response = await change_status({user_id: user_id, group_name: group_name, status: status});
+
+        if (response.success) {
+            // If the group is created successfully, refresh the groups
+            const index = pending_users_state.findIndex(user=>user.id === user_id);
+            if(index != -1){
+                setPendingUsers(prevState => prevState.filter(user => user.id !== user_id));
+            }
+        } else {
+            console.error("Failed to change status", response.message);
+        }
+    };
+
     return (
         <>
             <div style={styles.container}>
@@ -70,13 +92,13 @@ const CenteredAvatar: React.FC<CenteredAvatarProps> = ({ users, group, pending_u
             <div style={styles.secondDropdownContainer}>
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                        <Button variant="outline">Users: {group.pocet}</Button>
+                        <Button variant="outline">Pending users: {pending_users_state.length}</Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent className="w-56">
                         <ScrollArea className="h-72 w-30 rounded-md border">
                             <div className="p-4">
-                                <h4 className="mb-4 text-sm font-medium text-center">Pending users</h4>
-                                {pending_users.map((p_user) => (
+                                <h4 className="mb-4 text-sm font-medium text-center">List</h4>
+                                {pending_users_state.map((p_user) => (
                                     <React.Fragment key={p_user.id}>
                                         <div className="flex items-center gap-3 py-2">
                                             <div className="h-10 w-10 rounded-full overflow-hidden border border-gray-300">
@@ -86,7 +108,23 @@ const CenteredAvatar: React.FC<CenteredAvatarProps> = ({ users, group, pending_u
                                                     className="h-full w-full object-cover"
                                                 />
                                             </div>
-                                            <div className="text-sm font-medium">{p_user.profile_name}</div>
+                                            <div className="flex gap-2">
+                                                <div className="text-sm font-medium">{p_user.profile_name}</div>
+                                                <div className="flex gap-2 mt-1">
+                                                    <button onClick={()=>handleChangeClick(p_user.id, group.group_name, "Active")}
+                                                        className="px-3 py-1 text-sm text-white bg-green-500 bg-black rounded hover:bg-green-600"
+                                                         // Replace with your approve handler
+                                                    >
+                                                        ✔️
+                                                    </button>
+                                                    <button onClick={()=>handleChangeClick(p_user.id, group.group_name, "Refuse")}
+                                                        className="px-3 py-1 text-sm text-black bg-red-500  rounded hover:bg-red-600"
+                                                         // Replace with your decline handler
+                                                    >
+                                                        ✖
+                                                    </button>
+                                                </div>
+                                            </div>
                                         </div>
                                         <Separator className="my-1" />
                                     </React.Fragment>
@@ -100,7 +138,7 @@ const CenteredAvatar: React.FC<CenteredAvatarProps> = ({ users, group, pending_u
     );
 };
 
-const styles: {[key: string]: CSSProperties} = {
+const styles: { [key: string]: CSSProperties } = {
     container: {
         display: 'flex',
         justifyContent: 'center',
