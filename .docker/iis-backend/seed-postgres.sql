@@ -134,7 +134,7 @@ VALUES
         'Johnson',
         'bobby_j',
         '2023-02-20',
-        'hashed_password_2',
+        '$2a$10$SH2w1o.hwPjHa4BuDwpisOzKhLv36e0LNkCnZDcKWFi.8nWtDuqfm',
         'test1@gmail.com',
         'Mod'
     ),
@@ -152,7 +152,7 @@ VALUES
         'Prince',
         'wonder_d',
         '2023-04-05',
-        'hashed_password_4',
+        '$2a$10$SH2w1o.hwPjHa4BuDwpisOzKhLv36e0LNkCnZDcKWFi.8nWtDuqfm',
         'test3@gmail.com',
         'User'
     );
