@@ -19,8 +19,14 @@ export async function middleware(request: NextRequest) {
     
     const {role} = user_data;
 
+    console.log(role)
+
+    if (role !== "Admin"){
+        return NextResponse.redirect(new URL('/info', request.url))
+    }
+
 }
 
 export const config = {
-    matcher: ['/admin', '/profile'],
+    matcher: ['/admin'],
   }

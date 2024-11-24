@@ -30,7 +30,7 @@ CREATE TABLE groups (
     photo TEXT,
     owner INT NOT NULL,
     datum DATE NOT NULL,
-    FOREIGN KEY (owner) REFERENCES users(ID)
+    FOREIGN KEY (owner) REFERENCES users(ID) ON DELETE CASCADE
 );
 
 -- Create User_Groups Table (Many-to-Many: Users and Groups)
@@ -155,7 +155,17 @@ VALUES
         '$2a$10$SH2w1o.hwPjHa4BuDwpisOzKhLv36e0LNkCnZDcKWFi.8nWtDuqfm',
         'test3@gmail.com',
         'User'
+    ),
+    (
+        'Delete',
+        'Me',
+        'test_delete',
+        '2023-04-05',
+        '$2a$10$SH2w1o.hwPjHa4BuDwpisOzKhLv36e0LNkCnZDcKWFi.8nWtDuqfm',
+        'delete@gmail.com',
+        'User'
     );
+    ;
 
 -- Populate Posts Table
 INSERT INTO

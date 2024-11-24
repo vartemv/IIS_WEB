@@ -35,8 +35,6 @@ function Profile() {
   const { get_user_post } = usePosts();
   const [post_data, setPosts] = useState([]);
 
-  console.log(user);
-
   useEffect(() => {
     if (user && !Array.isArray(user)) {
       get_user_post(user).then((data) => {
