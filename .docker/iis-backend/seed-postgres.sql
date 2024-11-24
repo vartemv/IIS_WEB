@@ -205,10 +205,10 @@ VALUES
 INSERT INTO
     groups (group_name, pocet, owner, datum)
 VALUES
-    ('Nature Lovers', 50, 1, '2023-01-01'),
-    ('Coffee Enthusiasts', 30, 1, '2023-02-01'),
-    ('Runners United', 20, 3, '2023-03-01'),
-    ('Skaters Club', 15, 4, '2023-04-01');
+    ('Nature Lovers', 2, 1, '2023-01-01'),
+    ('Coffee Enthusiasts', 1, 1, '2023-02-01'),
+    ('Runners United', 1, 3, '2023-03-01'),
+    ('Skaters Club', 2, 4, '2023-04-01');
 
 -- Populate User_Groups Table
 INSERT INTO
@@ -217,9 +217,9 @@ VALUES
     (2, 'Nature Lovers', 'Pending', '2023-01-15'),
     (2, 'Coffee Enthusiasts', 'Pending', '2023-02-20'),
     (1, 'Runners United', 'Pending', '2023-03-10'),
-    (4, 'Skaters Club', 'Active', '2023-04-05'),
+    (3, 'Skaters Club', 'Active', '2023-04-05'),
     (4, 'Nature Lovers', 'Active', '2023-03-15'),
-    (1, 'Coffee Enthusiasts', 'Pending', '2023-05-01');
+    (3, 'Coffee Enthusiasts', 'Pending', '2023-05-01');
 
 -- Populate Group_Posts Table
 INSERT INTO

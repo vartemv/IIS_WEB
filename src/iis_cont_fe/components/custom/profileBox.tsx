@@ -20,6 +20,7 @@ import { Separator } from "@/components/ui/separator"
 import { useGroups } from '@/hooks/useGroups';
 import { GroupInfo, GroupUser } from '@/utils/types/fe_types';
 import { CSSProperties } from 'react';
+import { useEffect } from 'react';
 
 const tags = Array.from({ length: 50 }).map(
     (_, i, a) => `v1.2.0-beta.${a.length - i}`
@@ -34,6 +35,11 @@ interface CenteredAvatarProps {
 const CenteredAvatar: React.FC<CenteredAvatarProps> = ({ users, group, pending_users }) => {
     const {change_status} = useGroups();
     const [pending_users_state, setPendingUsers] = useState<GroupUser[]>(pending_users);
+
+    useEffect(() => {
+        setPendingUsers(pending_users);
+    }, [pending_users]);
+
     const handleChangeClick = async (user_id: number, group_name: string, status: string) => {
         const response = await change_status({user_id: user_id, group_name: group_name, status: status});
 

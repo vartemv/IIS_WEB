@@ -36,11 +36,22 @@ export async function POST(req: NextRequest) {
         if (status === "Refuse") {
 
             await prisma.user_groups.delete({
-                where:{
-                    id_of_user_group_name:{ 
-                        id_of_user:user_id,
+                where: {
+                    id_of_user_group_name: {
+                        id_of_user: user_id,
                         group_name: group_name
                     }
+                },
+            });
+
+            await prisma.groups.update({
+                where: {
+                    group_name: group_name, // The group_name for the group you want to update
+                },
+                data: {
+                    pocet: {
+                        decrement: 1, // Increment the value of pocet by 1
+                    },
                 },
             });
 
@@ -57,9 +68,18 @@ export async function POST(req: NextRequest) {
                     status: status,
                 },
             });
+
+            await prisma.groups.update({
+                where: {
+                    group_name: group_name, // The group_name for the group you want to update
+                },
+                data: {
+                    pocet: {
+                        increment: 1, // Increment the value of pocet by 1
+                    },
+                },
+            });
         }
-
-
 
         const response = NextResponse.json({
             success: true,

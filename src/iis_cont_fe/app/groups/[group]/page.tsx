@@ -29,7 +29,7 @@ function Profile() {
   const { get_all_users, get_group_info, get_Pgroup_info } = useGroups();
   const [post_data, setPosts] = useState([]);
   const [users_in_group, setUsers] = useState<GroupUser[]>([]);
-  const [group_info, setGroupInfo] = useState<GroupInfo|null>(null);
+  const [group_info, setGroupInfo] = useState<GroupInfo | null>(null);
   const [Pgroup_info, setPGroupInfo] = useState<GroupUser[]>([]);
 
 
@@ -47,8 +47,6 @@ function Profile() {
       get_Pgroup_info(group).then((data) => {
         setPGroupInfo(data.data ? data.data : {})
       });
-
-      
 
     }
   }, []);
