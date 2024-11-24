@@ -15,7 +15,7 @@ export async function POST(req: NextRequest) {
 
     try {
         const body = await req.json();
-        const { mediafile, description, location, availability, tags } = body;
+        const { mediafile, description, location, availability, tags, allowedUsers } = body;
 
         const newPost = await prisma.posts.create({
             data: {
@@ -49,10 +49,74 @@ export async function POST(req: NextRequest) {
                 });
             }
         }
+        
+        if(availability === 'FALSE'){
+        
 
+            const userRecord = await prisma.users.findUnique({
+                where: { id: user.id },
+            });
+            
+            if (!userRecord) {
+                console.error(`Invalid user ID: ${user.id}`);
+                return NextResponse.json({ success: false, message: "Invalid user ID" }, { status: 400 });
+            }
+            
+            
+            const allowedUsersList: string[] = [];
+
+                    
+            const adminAndModUsers = await prisma.users.findMany({
+                where: {
+                    role: {
+                        in: ['Admin', 'Mod'],
+                    },
+                },
+                select: {
+                    profile_name: true,
+                },
+            });
+            
+            adminAndModUsers.forEach((adminOrModUser) => {
+                allowedUsersList.push(adminOrModUser.profile_name);
+            });
+
+            if (!allowedUsersList.includes(userRecord.profile_name)) {
+                allowedUsersList.push(userRecord.profile_name);
+            }
+            
+            
+
+            if (Array.isArray(allowedUsers)) {
+                for (const user of allowedUsers) {
+                    if (!allowedUsersList.includes(user)) {  // Check if user is already in the list
+                        allowedUsersList.push(user);
+                    }
+                }
+                
+            }
+            
+            for (const username of allowedUsersList) {
+                const userRecord = await prisma.users.findUnique({
+                    where: { profile_name: username },
+                });
+            
+                if (!userRecord ) {
+                    console.error(`Invalid username: ${username}`);
+                    continue; // Skip invalid username
+                }
+            
+                await prisma.user_posts.create({
+                    data: {
+                        post_id: newPost.id,
+                        id_of_user: userRecord.id,
+                    },
+                });
+            }
+        }
         return NextResponse.json({ success: true, data: newPost, message: "Post created successfully" });
-    } catch (error) {
-        console.error("Error creating post:", error);
-        return NextResponse.json({ success: false, message: "Failed to create post" }, { status: 500 });
+        } catch (error) {
+            console.error("Error creating post:", error);
+            return NextResponse.json({ success: false, message: "Failed to create post" }, { status: 500 });
+        }
     }
-}

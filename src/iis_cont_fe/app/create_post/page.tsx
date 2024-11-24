@@ -10,6 +10,7 @@ const CreatePost = () => {
     location: '',
     availability: 'TRUE',
     tags: '',
+    allowedUsers: '',
   });
   const [file, setFile] = useState<File | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
@@ -51,8 +52,9 @@ const CreatePost = () => {
             },
             body: JSON.stringify({
               ...formData,
-              mediafile: filename,
-              tags: formData.tags.split(',').map(tag => tag.trim()), // Split and trim tags
+              mediafile: `/${filename}`,
+              tags: formData.tags.split(',').map(tag => tag.trim()),
+              allowedUsers: formData.allowedUsers.split(',').map(user => user.trim()), 
             }),
           });
           
@@ -65,6 +67,7 @@ const CreatePost = () => {
               location: '',
               availability: 'TRUE',
               tags: '',
+              allowedUsers: '',
             });
             setFile(null);
             setImagePreview(null);
@@ -77,6 +80,17 @@ const CreatePost = () => {
     } catch (error) {
       console.error("Error creating post:", error);
     }
+  };
+
+  const isFormValid = () => {
+    const { description, location, availability, allowedUsers } = formData;
+    if (description && location && file) {
+      if (availability === 'FALSE') {
+        return allowedUsers.trim() !== '';
+      }
+      return true;
+    }
+    return false;
   };
 
   return (
@@ -148,6 +162,18 @@ const CreatePost = () => {
               <option value="FALSE">Private</option>
             </select>
           </div>
+          {formData.availability === 'FALSE' && (
+            <div className="mb-4">
+              <Label htmlFor="allowedUsers">Allowed Users</Label>
+              <Input 
+                id="allowedUsers" 
+                type="text" 
+                value={formData.allowedUsers}
+                onChange={handleInputChange}
+                placeholder="Enter usernames separated by commas" 
+              />
+            </div>
+          )}
           <div className="mb-4">
             <Label htmlFor="tags">Tags</Label>
             <Input 
@@ -158,7 +184,7 @@ const CreatePost = () => {
               placeholder="Add tags (comma separated)" 
             />
           </div>
-          <Button type="submit" className="bg-blue-500 w-full">Post</Button>
+          <Button type="submit" className="bg-blue-500 w-full" disabled={!isFormValid()}>Post</Button>
         </form>
       </div>
     </div>
