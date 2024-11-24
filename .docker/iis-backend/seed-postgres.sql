@@ -181,7 +181,7 @@ VALUES
     (
         1,
         '2023-05-10 10:00:00',
-        'init_post_park.jpg',
+        '/init_post_park.jpg',
         'A sunny day in the park.',
         'Central Park, NYC',
         TRUE
@@ -189,7 +189,7 @@ VALUES
     (
         2,
         '2023-05-11 14:30:00',
-        'init_post_coffe.jpg',
+        '/init_post_coffe.jpg',
         'Had a great coffee today.',
         'Starbucks, LA',
         TRUE
@@ -197,7 +197,7 @@ VALUES
     (
         3,
         '2023-05-12 18:45:00',
-        'init_post_runner.jpeg',
+        '/init_post_runner.jpeg',
         'Just finished a 5K run!',
         'San Francisco',
         TRUE
@@ -205,7 +205,7 @@ VALUES
     (
         4,
         '2023-05-13 09:20:00',
-        'init_post_skater.jpg',
+        '/init_post_skater.jpg',
         'Check out this cool skate trick!',
         'Venice Beach',
         TRUE
@@ -213,7 +213,7 @@ VALUES
     (
         4,
         '2023-05-13 09:20:00',
-        '1732479209300_peter.jpg',
+        '/1732479209300_peter.jpg',
         'Peter, the horse is here',
         'Family Home',
         TRUE
@@ -223,11 +223,11 @@ VALUES
 INSERT INTO
     groups (group_name, pocet, photo, owner, datum)
 VALUES
-    ('Nature Lovers', 2, 'init_club_nature.jpg', 1, '2023-01-01'),
-    ('Coffee Enthusiasts', 1, 'init_club_coffe.jpg', 1, '2023-02-01'),
-    ('Runners United', 1, 'init_club_run.jpg', 3, '2023-03-01'),
-    ('Skaters Club', 2, 'init_club_skaters.jpg', 4, '2023-04-01'),
-    ('Skiing Lads', 2, 'init_club_skiing.jpg', 2, '2023-05-01');
+    ('Nature Lovers', 2, '/init_club_nature.jpg', 1, '2023-01-01'),
+    ('Coffee Enthusiasts', 1, '/init_club_coffe.jpg', 1, '2023-02-01'),
+    ('Runners United', 1, '/init_club_run.jpg', 3, '2023-03-01'),
+    ('Skaters Club', 2, '/init_club_skaters.jpg', 4, '2023-04-01'),
+    ('Skiing Lads', 2, '/init_club_skiing.jpg', 2, '2023-05-01');
 
 -- Populate User_Groups Table
 INSERT INTO

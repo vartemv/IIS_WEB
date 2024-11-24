@@ -58,7 +58,8 @@ const CenteredAvatar: React.FC<CenteredAvatarProps> = ({ users, group, pending_u
         <>
             <div style={styles.container}>
                 <Avatar className="hidden h-28 w-28 sm:flex">
-                    <AvatarImage src="https://picsum.photos/seed/picsum/200/300" alt="Avatar" />
+                    {/* <AvatarImage src="https://picsum.photos/seed/picsum/200/300" alt="Avatar" /> */}
+                    <AvatarImage src={group.photo} alt="Avatar" />
                     <AvatarFallback>JL</AvatarFallback>
                 </Avatar>
                 <DropdownMenu>
