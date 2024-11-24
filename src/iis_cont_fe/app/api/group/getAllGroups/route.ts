@@ -30,8 +30,6 @@ export async function GET(req: NextRequest) {
       },
     });
 
-    
-
     const formattedGroups = groups.map(group => ({
       group_name: group.group_name,
       owner: group.owner,
