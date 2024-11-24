@@ -134,7 +134,7 @@ VALUES
         'Johnson',
         'bobby_j',
         '2023-02-20',
-        'hashed_password_2',
+        '$2a$10$SH2w1o.hwPjHa4BuDwpisOzKhLv36e0LNkCnZDcKWFi.8nWtDuqfm',
         'test1@gmail.com',
         'Mod'
     ),
@@ -152,7 +152,7 @@ VALUES
         'Prince',
         'wonder_d',
         '2023-04-05',
-        'hashed_password_4',
+        '$2a$10$SH2w1o.hwPjHa4BuDwpisOzKhLv36e0LNkCnZDcKWFi.8nWtDuqfm',
         'test3@gmail.com',
         'User'
     );
@@ -208,7 +208,8 @@ VALUES
     ('Nature Lovers', 2, 1, '2023-01-01'),
     ('Coffee Enthusiasts', 1, 1, '2023-02-01'),
     ('Runners United', 1, 3, '2023-03-01'),
-    ('Skaters Club', 2, 4, '2023-04-01');
+    ('Skaters Club', 2, 4, '2023-04-01'),
+    ('Skiing Lads', 2, 2, '2023-05-01');
 
 -- Populate User_Groups Table
 INSERT INTO
@@ -219,7 +220,8 @@ VALUES
     (1, 'Runners United', 'Pending', '2023-03-10'),
     (3, 'Skaters Club', 'Active', '2023-04-05'),
     (4, 'Nature Lovers', 'Active', '2023-03-15'),
-    (3, 'Coffee Enthusiasts', 'Pending', '2023-05-01');
+    (3, 'Coffee Enthusiasts', 'Pending', '2023-05-01'),
+    (1, 'Skiing Lads', 'Active', '2023-05-01');
 
 -- Populate Group_Posts Table
 INSERT INTO

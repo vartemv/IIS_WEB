@@ -90,9 +90,9 @@ export const useGroups = () => {
             })
     }
 
-    const send_request = async (group: string) => {
+    const send_request = async (group_name: string) => {
         return await axios
-            .post(`/api/group/sendJoinRequest`, { group })
+            .post(`/api/group/sendJoinRequest`, { group_name })
             .then((res) => {
                 return res.data;
             })
