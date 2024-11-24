@@ -30,8 +30,8 @@ interface PostGridProps {
             onClick={() => handlePhotoClick(post)}
             >
             <img
-              // src={post.mediafile}
-              src={'https://via.placeholder.com/300'}
+              src={post.mediafile}
+              // src={'https://via.placeholder.com/300'}
               alt={post.description}
               className="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-105"
             />

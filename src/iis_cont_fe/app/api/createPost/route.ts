@@ -54,23 +54,29 @@ export async function POST(req: NextRequest) {
             }
         }
         
-        //todo mozna odstranit
-        // if (availability === 'TRUE') {
-        //     const userGroups = await prisma.user_groups.findMany({
-        //         where: { id_of_user: user.id },
-        //         select: { group_name: true },
-        //     });
-
-        //     for (const userGroup of userGroups) {
-        //         await prisma.group_posts.create({
-        //             data: {
-        //                 group_name: userGroup.group_name,
-        //                 post_id: newPost.id,
-        //                 datum: new Date()
-        //             },
-        //         });
-        //     }
-        // }
+        if (availability === 'TRUE') {
+            for (const groupName of allowedGroups) {
+                if(groupName){
+                    const groupRecord = await prisma.groups.findUnique({
+                        where: { group_name: groupName },
+                    });
+            
+                    if (!groupRecord) {
+                        return NextResponse.json({ success: false, message: `The group '${groupName}' does not exist` }, { status: 400 });
+                    }
+            
+                    await prisma.group_posts.create({
+                        data: {
+                            group_name: groupName,
+                            post_id: newPost.id,
+                            datum: new Date(),
+                        },
+                    });
+                }else{
+                console.log("No group(s) selected");
+            }
+            }
+        }
         
         
         if(availability === 'FALSE'){
@@ -120,40 +126,46 @@ export async function POST(req: NextRequest) {
             }
             
             for (const username of allowedUsersList) {
-                const userRecord = await prisma.users.findUnique({
-                    where: { profile_name: username },
-                });
-            
-                if (!userRecord ) {
-                    console.error(`Invalid username: ${username}`);
-                    continue; // Skip invalid username
+                if(username){
+                    const userRecord = await prisma.users.findUnique({
+                        where: { profile_name: username },
+                    });
+                
+                    if (!userRecord ) {
+                        return NextResponse.json({ success: false, message: `The user '${username}' does not exist` }, { status: 400 });
+                    }
+                
+                    await prisma.user_posts.create({
+                        data: {
+                            post_id: newPost.id,
+                            id_of_user: userRecord.id,
+                        },
+                    });
+                }else{
+                    console.log("No user(s) selected");
                 }
-            
-                await prisma.user_posts.create({
-                    data: {
-                        post_id: newPost.id,
-                        id_of_user: userRecord.id,
-                    },
-                });
             }
  
             for (const groupName of allowedGroups) {
-                const groupRecord = await prisma.groups.findUnique({
-                    where: { group_name: groupName },
-                });
-        
-                if (!groupRecord) {
-                    console.error(`Invalid group name: ${groupName}`);
-                    continue; 
+                if(groupName){
+                    const groupRecord = await prisma.groups.findUnique({
+                        where: { group_name: groupName },
+                    });
+            
+                    if (!groupRecord) {
+                        return NextResponse.json({ success: false, message: `The group '${groupName}' does not exist` }, { status: 400 });
+                    }
+            
+                    await prisma.group_posts.create({
+                        data: {
+                            group_name: groupName,
+                            post_id: newPost.id,
+                            datum: new Date(),
+                        },
+                    });
+                }else{
+                    console.log("No group(s) selected");
                 }
-        
-                await prisma.group_posts.create({
-                    data: {
-                        group_name: groupName,
-                        post_id: newPost.id,
-                        datum: new Date(),
-                    },
-                });
             }
         }
         return NextResponse.json({ success: true, data: newPost, message: "Post created successfully" });

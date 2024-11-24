@@ -17,6 +17,8 @@ const CreatePost = () => {
   const [file, setFile] = useState<File | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
@@ -33,6 +35,7 @@ const CreatePost = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
 
     if (!file || file.size > 10 * 1024 * 1024) { // 10MB limit
       console.error("File is required and must be under 10MB");
@@ -59,29 +62,30 @@ const CreatePost = () => {
         const filename = `${timestamp}_${file.name.replaceAll(" ", "_")}`;
         formDataWithFile.append('file', new File([file], filename, { type: file.type }));
         
-        const uploadResponse = await fetch('/api/savePost', {
-          method: 'POST',
-          body: formDataWithFile
+        const createPostResponse = await fetch('/api/createPost', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        
+        body: JSON.stringify({
+          ...formData,
+          mediafile: `/${filename}`,
+          tags: formData.tags.split(',').map(tag => tag.trim()),
+          allowedUsers: formData.allowedUsers.split(',').map(user => user.trim()),
+          allowedGroups: formData.allowedGroups.split(',').map(group => group.trim()), 
+        }),
         });
         
-        if (uploadResponse.ok) {
-          const createPostResponse = await fetch('/api/createPost', {
+        const data = await createPostResponse.json();
+        if (data.success) {
+          const uploadResponse = await fetch('/api/savePost', {
             method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              ...formData,
-              mediafile: `/${filename}`,
-              tags: formData.tags.split(',').map(tag => tag.trim()),
-              allowedUsers: formData.allowedUsers.split(',').map(user => user.trim()),
-              allowedGroups: formData.allowedGroups.split(',').map(group => group.trim()), 
-            }),
+            body: formDataWithFile
           });
-          
-          const data = await createPostResponse.json();
-          if (data.success) {
+          if (uploadResponse.ok) {
             console.log('Post created successfully');
+            setErrorMessage(null); 
             // Reset form
             setFormData({
               description: '',
@@ -90,27 +94,36 @@ const CreatePost = () => {
               tags: '',
               allowedUsers: '',
               allowedGroups: '', 
-
+              
             });
             setFile(null);
             setImagePreview(null);
             if (fileRef.current) {
               fileRef.current.value = '';
             }
+            
           }
+        }else {
+          // Display error message from server
+          setErrorMessage(data.message || 'Failed to create post');
+          return; // Don't proceed with file upload if post creation failed
         }
+        
       }
     } catch (error) {
       console.error("Error creating post:", error);
+      setErrorMessage('An error occurred while creating the post');
+
     }
   };
 
+  //todo
   const isFormValid = () => {
     const { description, location, availability, allowedUsers, allowedGroups } = formData;
     if (description && location && file) {
-      if (availability === 'FALSE') {
-        return (allowedUsers.trim() !== '' || allowedGroups.trim() !== '');
-      }
+      // if (availability === 'FALSE') {
+      //   return allowedUsers.trim();
+      // }
       return true;
     }
     return false;
@@ -121,7 +134,13 @@ const CreatePost = () => {
       <div>
         <Navbar />
       </div>
+      {errorMessage && (
+      <div className="text-red-500 text-sm mb-4 text-center w-full">
+        {errorMessage}
+      </div>
+      )}
       <div className="flex justify-center items-center min-h-screen p-10">
+        
         {/* Left Section*/}
         <div className="flex justify-center items-center w-1/2">
           <div className="w-full max-w-sm border-2 border-dashed border-gray-400 p-5 flex flex-col items-center justify-center">
@@ -185,7 +204,7 @@ const CreatePost = () => {
             {formData.availability === 'FALSE' && (
               <div>
                 <div className="mb-4">
-                  <Label htmlFor="allowedUsers">Allowed Users</Label>
+                  <Label htmlFor="allowedUsers">Select user(s)</Label>
                   <Input 
                     id="allowedUsers" 
                     type="text" 
@@ -194,18 +213,18 @@ const CreatePost = () => {
                     placeholder="Enter usernames separated by commas" 
                   />
                 </div>
-                <div className="mb-4">
-                <Label htmlFor="allowedGroups">Allowed Groups</Label>
-                <Input 
-                  id="allowedGroups" 
-                  type="text" 
-                  value={formData.allowedGroups}
-                  onChange={handleInputChange}
-                  placeholder="Enter groups separated by commas" 
-                />
-              </div>
             </div>
             )}
+              <div className="mb-4">
+              <Label htmlFor="allowedGroups">Select Group(s)</Label>
+              <Input 
+                id="allowedGroups" 
+                type="text" 
+                value={formData.allowedGroups}
+                onChange={handleInputChange}
+                placeholder="Enter groups separated by commas" 
+              />
+            </div>
             <div className="mb-4">
               <Label htmlFor="tags">Tags</Label>
               <Input 
