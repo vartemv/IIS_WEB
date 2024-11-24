@@ -39,7 +39,6 @@ interface PostGridProps {
               {post.description}
             </div>
           </div>
-          
         ))}
 
         {isModalOpen && selectedPost && (

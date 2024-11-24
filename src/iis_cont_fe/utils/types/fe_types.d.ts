@@ -1,8 +1,10 @@
 export interface Group {
     group_name: string;
     pocet: number;
-    owner: string;
+    owner: number;
     datum: Date;
+    photo: string;
+    users: {profile_name: string}
   }
 
   interface Post {
@@ -47,4 +49,17 @@ export interface Group {
     id: number;
     post_id: number;
     amount: number;
+  }
+
+  interface GroupUser extends CommentUsersPhoto{
+    profile_name: string;
+    id: number;
+  }
+
+  interface GroupInfo {
+    group_name: string;
+    pocet: number;
+    photo: string;
+    owner: number;
+    datum: Date;
   }

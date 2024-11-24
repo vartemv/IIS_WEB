@@ -18,17 +18,25 @@ export async function GET(req: NextRequest) {
     }
 
     const groups = await prisma.user_groups.findMany({
-        where: {
-          id_of_user: sender.id,
+      where: {
+        id_of_user: sender.id,
+      },
+      include: {
+        groups: {
+          include: {
+            users: { // Include the user details of the owner
+              select: {
+                profile_name: true, // Select the profile_name of the owner
+              },
+            },
+          },
         },
-        include: {
-          groups: true, // Include full group details
-        },
-      });
+      },
+    });
 
       const result = groups.map(userGroup => ({
         group_name: userGroup.groups.group_name,
-        owner: userGroup.groups.owner,
+        users:{ profile_name: userGroup.groups.users.profile_name},
         photo: userGroup.groups.photo,
         pocet: userGroup.groups.pocet,
         datum: userGroup.groups.datum,

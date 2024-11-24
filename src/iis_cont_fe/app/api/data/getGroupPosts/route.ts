@@ -22,13 +22,21 @@ export async function GET(req: NextRequest) {
     }
 
     try {
-
         const groupPosts = await prisma.group_posts.findMany({
             where: {
                 group_name: group,
             },
             include: {
-                posts: true, // Include post details
+                posts: {
+                    include: {
+                        comments: true,
+                        users: {
+                            select: {
+                                profile_name: true,
+                            }
+                        }
+                    },
+                },
             },
         });
 

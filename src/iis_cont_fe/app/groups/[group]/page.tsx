@@ -19,16 +19,28 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { usePosts } from "@/hooks/usePosts";
 import Navbar from "@/components/ui/navbar";
+import CenteredAvatar from "@/components/custom/profileBox";
+import { useGroups } from "@/hooks/useGroups";
+import { GroupUser, GroupInfo } from "@/utils/types/fe_types";
 
 function Profile() {
   const { group } = useParams();
   const { get_group_posts } = usePosts();
+  const { get_all_users, get_group_info } = useGroups();
   const [post_data, setPosts] = useState([]);
+  const [users_in_group, setUsers] = useState<GroupUser[]>([]);
+  const [group_info, setGroupInfo] = useState<GroupInfo|null>(null);
 
   useEffect(() => {
     if (group && !Array.isArray(group)) {
-        get_group_posts(group).then((data) => {
+      get_group_posts(group).then((data) => {
         setPosts(data.data ? data.data : [])
+      });
+      get_all_users(group).then((data) => {
+        setUsers(data.data ? data.data : [])
+      });
+      get_group_info(group).then((data) => {
+        setGroupInfo(data.data ? data.data : {})
       });
     }
   }, [group]);
@@ -41,9 +53,10 @@ function Profile() {
     { image: "https://via.placeholder.com/300", caption: "Post 1", author: "test" }
   ];
   return (<>
-    <Navbar/>
+    <Navbar />
+    {group_info && <CenteredAvatar users={users_in_group} group={group_info} />}
     <div>
-      <Separator className="my-4" />
+      <Separator className="my-1" />
     </div>
     <main className="p-4">
       <PostGrid posts={post_data} />
