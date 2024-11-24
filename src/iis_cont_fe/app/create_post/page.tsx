@@ -11,6 +11,7 @@ const CreatePost = () => {
     availability: 'TRUE',
     tags: '',
     allowedUsers: '',
+    allowedGroups: '',
   });
   const [file, setFile] = useState<File | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
@@ -54,7 +55,8 @@ const CreatePost = () => {
               ...formData,
               mediafile: `/${filename}`,
               tags: formData.tags.split(',').map(tag => tag.trim()),
-              allowedUsers: formData.allowedUsers.split(',').map(user => user.trim()), 
+              allowedUsers: formData.allowedUsers.split(',').map(user => user.trim()),
+              allowedGroups: formData.allowedGroups.split(',').map(group => group.trim()), 
             }),
           });
           
@@ -68,6 +70,8 @@ const CreatePost = () => {
               availability: 'TRUE',
               tags: '',
               allowedUsers: '',
+              allowedGroups: '', 
+
             });
             setFile(null);
             setImagePreview(null);
@@ -83,10 +87,10 @@ const CreatePost = () => {
   };
 
   const isFormValid = () => {
-    const { description, location, availability, allowedUsers } = formData;
+    const { description, location, availability, allowedUsers, allowedGroups } = formData;
     if (description && location && file) {
       if (availability === 'FALSE') {
-        return allowedUsers.trim() !== '';
+        return (allowedUsers.trim() !== '' || allowedGroups.trim() !== '');
       }
       return true;
     }
@@ -95,9 +99,12 @@ const CreatePost = () => {
 
   return (
     <div className="flex justify-center items-center min-h-screen p-10">
-      {/* Left Section - Image Preview */}
+      {/* Left Section*/}
       <div className="flex justify-center items-center w-1/2">
         <div className="w-full max-w-sm border-2 border-dashed border-gray-400 p-5 flex flex-col items-center justify-center">
+            {imagePreview && (
+              <img src={imagePreview} alt="Selected file" className="mt-4 max-w-full h-auto" />
+            )}
           <label className="cursor-pointer">
             <input 
               type="file" 
@@ -106,28 +113,18 @@ const CreatePost = () => {
               onChange={handleFileChange}
               accept="image/*"
             />
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-16 w-16 text-gray-500"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth={2}
-              strokeLinecap="round"
-              strokeLinejoin="round"
+            <button 
+              type="button" 
+              className="px-4 py-2 bg-blue-500 text-white rounded-md mt-4"
+              onClick={() => fileRef.current?.click()}
             >
-              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-              <polyline points="17 8 12 3 7 8"></polyline>
-              <line x1="12" y1="3" x2="12" y2="15"></line>
-            </svg>
+              Add image
+            </button>
           </label>
-          {imagePreview && (
-            <img src={imagePreview} alt="Selected file" className="mt-4 max-w-full h-auto" />
-          )}
         </div>
       </div>
 
-      {/* Right Section - Form */}
+      {/* Right Section*/}
       <div className="flex justify-center items-center w-1/2">
         <form onSubmit={handleSubmit} className="w-full max-w-md">
           <div className="mb-4">
@@ -163,16 +160,28 @@ const CreatePost = () => {
             </select>
           </div>
           {formData.availability === 'FALSE' && (
-            <div className="mb-4">
-              <Label htmlFor="allowedUsers">Allowed Users</Label>
+            <div>
+              <div className="mb-4">
+                <Label htmlFor="allowedUsers">Allowed Users</Label>
+                <Input 
+                  id="allowedUsers" 
+                  type="text" 
+                  value={formData.allowedUsers}
+                  onChange={handleInputChange}
+                  placeholder="Enter usernames separated by commas" 
+                />
+              </div>
+              <div className="mb-4">
+              <Label htmlFor="allowedGroups">Allowed Groups</Label>
               <Input 
-                id="allowedUsers" 
+                id="allowedGroups" 
                 type="text" 
-                value={formData.allowedUsers}
+                value={formData.allowedGroups}
                 onChange={handleInputChange}
-                placeholder="Enter usernames separated by commas" 
+                placeholder="Enter groups separated by commas" 
               />
             </div>
+          </div>
           )}
           <div className="mb-4">
             <Label htmlFor="tags">Tags</Label>

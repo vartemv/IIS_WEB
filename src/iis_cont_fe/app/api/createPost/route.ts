@@ -15,7 +15,7 @@ export async function POST(req: NextRequest) {
 
     try {
         const body = await req.json();
-        const { mediafile, description, location, availability, tags, allowedUsers } = body;
+        const { mediafile, description, location, availability, tags, allowedUsers, allowedGroups } = body;
 
         const newPost = await prisma.posts.create({
             data: {
@@ -24,11 +24,11 @@ export async function POST(req: NextRequest) {
                 mediafile,
                 description,
                 location,
-                availability: availability === 'TRUE', // Convert to boolean
+                availability: availability === 'TRUE', 
             },
         });
 
-        // Handle tags
+        
         if (tags && tags.length > 0) {
             for (const tag of tags) {
                 let tagRecord = await prisma.tags.findFirst({
@@ -49,6 +49,24 @@ export async function POST(req: NextRequest) {
                 });
             }
         }
+        
+        if (availability === 'TRUE') {
+            const userGroups = await prisma.user_groups.findMany({
+                where: { id_of_user: user.id },
+                select: { group_name: true },
+            });
+
+            for (const userGroup of userGroups) {
+                await prisma.group_posts.create({
+                    data: {
+                        group_name: userGroup.group_name,
+                        post_id: newPost.id,
+                        datum: new Date()
+                    },
+                });
+            }
+        }
+        
         
         if(availability === 'FALSE'){
         
@@ -89,7 +107,7 @@ export async function POST(req: NextRequest) {
 
             if (Array.isArray(allowedUsers)) {
                 for (const user of allowedUsers) {
-                    if (!allowedUsersList.includes(user)) {  // Check if user is already in the list
+                    if (!allowedUsersList.includes(user)) {  
                         allowedUsersList.push(user);
                     }
                 }
@@ -110,6 +128,25 @@ export async function POST(req: NextRequest) {
                     data: {
                         post_id: newPost.id,
                         id_of_user: userRecord.id,
+                    },
+                });
+            }
+ 
+            for (const groupName of allowedGroups) {
+                const groupRecord = await prisma.groups.findUnique({
+                    where: { group_name: groupName },
+                });
+        
+                if (!groupRecord) {
+                    console.error(`Invalid group name: ${groupName}`);
+                    continue; 
+                }
+        
+                await prisma.group_posts.create({
+                    data: {
+                        group_name: groupName,
+                        post_id: newPost.id,
+                        datum: new Date(),
                     },
                 });
             }
