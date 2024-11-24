@@ -27,10 +27,16 @@ export async function GET(req: NextRequest) {
             status: true,
           }
         },
+        users:{
+          select:{
+            profile_name: true,
+          }
+        }
       },
     });
 
     const formattedGroups = groups.map(group => ({
+      users: {profile_name: group.users.profile_name},
       group_name: group.group_name,
       owner: group.owner,
       pocet: group.pocet,
