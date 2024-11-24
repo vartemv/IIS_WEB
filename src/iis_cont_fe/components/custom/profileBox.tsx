@@ -27,10 +27,11 @@ const tags = Array.from({ length: 50 }).map(
 
 interface CenteredAvatarProps {
     users: GroupUser[];
+    pending_users: GroupUser[];
     group: GroupInfo;
 };
 
-const CenteredAvatar: React.FC<CenteredAvatarProps> = ({ users, group }) => {
+const CenteredAvatar: React.FC<CenteredAvatarProps> = ({ users, group, pending_users }) => {
     return (
         <>
             <div style={styles.container}>
@@ -74,18 +75,18 @@ const CenteredAvatar: React.FC<CenteredAvatarProps> = ({ users, group }) => {
                     <DropdownMenuContent className="w-56">
                         <ScrollArea className="h-72 w-30 rounded-md border">
                             <div className="p-4">
-                                <h4 className="mb-4 text-sm font-medium text-center">Group Members</h4>
-                                {users.map((user) => (
-                                    <React.Fragment key={user.id}>
+                                <h4 className="mb-4 text-sm font-medium text-center">Pending users</h4>
+                                {pending_users.map((p_user) => (
+                                    <React.Fragment key={p_user.id}>
                                         <div className="flex items-center gap-3 py-2">
                                             <div className="h-10 w-10 rounded-full overflow-hidden border border-gray-300">
                                                 <img
-                                                    src={user.photo || "https://via.placeholder.com/150"} // Placeholder image if photo is missing
-                                                    alt={`${user.profile_name}'s photo`}
+                                                    src={p_user.photo || "https://via.placeholder.com/150"} // Placeholder image if photo is missing
+                                                    alt={`${p_user.profile_name}'s photo`}
                                                     className="h-full w-full object-cover"
                                                 />
                                             </div>
-                                            <div className="text-sm font-medium">{user.profile_name}</div>
+                                            <div className="text-sm font-medium">{p_user.profile_name}</div>
                                         </div>
                                         <Separator className="my-1" />
                                     </React.Fragment>
