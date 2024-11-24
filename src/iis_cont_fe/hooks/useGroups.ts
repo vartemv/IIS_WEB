@@ -81,14 +81,25 @@ export const useGroups = () => {
 
     const change_status = async (new_status: UserStatus) => {
         return await axios
-        .post(`/api/group/changeUserStatus`, new_status)
-        .then((res)=>{
-            return res.data;
-        })
-        .catch((err)=>{
-            return { success: false, data: null, message: "Failed to retrieve pending users." };
-        })
+            .post(`/api/group/changeUserStatus`, new_status)
+            .then((res) => {
+                return res.data;
+            })
+            .catch((err) => {
+                return { success: false, data: null, message: "Failed to retrieve pending users." };
+            })
     }
 
-    return { get_all_groups, create_group, get_all_my_groups, get_all_in_groups, get_all_users, get_group_info, get_Pgroup_info, change_status };
+    const send_request = async (group: string) => {
+        return await axios
+            .post(`/api/group/sendJoinRequest`, { group })
+            .then((res) => {
+                return res.data;
+            })
+            .catch((err) => {
+                return { success: false, data: null, message: "Failed to send request." };
+            })
+    }
+
+    return { get_all_groups, create_group, get_all_my_groups, get_all_in_groups, get_all_users, get_group_info, get_Pgroup_info, change_status, send_request };
 }
