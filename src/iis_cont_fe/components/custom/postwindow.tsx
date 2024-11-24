@@ -64,7 +64,7 @@ export const SocialPost: React.FC<{post: Post}> = ({post}) => {
       <div className="flex flex-col w-1/2 p-4">
         {/* Post Header */}
         <PostHeader post={post}/>
-
+        <div className="border-t border-gray-300 my-2"></div>
         {/* Comments Section */}
         <div className="flex flex-col gap-4 overflow-y-auto max-h-96 my-4">
           {post.comments.map((comment ,index) => (

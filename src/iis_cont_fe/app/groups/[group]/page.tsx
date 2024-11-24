@@ -26,10 +26,12 @@ import { GroupUser, GroupInfo } from "@/utils/types/fe_types";
 function Profile() {
   const { group } = useParams();
   const { get_group_posts } = usePosts();
-  const { get_all_users, get_group_info } = useGroups();
+  const { get_all_users, get_group_info, get_Pgroup_info } = useGroups();
   const [post_data, setPosts] = useState([]);
   const [users_in_group, setUsers] = useState<GroupUser[]>([]);
   const [group_info, setGroupInfo] = useState<GroupInfo|null>(null);
+  const [Pgroup_info, setPGroupInfo] = useState<GroupUser[]>([]);
+
 
   useEffect(() => {
     if (group && !Array.isArray(group)) {
@@ -38,12 +40,20 @@ function Profile() {
       });
       get_all_users(group).then((data) => {
         setUsers(data.data ? data.data : [])
+        console.log(data.data)
       });
       get_group_info(group).then((data) => {
         setGroupInfo(data.data ? data.data : {})
       });
+      get_Pgroup_info(group).then((data) => {
+        setPGroupInfo(data.data ? data.data : {})
+        console.log(data.data)
+      });
+
+      
+
     }
-  }, [group]);
+  }, []);
 
   if (!group) {
     return <p>Loading group...</p>;
@@ -54,7 +64,7 @@ function Profile() {
   ];
   return (<>
     <Navbar />
-    {group_info && <CenteredAvatar users={users_in_group} group={group_info} />}
+    {group_info && Pgroup_info && <CenteredAvatar users={users_in_group} group={group_info} pending_users={Pgroup_info} />}
     <div>
       <Separator className="my-1" />
     </div>

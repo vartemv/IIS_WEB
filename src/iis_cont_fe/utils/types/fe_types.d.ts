@@ -4,6 +4,7 @@ export interface Group {
     owner: number;
     datum: Date;
     photo: string;
+    user_status: string;
     users: {profile_name: string}
   }
 

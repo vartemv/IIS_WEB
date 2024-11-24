@@ -24,29 +24,47 @@ interface GroupGridProps {
       router.push(`groups/${group.group_name}`);
     };
 
+    const handleJoinGroup = (group: Group) => {
+      alert("TODO additing user to Pending");
+      // setSelectedPost(group); // Set the clicked post as the selected post
+      // router.push(`groups/${group.group_name}`);
+    };
+
     return (
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
-        {groups.map((group, index) => (
-          <div key={index} onClick={() => handlePhotoClick(group)} className="flex items-center space-x-4 rounded-md border p-2 max-w-[400px] bg-gray-200">
-          <Avatar className="hidden h-20 w-20 sm:flex">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 p-4">
+    {groups?.map((group, index) => (
+      <div
+        key={index}
+        onClick={() => handlePhotoClick(group)}
+        className="flex items-center justify-between rounded-md border p-2 max-w-[500px] bg-gray-200 hover:bg-gray-300 transition duration-200"
+      >
+        {/* Left side: Avatar and Group Information */}
+        <div className="flex items-center space-x-4">
+          <Avatar className="hidden h-28 w-28 sm:flex">
             {/* <AvatarImage src={group.photo} alt="Avatar" /> */}
             <AvatarImage src="https://picsum.photos/seed/picsum/200/300" alt="Avatar" />
             <AvatarFallback>JL</AvatarFallback>
           </Avatar>
           <div className="grid gap-1">
-            <p className="text-lg font-bold leading-none">{group.group_name}</p>
-            <p className="text-base text-muted-foreground">{group.users.profile_name}</p>
+            <p className="text-2xl font-bold leading-none">{group.group_name}</p>
+            <p className="text-xl text-muted-foreground">{group.users.profile_name}</p>
+            <p className="text-lg text-muted-foreground">Subscribers: {group.pocet}</p>
           </div>
         </div>
-          
-        ))}
 
-        {/* {isModalOpen && selectedPost && (
-          <Modal group={selectedPost} onClose={() => setIsModalOpen(false)} />
-        )} */}
+        {/* Right side: Join button */}
+        {group.user_status === null && (
+          <button
+            onClick={(e) => { e.stopPropagation(); handleJoinGroup(group); }}
+            className="ml-auto mr-4 px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition duration-200">
+            Join
+          </button>
+        )}
       </div>
-    );
-  };
+    ))}
+  </div>
+);
+};
 
   const Modal: React.FC<ModalProps> = ({ group , onClose }) => {
   return (
