@@ -20,7 +20,7 @@ services:
         - "3000:3000"
     volumes:
         - ./src/iis_cont_fe:/home/node/code
-
+        - ./.env:/home/node/code/.env
     working_dir: /home/node/code/
     depends_on:
         - backend
