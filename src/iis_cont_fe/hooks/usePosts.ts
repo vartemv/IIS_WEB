@@ -34,6 +34,17 @@ export const usePosts = () => {
         }
     )
     }
-
-    return { get_user_post, get_all_posts, get_group_posts };
+    
+    const get_posts_by_tag = async (tag: string) => {
+        return await axios
+          .get(`/api/data/getPostsByTag?tag=${tag}`)
+          .then((res) => {
+            return res.data;
+          })
+          .catch((err) => {
+            return { success: false, data: null, message: "Failed to fetch posts by tag." };
+          });
+      };
+    
+      return { get_user_post, get_all_posts, get_group_posts, get_posts_by_tag };
 }

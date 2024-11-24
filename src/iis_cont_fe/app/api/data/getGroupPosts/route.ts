@@ -34,6 +34,11 @@ export async function GET(req: NextRequest) {
                             select: {
                                 profile_name: true,
                             }
+                        },
+                        post_tags: {
+                            include: {
+                              tags: true,
+                            },
                         }
                     },
                 },

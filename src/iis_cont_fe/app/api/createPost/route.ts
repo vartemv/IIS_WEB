@@ -13,6 +13,10 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ success: false, message: "Invalid token" }, { status: 403 });
     }
 
+    if (user.role !== 'User' && user.role !== 'Admin' && user.role !== 'Mod') {
+        return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 403 });
+      }
+
     try {
         const body = await req.json();
         const { mediafile, description, location, availability, tags, allowedUsers, allowedGroups } = body;
@@ -50,22 +54,23 @@ export async function POST(req: NextRequest) {
             }
         }
         
-        if (availability === 'TRUE') {
-            const userGroups = await prisma.user_groups.findMany({
-                where: { id_of_user: user.id },
-                select: { group_name: true },
-            });
+        //todo mozna odstranit
+        // if (availability === 'TRUE') {
+        //     const userGroups = await prisma.user_groups.findMany({
+        //         where: { id_of_user: user.id },
+        //         select: { group_name: true },
+        //     });
 
-            for (const userGroup of userGroups) {
-                await prisma.group_posts.create({
-                    data: {
-                        group_name: userGroup.group_name,
-                        post_id: newPost.id,
-                        datum: new Date()
-                    },
-                });
-            }
-        }
+        //     for (const userGroup of userGroups) {
+        //         await prisma.group_posts.create({
+        //             data: {
+        //                 group_name: userGroup.group_name,
+        //                 post_id: newPost.id,
+        //                 datum: new Date()
+        //             },
+        //         });
+        //     }
+        // }
         
         
         if(availability === 'FALSE'){

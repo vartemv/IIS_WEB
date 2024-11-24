@@ -41,12 +41,58 @@ export async function GET(req: NextRequest) {
         where: {
           user_id: user_data?.id,
         },
+        include: {
+          post_tags: {
+            include: {
+              tags: true,
+            },
+          },
+          comments: {
+            include: {
+              users: {
+                select: {
+                  photo: true,
+                },
+              },
+            },
+          },
+          users: {
+            select: {
+              profile_name: true,
+              photo: true,
+            }
+          },
+          reactions: true,
+        },
       });
     } else {
       posts = await prisma.posts.findMany({
         where: {
           user_id: user_data?.id,
           availability: true,
+        },
+        include: {
+          post_tags: {
+            include: {
+              tags: true,
+            },
+          },
+          comments: {
+            include: {
+              users: {
+                select: {
+                  photo: true,
+                },
+              },
+            },
+          },
+          users: {
+            select: {
+              profile_name: true,
+              photo: true,
+            }
+          },
+          reactions: true,
         },
       });
     }

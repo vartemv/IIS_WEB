@@ -3,6 +3,7 @@ import React, { useState, useRef } from 'react';
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import Navbar from "../../components/ui/navbar";
 
 const CreatePost = () => {
   const [formData, setFormData] = useState({
@@ -32,6 +33,24 @@ const CreatePost = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!file || file.size > 10 * 1024 * 1024) { // 10MB limit
+      console.error("File is required and must be under 10MB");
+      return;
+    }
+  
+    if (!formData.description || formData.description.length > 1000) {
+      console.error("Description is required and must be under 1000 characters");
+      return;
+    }
+  
+    // Validate allowed file types
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+    if (!allowedTypes.includes(file.type)) {
+      console.error("Invalid file type");
+      return;
+    }
+    
     
     try {
       if (file) {
@@ -98,103 +117,108 @@ const CreatePost = () => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen p-10">
-      {/* Left Section*/}
-      <div className="flex justify-center items-center w-1/2">
-        <div className="w-full max-w-sm border-2 border-dashed border-gray-400 p-5 flex flex-col items-center justify-center">
-            {imagePreview && (
-              <img src={imagePreview} alt="Selected file" className="mt-4 max-w-full h-auto" />
-            )}
-          <label className="cursor-pointer">
-            <input 
-              type="file" 
-              className="hidden"
-              ref={fileRef}
-              onChange={handleFileChange}
-              accept="image/*"
-            />
-            <button 
-              type="button" 
-              className="px-4 py-2 bg-blue-500 text-white rounded-md mt-4"
-              onClick={() => fileRef.current?.click()}
-            >
-              Add image
-            </button>
-          </label>
-        </div>
+    <div>
+      <div>
+        <Navbar />
       </div>
+      <div className="flex justify-center items-center min-h-screen p-10">
+        {/* Left Section*/}
+        <div className="flex justify-center items-center w-1/2">
+          <div className="w-full max-w-sm border-2 border-dashed border-gray-400 p-5 flex flex-col items-center justify-center">
+              {imagePreview && (
+                <img src={imagePreview} alt="Selected file" className="mt-4 max-w-full h-auto" />
+              )}
+            <label className="cursor-pointer">
+              <input 
+                type="file" 
+                className="hidden"
+                ref={fileRef}
+                onChange={handleFileChange}
+                accept="image/*"
+              />
+              <button 
+                type="button" 
+                className="px-4 py-2 bg-blue-500 text-white rounded-md mt-4"
+                onClick={() => fileRef.current?.click()}
+              >
+                Add image
+              </button>
+            </label>
+          </div>
+        </div>
 
-      {/* Right Section*/}
-      <div className="flex justify-center items-center w-1/2">
-        <form onSubmit={handleSubmit} className="w-full max-w-md">
-          <div className="mb-4">
-            <Label htmlFor="description">Description</Label>
-            <Input 
-              id="description" 
-              type="text" 
-              value={formData.description} 
-              onChange={handleInputChange} 
-              placeholder="Add description" 
-            />
-          </div>
-          <div className="mb-4">
-            <Label htmlFor="location">Location</Label>
-            <Input 
-              id="location" 
-              type="text" 
-              value={formData.location} 
-              onChange={handleInputChange} 
-              placeholder="Add location" 
-            />
-          </div>
-          <div className="mb-4">
-            <Label htmlFor="availability">Availability</Label>
-            <select 
-              id="availability" 
-              value={formData.availability} 
-              onChange={(e) => setFormData({ ...formData, availability: e.target.value })}
-              className="w-full p-2 border border-gray-300 rounded"
-            >
-              <option value="TRUE">Public</option>
-              <option value="FALSE">Private</option>
-            </select>
-          </div>
-          {formData.availability === 'FALSE' && (
-            <div>
-              <div className="mb-4">
-                <Label htmlFor="allowedUsers">Allowed Users</Label>
-                <Input 
-                  id="allowedUsers" 
-                  type="text" 
-                  value={formData.allowedUsers}
-                  onChange={handleInputChange}
-                  placeholder="Enter usernames separated by commas" 
-                />
-              </div>
-              <div className="mb-4">
-              <Label htmlFor="allowedGroups">Allowed Groups</Label>
+        {/* Right Section*/}
+        <div className="flex justify-center items-center w-1/2">
+          <form onSubmit={handleSubmit} className="w-full max-w-md">
+            <div className="mb-4">
+              <Label htmlFor="description">Description</Label>
               <Input 
-                id="allowedGroups" 
+                id="description" 
                 type="text" 
-                value={formData.allowedGroups}
-                onChange={handleInputChange}
-                placeholder="Enter groups separated by commas" 
+                value={formData.description} 
+                onChange={handleInputChange} 
+                placeholder="Add description" 
               />
             </div>
-          </div>
-          )}
-          <div className="mb-4">
-            <Label htmlFor="tags">Tags</Label>
-            <Input 
-              id="tags" 
-              type="text" 
-              value={formData.tags}
-              onChange={handleInputChange}
-              placeholder="Add tags (comma separated)" 
-            />
-          </div>
-          <Button type="submit" className="bg-blue-500 w-full" disabled={!isFormValid()}>Post</Button>
-        </form>
+            <div className="mb-4">
+              <Label htmlFor="location">Location</Label>
+              <Input 
+                id="location" 
+                type="text" 
+                value={formData.location} 
+                onChange={handleInputChange} 
+                placeholder="Add location" 
+              />
+            </div>
+            <div className="mb-4">
+              <Label htmlFor="availability">Availability</Label>
+              <select 
+                id="availability" 
+                value={formData.availability} 
+                onChange={(e) => setFormData({ ...formData, availability: e.target.value })}
+                className="w-full p-2 border border-gray-300 rounded"
+              >
+                <option value="TRUE">Public</option>
+                <option value="FALSE">Private</option>
+              </select>
+            </div>
+            {formData.availability === 'FALSE' && (
+              <div>
+                <div className="mb-4">
+                  <Label htmlFor="allowedUsers">Allowed Users</Label>
+                  <Input 
+                    id="allowedUsers" 
+                    type="text" 
+                    value={formData.allowedUsers}
+                    onChange={handleInputChange}
+                    placeholder="Enter usernames separated by commas" 
+                  />
+                </div>
+                <div className="mb-4">
+                <Label htmlFor="allowedGroups">Allowed Groups</Label>
+                <Input 
+                  id="allowedGroups" 
+                  type="text" 
+                  value={formData.allowedGroups}
+                  onChange={handleInputChange}
+                  placeholder="Enter groups separated by commas" 
+                />
+              </div>
+            </div>
+            )}
+            <div className="mb-4">
+              <Label htmlFor="tags">Tags</Label>
+              <Input 
+                id="tags" 
+                type="text" 
+                value={formData.tags}
+                onChange={handleInputChange}
+                placeholder="Add tags (comma separated)" 
+              />
+            </div>
+            <Button type="submit" className="bg-blue-500 w-full" disabled={!isFormValid()}>Post</Button>
+          </form>
+        </div>
       </div>
     </div>
   );
