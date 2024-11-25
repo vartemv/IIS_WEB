@@ -37,12 +37,19 @@ const EditPost = ({ params }: EditPostProps) => {
         if (response.success) {
           const post = response.data;
 
+          const allowedUsers = post.user_posts && post.user_posts.length > 0 
+          ? post.user_posts
+              .filter((up: any) => up.users && up.users.profile_name) // Add null check
+              .map((up: any) => up.users.profile_name)
+              .join(',')
+          : '';          
+
           setFormData({
             description: post.description || '',
             location: post.location || '',
             availability: post.availability ? 'TRUE' : 'FALSE',
             tags: post.post_tags?.map((pt: any) => pt.tags.name).join(',') || '',
-            allowedUsers: '',
+            allowedUsers: allowedUsers,
             allowedGroups: post.group_posts?.map((gp: any) => gp.group_name).join(',') || '',
           });
           setImagePreview(post.mediafile);

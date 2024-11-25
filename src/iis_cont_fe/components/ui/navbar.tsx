@@ -25,6 +25,13 @@ const Navbar: React.FC = () => {
               Groups
             </a>
           </li>
+          <li>
+          </li>
+          <li>
+            <a href="/create_post" className="text-white hover:underline">
+              Create Post
+            </a>
+          </li>
         </ul>
       </div>
     </nav>

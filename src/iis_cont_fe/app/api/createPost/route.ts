@@ -17,9 +17,98 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 403 });
       }
 
-    try {
+      try {
         const body = await req.json();
         const { mediafile, description, location, availability, tags, allowedUsers, allowedGroups } = body;
+
+        if (allowedGroups && allowedGroups.length > 0) {
+            for (const groupName of allowedGroups) {
+                if (groupName) {
+                    const groupRecord = await prisma.groups.findUnique({
+                        where: { group_name: groupName },
+                    });
+                    
+                    if (!groupRecord) {
+                        return NextResponse.json({ 
+                            success: false, 
+                            message: `The group '${groupName}' does not exist` 
+                        }, { status: 400 });
+                    }
+
+                    const userGroupStatus = await prisma.user_groups.findFirst({
+                        where: {
+                            group_name: groupName,
+                            id_of_user: user.id,
+                            status: "Active"
+                        }
+                    });
+
+                    if (!userGroupStatus) {
+                        return NextResponse.json({
+                            success: false,
+                            message: `You don't have permission to post in group '${groupName}'. You must be an active member.`
+                        }, { status: 403 });
+                    }
+                }
+            }
+        }
+
+
+        if (availability === 'FALSE' && allowedUsers && allowedUsers.length > 0) {
+            const allowedUsersList: string[] = [];
+            
+            const adminAndModUsers = await prisma.users.findMany({
+                where: {
+                    role: {
+                        in: ['Admin', 'Mod'],
+                    },
+                },
+                select: {
+                    profile_name: true,
+                },
+            });
+            
+            adminAndModUsers.forEach(user => allowedUsersList.push(user.profile_name));
+            
+            const postOwner = await prisma.users.findUnique({
+                where: { id: user.id },
+                select: { profile_name: true }
+            });
+            
+            if (postOwner){ 
+                allowedUsersList.push(postOwner.profile_name);
+            }
+            
+            
+            
+            for (const username of allowedUsersList) {
+                if(!allowedUsers.includes(username)){
+                allowedUsers.push(username);
+                }
+            }
+            console.log('hmm:', allowedUsers);
+
+            for (const username of allowedUsers) {
+                console.log(username);
+                if (username && !allowedUsers.includes(username)) {
+                    console.log("here2");
+                    const userExists = await prisma.users.findUnique({
+                        where: { profile_name: username }
+                    });
+                    
+                    if (!userExists) {
+                        console.log("here3");
+                        return NextResponse.json({
+                            success: false,
+                            message: `User '${username}' does not exist`
+                        }, { status: 400 });
+                    }
+                    console.log(username);
+                    allowedUsers.push(username);
+                }
+            }
+        }
+
 
         const newPost = await prisma.posts.create({
             data: {
@@ -28,7 +117,7 @@ export async function POST(req: NextRequest) {
                 mediafile,
                 description,
                 location,
-                availability: availability === 'TRUE', 
+                availability: availability === 'TRUE',
             },
         });
 
@@ -53,18 +142,11 @@ export async function POST(req: NextRequest) {
                 });
             }
         }
+
         
-        if (availability === 'TRUE') {
+        if (allowedGroups && allowedGroups.length > 0) {
             for (const groupName of allowedGroups) {
-                if(groupName){
-                    const groupRecord = await prisma.groups.findUnique({
-                        where: { group_name: groupName },
-                    });
-            
-                    if (!groupRecord) {
-                        return NextResponse.json({ success: false, message: `The group '${groupName}' does not exist` }, { status: 400 });
-                    }
-            
+                if (groupName) {
                     await prisma.group_posts.create({
                         data: {
                             group_name: groupName,
@@ -72,105 +154,40 @@ export async function POST(req: NextRequest) {
                             datum: new Date(),
                         },
                     });
-                }else{
-                console.log("No group(s) selected");
-            }
+                }
             }
         }
-        
-        
-        if(availability === 'FALSE'){
-        
 
-            const userRecord = await prisma.users.findUnique({
-                where: { id: user.id },
-            });
-            
-            if (!userRecord) {
-                console.error(`Invalid user ID: ${user.id}`);
-                return NextResponse.json({ success: false, message: "Invalid user ID" }, { status: 400 });
-            }
-            
-            
-            const allowedUsersList: string[] = [];
-
-                    
-            const adminAndModUsers = await prisma.users.findMany({
-                where: {
-                    role: {
-                        in: ['Admin', 'Mod'],
-                    },
-                },
-                select: {
-                    profile_name: true,
-                },
-            });
-            
-            adminAndModUsers.forEach((adminOrModUser) => {
-                allowedUsersList.push(adminOrModUser.profile_name);
-            });
-
-            if (!allowedUsersList.includes(userRecord.profile_name)) {
-                allowedUsersList.push(userRecord.profile_name);
-            }
-            
-            
-
-            if (Array.isArray(allowedUsers)) {
-                for (const user of allowedUsers) {
-                    if (!allowedUsersList.includes(user)) {  
-                        allowedUsersList.push(user);
-                    }
-                }
-                
-            }
-            
-            for (const username of allowedUsersList) {
-                if(username){
+        if (availability === 'FALSE' && allowedUsers && allowedUsers.length > 0) {
+            for (const username of allowedUsers) {
+                if (username) {
                     const userRecord = await prisma.users.findUnique({
                         where: { profile_name: username },
                     });
-                
-                    if (!userRecord ) {
-                        return NextResponse.json({ success: false, message: `The user '${username}' does not exist` }, { status: 400 });
+
+                    if (userRecord) {
+                        await prisma.user_posts.create({
+                            data: {
+                                post_id: newPost.id,
+                                id_of_user: userRecord.id,
+                            },
+                        });
                     }
-                
-                    await prisma.user_posts.create({
-                        data: {
-                            post_id: newPost.id,
-                            id_of_user: userRecord.id,
-                        },
-                    });
-                }else{
-                    console.log("No user(s) selected");
-                }
-            }
- 
-            for (const groupName of allowedGroups) {
-                if(groupName){
-                    const groupRecord = await prisma.groups.findUnique({
-                        where: { group_name: groupName },
-                    });
-            
-                    if (!groupRecord) {
-                        return NextResponse.json({ success: false, message: `The group '${groupName}' does not exist` }, { status: 400 });
-                    }
-            
-                    await prisma.group_posts.create({
-                        data: {
-                            group_name: groupName,
-                            post_id: newPost.id,
-                            datum: new Date(),
-                        },
-                    });
-                }else{
-                    console.log("No group(s) selected");
                 }
             }
         }
-        return NextResponse.json({ success: true, data: newPost, message: "Post created successfully" });
-        } catch (error) {
-            console.error("Error creating post:", error);
-            return NextResponse.json({ success: false, message: "Failed to create post" }, { status: 500 });
-        }
+
+        return NextResponse.json({
+            success: true,
+            data: newPost,
+            message: "Post created successfully"
+        });
+
+    } catch (error) {
+        console.error("Error creating post:", error);
+        return NextResponse.json({
+            success: false,
+            message: "Failed to create post"
+        }, { status: 500 });
     }
+}

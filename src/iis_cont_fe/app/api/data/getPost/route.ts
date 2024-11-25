@@ -24,6 +24,21 @@ export async function GET(req: NextRequest) {
   
 
   try {
+    // First query to get the post's user_id
+    const initialPost = await prisma.posts.findUnique({
+      where: {
+        id: parseInt(postId),
+      },
+      select: {
+        user_id: true
+      }
+    });
+  
+    if (!initialPost) {
+      return NextResponse.json({ success: false, message: "Post not found" }, { status: 404 });
+    }
+  
+    // Second query to get all post data with filtered users
     const post = await prisma.posts.findUnique({
       where: {
         id: parseInt(postId),
@@ -33,6 +48,31 @@ export async function GET(req: NextRequest) {
           include: {
             tags: true,
           },
+        },
+        user_posts: { 
+          where: {
+            users: {
+              AND: [
+                {
+                  role: {
+                    notIn: ['Mod', 'Admin']
+                  }
+                },
+                {
+                  id: {
+                    not: initialPost.user_id
+                  }
+                }
+              ]
+            }
+          },
+          include: {
+            users: {
+              select: {
+                profile_name: true
+              }
+            }
+          }
         },
         group_posts: true,
         comments: {
@@ -53,7 +93,7 @@ export async function GET(req: NextRequest) {
         reactions: true,
       },
     });
-
+  
     if (!post) {
       return NextResponse.json({ success: false, message: "Post not found" }, { status: 404 });
     }
