@@ -167,14 +167,14 @@ export default function TextareaDemo() {
         <div className="text-3xl font-bold leading-none tracking-tight pt-5 pl-5">
             My Groups
         </div>
-        <GroupGrid groups={my_group_data} role={user?.role ? user.role : ""} />
+        <GroupGrid groups={my_group_data} role={user?.role ? user.role : ""}/>
         <div className="text-3xl font-bold leading-none tracking-tight pt-5 pl-5">
             Groups I'm in
         </div>
-        <GroupGrid groups={in_group_data} role={user?.role ? user.role : ""} />
+        <GroupGrid groups={in_group_data} role={user?.role ? user.role : ""}/>
         <div className="text-3xl font-bold leading-none tracking-tight pt-5 pl-5">
             Groups
         </div>
-        <GroupGrid groups={group_data} role={user?.role ? user.role : ""} />
+        <GroupGrid groups={group_data} role={user?.role ? user.role : ""}/>
     </>);
 }

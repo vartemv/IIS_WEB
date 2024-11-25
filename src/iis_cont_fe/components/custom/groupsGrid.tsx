@@ -22,7 +22,7 @@ interface GroupGridProps {
   role: string;
 }
 
-const GroupGrid: React.FC<GroupGridProps> = ({ groups, role }) => {
+const GroupGrid: React.FC<GroupGridProps> = ({ groups, role}) => {
   const { send_request, delete_group } = useGroups();
   const [allGroups, setGroups] = useState<Group[]>(groups);
   const router = useRouter();
@@ -60,7 +60,7 @@ const GroupGrid: React.FC<GroupGridProps> = ({ groups, role }) => {
       {allGroups?.map((group, index) => (
         <div
           key={index}
-          onClick={() => handlePhotoClick(group)}
+          onClick={(group.user_status !== null && group.user_status !== 'Pending') ? () => handlePhotoClick(group) : ()=> {}}
           className="flex items-center justify-between rounded-xl border p-2 max-w-[500px] bg-gray-200 hover:bg-gray-300 transition duration-200"
         >
           <ContextMenu>
