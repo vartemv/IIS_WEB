@@ -1,52 +1,36 @@
-import * as React from "react";
+import React, { useState } from "react";
 import { CommentPart } from "./comments";
 import { PostHeader } from "./postheader";
-import { Post } from "@/utils/types/fe_types";
+import { Post, Comment } from "@/utils/types/fe_types";
+import { usePosts } from '@/hooks/usePosts';
 
-const comments = [
-  {
-    avatarSrc: "https://cdn.builder.io/api/v1/image/assets/TEMP/372cb138c0d17fe9aadf4e682f263f4b738a69cf9c6269dbdfea9d4343d386b0?apiKey=9822d2f548184319a14eb0b77089634c&",
-    userName: "Adam",
-    comment: "Nice picture!"
-  },
-  {
-    avatarSrc: "https://cdn.builder.io/api/v1/image/assets/TEMP/372cb138c0d17fe9aadf4e682f263f4b738a69cf9c6269dbdfea9d4343d386b0?apiKey=9822d2f548184319a14eb0b77089634c&",
-    userName: "Tomas",
-    comment: "Cool!"
-  },
-  {
-    avatarSrc: "https://cdn.builder.io/api/v1/image/assets/TEMP/372cb138c0d17fe9aadf4e682f263f4b738a69cf9c6269dbdfea9d4343d386b0?apiKey=9822d2f548184319a14eb0b77089634c&",
-    userName: "Tomas",
-    comment: "Cool!"
-  },
-  {
-    avatarSrc: "https://cdn.builder.io/api/v1/image/assets/TEMP/372cb138c0d17fe9aadf4e682f263f4b738a69cf9c6269dbdfea9d4343d386b0?apiKey=9822d2f548184319a14eb0b77089634c&",
-    userName: "Tomas",
-    comment: "Cool!"
-  },
-  {
-    avatarSrc: "https://cdn.builder.io/api/v1/image/assets/TEMP/372cb138c0d17fe9aadf4e682f263f4b738a69cf9c6269dbdfea9d4343d386b0?apiKey=9822d2f548184319a14eb0b77089634c&",
-    userName: "Tomas",
-    comment: "Cool!"
-  },
-  {
-    avatarSrc: "https://cdn.builder.io/api/v1/image/assets/TEMP/372cb138c0d17fe9aadf4e682f263f4b738a69cf9c6269dbdfea9d4343d386b0?apiKey=9822d2f548184319a14eb0b77089634c&",
-    userName: "Tomas",
-    comment: "Cool!"
-  },
-  {
-    avatarSrc: "https://cdn.builder.io/api/v1/image/assets/TEMP/372cb138c0d17fe9aadf4e682f263f4b738a69cf9c6269dbdfea9d4343d386b0?apiKey=9822d2f548184319a14eb0b77089634c&",
-    userName: "Tomas",
-    comment: "Cool!"
-  },
-  {
-    avatarSrc: "https://cdn.builder.io/api/v1/image/assets/TEMP/372cb138c0d17fe9aadf4e682f263f4b738a69cf9c6269dbdfea9d4343d386b0?apiKey=9822d2f548184319a14eb0b77089634c&",
-    userName: "Tomas",
-    comment: "Cool!"
-  }
-];
+
 
 export const SocialPost: React.FC<{post: Post}> = ({post}) => {
+  const {post_comment} = usePosts();
+  const [newComment, setNewComment] = useState(""); // State for the new comment
+  const [comments, setComments] = useState(post.comments); // State to update comments locally
+
+  const handleCommentSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!newComment.trim()) {
+      setNewComment("");
+      return;
+    }
+
+    const response = await post_comment( newComment, post.id );
+    console.log(response);
+
+    if (response.success) {
+      setComments(response.data);
+      setNewComment("");
+    } else {
+      alert(response.message);
+      console.log("Failed to post comment");
+    }
+  };
+
   return (
     <div className="flex w-full">
       {/* Left: Photo */}
@@ -67,16 +51,18 @@ export const SocialPost: React.FC<{post: Post}> = ({post}) => {
         <div className="border-t border-gray-300 my-2"></div>
         {/* Comments Section */}
         <div className="flex flex-col gap-4 overflow-y-auto max-h-96 my-4">
-          {post.comments.map((comment ,index) => (
+          {comments.map((comment ,index) => (
             <CommentPart key={index} comment={comment} />
           ))}
         </div>
 
         {/* Add Comment Form (Fixed at Bottom) */}
-        <form className="flex items-center gap-4 p-4 bg-gray-100 rounded-lg mt-auto">
+        <form onSubmit={handleCommentSubmit} className="flex items-center gap-4 p-4 bg-gray-100 rounded-lg mt-auto">
           <input
             type="text"
             placeholder="Add a comment..."
+            value={newComment}
+            onChange={(e) => setNewComment(e.target.value)}
             className="flex-1 p-2 text-sm bg-transparent border-none outline-none"
           />
           <button

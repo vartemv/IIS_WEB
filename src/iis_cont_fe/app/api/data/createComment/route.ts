@@ -34,8 +34,14 @@ export async function POST(req: NextRequest) {
                 author
             },
         });
+
+        const comments = await prisma.comments.findMany({
+            where: {
+                post_id: post_id
+            }
+        });
         
-        return NextResponse.json({success: true, message: "Comment created"});
+        return NextResponse.json({success: true, message: "Comment created", data: comments});
     } catch (error) {
         console.log(` ${error} Error in POST handler:`);
         return NextResponse.json({ error: 'Failed to create user' }, { status: 500 });

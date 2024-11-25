@@ -27,7 +27,7 @@ export async function POST(req: Request) {
         return NextResponse.json({ error: 'Wrong password or email'}, { status: 401 });
       }
 
-      const token = await TokenService.create({user: result.profile_name, email: email, role: "User", id: result.id});
+      const token = await TokenService.create({user: result.profile_name, email: email, role: result.role, id: result.id});
 
       const return_data : AuthUser = {
         role: "user",

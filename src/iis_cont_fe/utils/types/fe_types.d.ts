@@ -65,8 +65,29 @@ export interface Group {
     datum: Date;
   }
 
+  interface GroupCreate {
+    group_name: string;
+    photo: string;
+  }
+
   interface UserStatus {
     user_id: number;
     status: string;
     group_name: string;
+  }
+
+  interface User {
+    id: number;
+    first_name: string;
+    last_name: string;
+    profile_name: string;
+    sign_up_date: Date;
+    hash_password: string;
+    email: string;
+    role: string
+  }
+
+  interface ChangeRole {
+    user_id: number;
+    role: string;
   }

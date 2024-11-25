@@ -1,5 +1,5 @@
 import axios from "axios";
-import { UserStatus } from "@/utils/types/fe_types";
+import { GroupCreate, GroupInfo, UserStatus } from "@/utils/types/fe_types";
 
 export const useGroups = () => {
     const get_all_groups = async () => {
@@ -13,9 +13,9 @@ export const useGroups = () => {
             });
     }
 
-    const create_group = async (group_name: string) => {
+    const create_group = async (group_info: GroupCreate) => {
         return await axios
-            .post(`/api/group/createGroup`, { group_name })
+            .post(`/api/group/createGroup`, group_info)
             .then((res) => {
                 return res.data;
             })
