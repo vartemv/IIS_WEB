@@ -8,6 +8,7 @@ import {
   ContextMenuTrigger,
 } from "@/components/ui/context-menu"
 import { usePosts } from "@/hooks/usePosts";
+import { useRouter } from "next/navigation";
 
 interface ModalProps {
   post: Post;
@@ -17,13 +18,17 @@ interface ModalProps {
 interface PostGridProps {
   posts: Post[];
   role: string;
+  isProfilePage?: boolean;
+  canEdit?: boolean;
 }
 
-const PostGrid: React.FC<PostGridProps> = ({ posts, role }) => {
+const PostGrid: React.FC<PostGridProps> = ({ posts, role, isProfilePage = false, canEdit = false }) => {
   const [local_post, setPosts] = useState<Post[]>(posts);
   const { delete_post } = usePosts();
   const [selectedPost, setSelectedPost] = useState<Post | null>(null); // Store selected post data
   const [isModalOpen, setIsModalOpen] = useState(false); // Track modal visibility
+  const router = useRouter();
+
 
   useEffect(() => {
     setPosts(posts);
@@ -41,6 +46,13 @@ const PostGrid: React.FC<PostGridProps> = ({ posts, role }) => {
 
   };
 
+  const handleEditClick = (postId: number) => {
+    router.push(`/edit_post/${postId}`);
+  };
+
+  // console.log(isProfilePage);
+  // console.log(canEdit);
+
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
       {local_post.map((post) => (
@@ -49,18 +61,21 @@ const PostGrid: React.FC<PostGridProps> = ({ posts, role }) => {
           className="relative overflow-hidden rounded-lg bg-gray-200 group"
           onClick={() => handlePhotoClick(post)}>
           <ContextMenu>
-            <ContextMenuTrigger >
+            <ContextMenuTrigger>
               <img
                 src={post.mediafile}
                 alt={post.description}
                 className="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-105"
               />
             </ContextMenuTrigger>
-            {(role === "Admin" || role === "Mod") && (
-              <ContextMenuContent onClick={(e) => e.stopPropagation()} className="z-[9999] overflow-visible bg-white shadow-lg">
+            <ContextMenuContent onClick={(e) => e.stopPropagation()} className="z-[9999] overflow-visible bg-white shadow-lg">
+              {isProfilePage && canEdit && (
+                <ContextMenuItem onClick={() => handleEditClick(post.id)}>Edit</ContextMenuItem>
+              )}
+              {(role === "Admin" || role === "Mod") && (
                 <ContextMenuItem onClick={() => handlePostDelete(post.id, post.mediafile)}>Delete</ContextMenuItem>
-              </ContextMenuContent>)
-            }
+              )}
+            </ContextMenuContent>
           </ContextMenu>
           <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white text-sm p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
             {post.description}

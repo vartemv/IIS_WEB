@@ -36,13 +36,15 @@ function Profile() {
     }
   }, []);
   
+  const isOwnProfile = user?.user.profileName === user_profile;
+
   return (<>
     <Navbar/>
     <div>
       <Separator className="my-4" />
     </div>
     <main className="p-4">
-      <PostGrid posts={post_data} role={user?.role ? user.role : ""}/>
+    <PostGrid posts={post_data} role={user?.role ? user.role : ""} isProfilePage={true} canEdit={isOwnProfile}/>
     </main>
   </>)
 
