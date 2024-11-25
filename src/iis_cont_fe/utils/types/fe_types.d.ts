@@ -19,7 +19,8 @@ export interface Group {
     comments: Comment[];
     post_tags: PostTag[];
     reactions: Reaction[];
-    users: {profile_name: string, photo: string}
+    users: {profile_name: string, photo: string};
+    user_reaction: {reacted: boolean}
   }
   
   interface Comment {

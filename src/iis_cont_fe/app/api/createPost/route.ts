@@ -121,6 +121,14 @@ export async function POST(req: NextRequest) {
             },
         });
 
+        await prisma.reactions.create({
+            data: {
+              id: newPost.id,
+              post_id: newPost.id,
+              amount: 0,
+            }
+          });
+
         
         if (tags && tags.length > 0) {
             for (const tag of tags) {

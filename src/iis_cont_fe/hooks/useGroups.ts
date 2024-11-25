@@ -1,5 +1,6 @@
 import axios from "axios";
 import { GroupCreate, GroupInfo, UserStatus } from "@/utils/types/fe_types";
+import { group } from "console";
 
 export const useGroups = () => {
     const get_all_groups = async () => {
@@ -101,5 +102,16 @@ export const useGroups = () => {
             })
     }
 
-    return { get_all_groups, create_group, get_all_my_groups, get_all_in_groups, get_all_users, get_group_info, get_Pgroup_info, change_status, send_request };
+    const delete_group = async (group_name: string, photo: string) => {
+        return await axios
+            .delete(`/api/group/deleteGroup`, { data: { group_name, photo } })
+            .then((res) => {
+                return res.data;
+            })
+            .catch((err) => {
+                return { success: false, data: null, message: "Failed to delete group." };
+            })
+    }
+
+    return { get_all_groups, create_group, get_all_my_groups, get_all_in_groups, get_all_users, get_group_info, get_Pgroup_info, change_status, send_request, delete_group };
 }

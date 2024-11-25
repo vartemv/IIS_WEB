@@ -39,7 +39,7 @@ model groups {
   owner       Int
   datum       DateTime      @db.Date
   group_posts group_posts[]
-  users       users         @relation(fields: [owner], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  users       users         @relation(fields: [owner], references: [id], onDelete: Cascade, onUpdate: NoAction)
   user_groups user_groups[]
 }
 
@@ -54,19 +54,20 @@ model post_tags {
 }
 
 model posts {
-  id           Int           @id @default(autoincrement())
-  user_id      Int
-  datetime     DateTime      @db.Timestamp(6)
-  mediafile    String?       @db.VarChar(255)
-  description  String?
-  location     String?       @db.VarChar(255)
-  availability Boolean?      @default(true)
-  comments     comments[]
-  group_posts  group_posts[]
-  post_tags    post_tags[]
-  users        users         @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
-  reactions    reactions[]
-  user_posts   user_posts[]
+  id             Int              @id @default(autoincrement())
+  user_id        Int
+  datetime       DateTime         @db.Timestamp(6)
+  mediafile      String?          @db.VarChar(255)
+  description    String?
+  location       String?          @db.VarChar(255)
+  availability   Boolean?         @default(true)
+  comments       comments[]
+  group_posts    group_posts[]
+  post_tags      post_tags[]
+  users          users            @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  reactions      reactions[]
+  user_posts     user_posts[]
+  user_reactions user_reactions[]
 }
 
 model reactions {
@@ -99,26 +100,36 @@ model user_groups {
 
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
 model users {
-  id            Int           @id @default(autoincrement())
-  first_name    String        @db.VarChar(50)
-  last_name     String        @db.VarChar(50)
-  profile_name  String        @unique @db.VarChar(50)
-  photo         String?
-  sign_up_date  DateTime      @db.Date
-  hash_password String        @db.VarChar(255)
-  email         String        @unique @db.VarChar(255)
-  role          String?       @default("User") @db.VarChar(10)
-  comments      comments[]
-  groups        groups[]
-  posts         posts[]
-  user_groups   user_groups[]
-  user_posts    user_posts[]
+  id             Int              @id @default(autoincrement())
+  first_name     String           @db.VarChar(50)
+  last_name      String           @db.VarChar(50)
+  profile_name   String           @unique @db.VarChar(50)
+  photo          String?
+  sign_up_date   DateTime         @db.Date
+  hash_password  String           @db.VarChar(255)
+  email          String           @unique @db.VarChar(255)
+  role           String?          @default("User") @db.VarChar(10)
+  comments       comments[]
+  groups         groups[]
+  posts          posts[]
+  user_groups    user_groups[]
+  user_posts     user_posts[]
+  user_reactions user_reactions[]
 }
 
 model user_posts {
   id_of_user Int
   post_id    Int
   users      users @relation(fields: [id_of_user], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  posts      posts @relation(fields: [post_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@id([id_of_user, post_id])
+}
+
+model user_reactions {
+  id_of_user Int
+  post_id    Int
+  user       users @relation(fields: [id_of_user], references: [id], onDelete: Cascade, onUpdate: NoAction)
   posts      posts @relation(fields: [post_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
 
   @@id([id_of_user, post_id])

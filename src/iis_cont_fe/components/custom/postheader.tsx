@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState } from "react";
 import { Post } from "@/utils/types/fe_types";
 import {
   DropdownMenu,
@@ -7,8 +7,30 @@ import {
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
+import { usePosts } from '@/hooks/usePosts';
 
-export const PostHeader: React.FC<{ post: Post }> = ({ post }) => (
+export const PostHeader: React.FC<{ post: Post }> = ({ post }) => {
+  const {post_reaction} = usePosts();
+  const [liked, setLiked] = useState(post.user_reaction.reacted || false);
+  const [reactionsCount, setReactionsCount] = useState(post.reactions[0].amount);
+
+  const handleLike = async () => {
+    setLiked(!liked);
+    setReactionsCount((prevCount) => (liked ? prevCount - 1 : prevCount + 1));
+    
+    const response = await post_reaction( post.id, !liked );
+    
+    if (response.success && response.data !== undefined) {
+      setReactionsCount(response.data);
+    } else {
+      setLiked(!liked);
+      setReactionsCount((prevCount) => (liked ? prevCount + 1 : prevCount - 1));
+      console.log('Failed to update reaction.');
+    }
+  };
+
+  
+  return (
   <header className="flex flex-col gap-2 text-black w-full">
     <div className="flex justify-between items-start w-full">
       {/* Title (Description) */}
@@ -57,8 +79,7 @@ export const PostHeader: React.FC<{ post: Post }> = ({ post }) => (
         <div className="flex items-center gap-2">
           <img
             loading="lazy"
-            // TODO location icon
-            src="https://cdn.builder.io/api/v1/image/assets/TEMP/3f3015d7142edfce35dd12b8a537f40a71bcf75bc66ac19696401101f0395090?apiKey=9822d2f548184319a14eb0b77089634c&"
+            src="/location_icon.png"
             alt=""
             className="w-5 h-5"
           />
@@ -69,5 +90,21 @@ export const PostHeader: React.FC<{ post: Post }> = ({ post }) => (
         <time className="text-xs text-gray-500">{post.datetime}</time>
       </div>
     </div>
+    {/* Reaction Counter and Heart Button */}
+    <div className="flex items-center justify-end gap-2">
+      {/* Heart Button */}
+      <button
+      onClick={() => handleLike()} // Add your like button functionality here.
+      className="w-7 h-7" >
+        <img
+        src={liked ? "/heart_liked.png" : "/heart.png"} // Toggle between heart images
+        // src="/heart.png" // Toggle between heart images
+        alt="reaction heart"
+        className="w-full h-full" />
+      </button>
+      {/* Reaction Count */}
+      <span className="text-xl font_bold text-gray-700">{reactionsCount}</span>
+      </div>
   </header>
 );
+}
