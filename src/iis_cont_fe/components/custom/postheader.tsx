@@ -8,13 +8,19 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { usePosts } from '@/hooks/usePosts';
+import { useUser } from "@/hooks/useUser"
 
 export const PostHeader: React.FC<{ post: Post }> = ({ post }) => {
+  const {user} = useUser();
   const {post_reaction} = usePosts();
-  const [liked, setLiked] = useState(post.user_reaction.reacted || false);
+  const [liked, setLiked] = useState(post.user_reaction?.reacted ?? false);
   const [reactionsCount, setReactionsCount] = useState(post.reactions[0].amount);
 
   const handleLike = async () => {
+    if (!user) {
+      alert("You need to register or log in to like a post.");
+      return;
+    }
     setLiked(!liked);
     setReactionsCount((prevCount) => (liked ? prevCount - 1 : prevCount + 1));
     
@@ -94,11 +100,10 @@ export const PostHeader: React.FC<{ post: Post }> = ({ post }) => {
     <div className="flex items-center justify-end gap-2">
       {/* Heart Button */}
       <button
-      onClick={() => handleLike()} // Add your like button functionality here.
+      onClick={() => handleLike()}
       className="w-7 h-7" >
         <img
-        src={liked ? "/heart_liked.png" : "/heart.png"} // Toggle between heart images
-        // src="/heart.png" // Toggle between heart images
+        src={liked ? "/heart_liked.png" : "/heart.png"}
         alt="reaction heart"
         className="w-full h-full" />
       </button>

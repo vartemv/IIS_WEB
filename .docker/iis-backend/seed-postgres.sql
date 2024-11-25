@@ -221,7 +221,7 @@ VALUES
     (
         4,
         '2024-11-01 09:20:00',
-        '/1732479209300_peter.jpg',
+        '/init_post_peter.jpg',
         'Peter, the horse is here',
         'Family Home',
         TRUE
