@@ -132,7 +132,7 @@ export default function TextareaDemo() {
                         </Label>
                         <Input id="name" value={name} onChange={(e) => setName(e.target.value)} className="col-span-3" />
                         <div className="flex justify-center items-center w-1/2">
-                            <div className="w-full max-w-sm border-2 border-dashed border-gray-400 p-5 flex flex-col items-center justify-center">
+                            <div className="w-full max-w-sm border-2 border-dashed border-gray-400 p-10 flex flex-col items-center ">
                                 {imagePreview && (
                                     <img src={imagePreview} alt="Selected file" className="mt-4 max-w-full h-auto" />
                                 )}
@@ -146,7 +146,7 @@ export default function TextareaDemo() {
                                     />
                                     <button
                                         type="button"
-                                        className="px-4 py-2 bg-blue-500 text-white rounded-md mt-4"
+                                        className="px-4 py-2 bg-blue-500 text-white rounded-md"
                                         onClick={() => fileRef.current?.click()}
                                     >
                                         Add image
