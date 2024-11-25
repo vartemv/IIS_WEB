@@ -60,7 +60,7 @@ const GroupGrid: React.FC<GroupGridProps> = ({ groups, role}) => {
       {allGroups?.map((group, index) => (
         <div
           key={index}
-          onClick={(group.user_status !== null && group.user_status !== 'Pending') ? () => handlePhotoClick(group) : ()=> {}}
+          onClick={(group.user_status !== null && group.user_status !== 'Pending') ? () => handlePhotoClick(group) : ()=> {alert("You are not active user of this group")}}
           className="flex items-center justify-between rounded-xl border p-2 max-w-[500px] bg-gray-200 hover:bg-gray-300 transition duration-200"
         >
           <ContextMenu>

@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { TokenService } from "@/app/utils/token";
 import prisma from 'db';
-import { group } from "console";
 
 export async function GET(req: NextRequest) {
     const token = req.cookies.get("user_token");
