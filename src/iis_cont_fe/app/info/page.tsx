@@ -33,7 +33,7 @@ export default function TextareaDemo() {
     sortPosts(post_data);
   }, [sortOrder, post_data, dateOrder]);
 
-  const sortPosts = (posts: Post[]) => {
+  const sortPosts = async (posts: Post[]) => {
     let sortedPosts = [...posts];
 
     if (sortOrder !== "none") {
