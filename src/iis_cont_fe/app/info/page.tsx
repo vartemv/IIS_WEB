@@ -16,7 +16,7 @@ export default function TextareaDemo() {
   useEffect(() => {
     get_all_posts().then((data) => {
       console.log(data.data)
-      setPosts(data.data)
+      setPosts(data.data ? data.data : [])
     });
   }, []);
 

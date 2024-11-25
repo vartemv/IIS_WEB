@@ -82,6 +82,14 @@ CREATE TABLE reactions (
     FOREIGN KEY (post_ID) REFERENCES posts(ID) ON DELETE CASCADE
 );
 
+CREATE TABLE user_reactions (
+    id_of_user INT NOT NULL,
+    post_ID INT NOT NULL,
+    PRIMARY KEY (id_of_user, post_ID),
+    FOREIGN KEY (id_of_user) REFERENCES users(ID) ON DELETE CASCADE,
+    FOREIGN KEY (post_ID) REFERENCES posts(ID) ON DELETE CASCADE
+);
+
 -- Create Tags Table
 CREATE TABLE tags (
     ID SERIAL PRIMARY KEY,
@@ -283,10 +291,27 @@ VALUES
 INSERT INTO
     reactions (post_ID, amount)
 VALUES
-    (1, 10),
-    (2, 15),
-    (3, 8),
-    (4, 20);
+    (1, 3),
+    (2, 2),
+    (3, 2),
+    (4, 1),
+    (5, 4);
+
+INSERT INTO
+    user_reactions (id_of_user, post_ID)
+VALUES
+    (2, 1),
+    (3, 1),
+    (4, 1),
+    (3, 2),
+    (4, 2),
+    (1, 3),
+    (2, 3),
+    (2, 4),
+    (1, 5),
+    (2, 5),
+    (3, 5),
+    (4, 5);
 
 -- Populate Tags Table
 INSERT INTO

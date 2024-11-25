@@ -46,7 +46,19 @@ export async function GET(req: NextRequest) {
 
     const filteredPosts = await Promise.all(posts.map(async (post) => {
       if (post.availability) {
-        return post;
+        const userReaction = await prisma.user_reactions.findFirst({
+          where: {
+              id_of_user: sender.id,
+              post_id: post.id,
+          },
+        });
+        
+        const postWithUserReaction = {
+          ...post,
+          user_reaction: userReaction ? { reacted: true } : { reacted: false },
+        };
+
+        return postWithUserReaction;
       } else {
         
         const allowedUser = await prisma.user_posts.findFirst({

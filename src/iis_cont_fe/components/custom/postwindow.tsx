@@ -8,8 +8,8 @@ import { usePosts } from '@/hooks/usePosts';
 
 export const SocialPost: React.FC<{post: Post}> = ({post}) => {
   const {post_comment} = usePosts();
-  const [newComment, setNewComment] = useState(""); // State for the new comment
-  const [comments, setComments] = useState(post.comments); // State to update comments locally
+  const [newComment, setNewComment] = useState("");
+  const [comments, setComments] = useState(post.comments);
 
   const handleCommentSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
