@@ -16,18 +16,19 @@ interface ModalProps {
 
 interface PostGridProps {
   posts: Post[];
+  role: string;
 }
 
-const PostGrid: React.FC<PostGridProps> = ({ posts }) => {
-
+const PostGrid: React.FC<PostGridProps> = ({ posts, role }) => {
+  console.log(role);
   const [local_post, setPosts] = useState<Post[]>(posts);
   const { delete_post } = usePosts();
   const [selectedPost, setSelectedPost] = useState<Post | null>(null); // Store selected post data
   const [isModalOpen, setIsModalOpen] = useState(false); // Track modal visibility
 
-  useEffect(()=>{
+  useEffect(() => {
     setPosts(posts);
-  },[posts])
+  }, [posts])
 
   const handlePhotoClick = (post: Post) => {
     setSelectedPost(post); // Set the clicked post as the selected post
@@ -38,7 +39,7 @@ const PostGrid: React.FC<PostGridProps> = ({ posts }) => {
     delete_post(post_id, post_mediafile).then(() => {
       setPosts((prevPost) => prevPost.filter((post) => post.id !== post_id));
     })
-    
+
   };
 
   return (
@@ -54,10 +55,13 @@ const PostGrid: React.FC<PostGridProps> = ({ posts }) => {
                 src={post.mediafile}
                 alt={post.description}
                 className="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-105"
-              /></ContextMenuTrigger>
-            <ContextMenuContent onClick={(e) => e.stopPropagation()} className="z-[9999] overflow-visible bg-white shadow-lg">
-              <ContextMenuItem onClick={() => handlePostDelete(post.id, post.mediafile)}>Delete</ContextMenuItem>
-            </ContextMenuContent>
+              />
+            </ContextMenuTrigger>
+            {(role === "Admin" || role === "Mod") && (
+              <ContextMenuContent onClick={(e) => e.stopPropagation()} className="z-[9999] overflow-visible bg-white shadow-lg">
+                <ContextMenuItem onClick={() => handlePostDelete(post.id, post.mediafile)}>Delete</ContextMenuItem>
+              </ContextMenuContent>)
+            }
           </ContextMenu>
           <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white text-sm p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
             {post.description}

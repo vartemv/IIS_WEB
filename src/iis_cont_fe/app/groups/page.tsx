@@ -10,8 +10,10 @@ import GroupGrid from "@/components/custom/groupsGrid";
 import { Group, GroupInfo } from "@/utils/types/fe_types";
 import { useGroups } from "@/hooks/useGroups";
 import { useRef } from "react";
+import { useUser } from "@/hooks/useUser";
 
 export default function TextareaDemo() {
+    const {user} = useUser();
     const [name, setName] = useState("");
     const [file, setFile] = useState<File | null>(null);
     const fileRef = useRef<HTMLInputElement>(null);
@@ -21,6 +23,7 @@ export default function TextareaDemo() {
     const [group_data, setGroups] = useState<Group[]>([]);
     const [my_group_data, setMyGroups] = useState<Group[]>([]);
     const [in_group_data, setInGroups] = useState<Group[]>([]);
+    const [refreshData, setRefreshData] = useState(false);
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files[0]) {
@@ -48,7 +51,7 @@ export default function TextareaDemo() {
             if (file) {
                 const formDataWithFile = new FormData();
                 const timestamp = Date.now();
-                const filename = `${timestamp}_${file.name.replaceAll(" ", "_")}`;
+                const filename = `/${timestamp}_${file.name.replaceAll(" ", "_")}`;
                 formDataWithFile.append('file', new File([file], filename, { type: file.type }));
 
                 const response = await create_group({group_name: name, photo:filename});
@@ -75,8 +78,10 @@ export default function TextareaDemo() {
                     setErrorMessage(response.message || 'Failed to create post');
                     return; // Don't proceed with file upload if post creation failed
                 }
-
             }
+
+            setRefreshData((prev)=> !prev);
+
         } catch (error) {
             console.error("Error creating post:", error);
             setErrorMessage('An error occurred while creating the post');
@@ -86,24 +91,18 @@ export default function TextareaDemo() {
 
     useEffect(() => {
         get_all_groups().then((data) => {
-            console.log("ALL GROUPS");
-            console.log(data.data);
             setGroups(data.data ? data.data : [])
         });
 
         get_all_my_groups().then((data) => {
-            console.log("MY GROUPS");
-            console.log(data.data);
             setMyGroups(data.data ? data.data : []);
         });
 
         get_all_in_groups().then((data) => {
-            console.log("GROUPS I AM IN");
-            console.log(data.data);
             setInGroups(data.data ? data.data : []);
         });
 
-    }, []);
+    }, [refreshData]);
 
     return (<>
         <div>
@@ -166,15 +165,15 @@ export default function TextareaDemo() {
         <div className="text-3xl font-bold leading-none tracking-tight pt-5 pl-5">
             My Groups
         </div>
-        <GroupGrid groups={my_group_data} />
+        <GroupGrid groups={my_group_data} role={user?.role ? user.role : ""}/>
         <div className="text-3xl font-bold leading-none tracking-tight pt-5 pl-5">
             Groups I'm in
         </div>
-        <GroupGrid groups={in_group_data} />
+        <GroupGrid groups={in_group_data} role={user?.role ? user.role : ""}/>
         <div className="text-3xl font-bold leading-none tracking-tight pt-5 pl-5">
             Groups
         </div>
-        <GroupGrid groups={group_data} />
+        <GroupGrid groups={group_data} role={user?.role ? user.role : ""}/>
     </>)
 
 }
