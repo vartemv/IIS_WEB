@@ -109,7 +109,6 @@ export default function TextareaDemo() {
         <div>
             <Navbar />
         </div>
-
         <Sheet>
             <SheetTrigger asChild>
                 <button

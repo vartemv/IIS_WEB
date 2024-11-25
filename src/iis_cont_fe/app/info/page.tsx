@@ -34,16 +34,6 @@ export default function TextareaDemo() {
     <div>
       <Navbar />
     </div>
-      <div>
-      <Separator className="my-4" />
-      <div className="flex h-5 items-center space-x-4 text-sm">
-        <div>Blog</div>
-        <Separator orientation="vertical" />
-        <div>Docs</div>
-        <Separator orientation="vertical" />
-        <div>Source</div>
-      </div>
-    </div>
     <main className="p-1">
       {/* Pass the posts to PostGrid */}
       <PostGrid posts={post_data} />
