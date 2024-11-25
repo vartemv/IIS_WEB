@@ -50,7 +50,6 @@ export async function GET(req: NextRequest) {
     }));
 
     const filteredGroups = formattedGroups.filter(group => group.owner !== sender.id && group.user_status !== "Active");
-    console.log(filteredGroups);
 
     const response = NextResponse.json({
       success: true,
