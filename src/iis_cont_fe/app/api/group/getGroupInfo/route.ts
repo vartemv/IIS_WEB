@@ -13,6 +13,13 @@ export async function GET(req: NextRequest) {
         const groups = await prisma.groups.findFirst({
             where:{
                 group_name: group
+            },
+            include : {
+                users:{
+                    select:{
+                      profile_name: true,
+                    }
+                  }
             }
         });
 

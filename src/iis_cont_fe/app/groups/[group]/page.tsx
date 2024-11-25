@@ -24,7 +24,6 @@ function Profile() {
   useEffect(() => {
     if (group && !Array.isArray(group)) {
       get_group_posts(group).then((data) => {
-        console.log(data.data);
         setPosts(data.data ? data.data : [])
       });
       get_all_users(group).then((data) => {
@@ -47,9 +46,7 @@ function Profile() {
   return (<>
     <Navbar />
     {group_info && Pgroup_info && <CenteredAvatar users={users_in_group} group={group_info} pending_users={Pgroup_info} />}
-    <div>
-      <Separator className="my-1" />
-    </div>
+    <div className="border-t border-gray-300 my-2"></div>
     <main className="p-4">
       <PostGrid posts={post_data} role={user?.role ? user.role : ""}/>
     </main>
