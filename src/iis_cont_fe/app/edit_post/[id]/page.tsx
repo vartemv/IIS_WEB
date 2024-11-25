@@ -39,7 +39,7 @@ const EditPost = ({ params }: EditPostProps) => {
 
           const allowedUsers = post.user_posts && post.user_posts.length > 0 
           ? post.user_posts
-              .filter((up: any) => up.users && up.users.profile_name) // Add null check
+              .filter((up: any) => up.users && up.users.profile_name) 
               .map((up: any) => up.users.profile_name)
               .join(',')
           : '';          

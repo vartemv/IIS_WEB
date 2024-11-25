@@ -21,36 +21,40 @@ import { usePosts } from "@/hooks/usePosts";
 import Navbar from "@/components/ui/navbar";
 
 function Profile() {
-  const { user } = useParams();
+  const { user: currentUser } = useUser(); 
+  const { user: profileUser } = useParams(); 
   const { get_user_post } = usePosts();
   const [post_data, setPosts] = useState([]);
 
   useEffect(() => {
-    if (user && !Array.isArray(user)) {
-      get_user_post(user).then((data) => {
+    if (profileUser && !Array.isArray(profileUser)) {
+      get_user_post(profileUser).then((data) => {
         console.log(data.data)
         setPosts(data.data)
       });
     }
-  }, []);
+  }, [profileUser]);
 
-  if (!user) {
+  if (!profileUser) {
     return <p>Loading user...</p>;
   }
 
-  const posts = [
-    { image: "https://via.placeholder.com/300", caption: "Post 1", author: "test" }
-  ];
+  
+  const isOwnProfile = currentUser?.user.profileName === profileUser;
+
   return (<>
     <Navbar/>
     <div>
       <Separator className="my-4" />
     </div>
     <main className="p-4">
-      <PostGrid posts={post_data} />
+      <PostGrid 
+        posts={post_data} 
+        isProfilePage={true}
+        canEdit={isOwnProfile}
+      />
     </main>
   </>)
-
 };
 
 export default Profile;
