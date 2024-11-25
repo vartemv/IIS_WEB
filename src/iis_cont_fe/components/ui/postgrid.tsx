@@ -20,7 +20,6 @@ interface PostGridProps {
 }
 
 const PostGrid: React.FC<PostGridProps> = ({ posts, role }) => {
-  console.log(role);
   const [local_post, setPosts] = useState<Post[]>(posts);
   const { delete_post } = usePosts();
   const [selectedPost, setSelectedPost] = useState<Post | null>(null); // Store selected post data
