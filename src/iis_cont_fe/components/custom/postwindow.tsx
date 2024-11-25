@@ -3,10 +3,11 @@ import { CommentPart } from "./comments";
 import { PostHeader } from "./postheader";
 import { Post, Comment } from "@/utils/types/fe_types";
 import { usePosts } from '@/hooks/usePosts';
-
+import { useUser } from "@/hooks/useUser"
 
 
 export const SocialPost: React.FC<{post: Post}> = ({post}) => {
+  const {user} = useUser();
   const {post_comment} = usePosts();
   const [newComment, setNewComment] = useState("");
   const [comments, setComments] = useState(post.comments);
@@ -15,6 +16,12 @@ export const SocialPost: React.FC<{post: Post}> = ({post}) => {
     e.preventDefault();
 
     if (!newComment.trim()) {
+      setNewComment("");
+      return;
+    }
+
+    if (!user) {
+      alert("You need to register or log in to post a comment.");
       setNewComment("");
       return;
     }
@@ -38,7 +45,6 @@ export const SocialPost: React.FC<{post: Post}> = ({post}) => {
         <img
           loading="lazy"
           src={post.mediafile}
-          // src="https://via.placeholder.com/600"
           alt={post.description}
           className="object-cover w-full h-full"
         />
