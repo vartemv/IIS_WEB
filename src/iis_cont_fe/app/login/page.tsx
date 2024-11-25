@@ -27,7 +27,40 @@ const Sign_in = () => {
   const [loginData, setLoginData] = useState<TLogin>({ email: "", password: "" });
   const [registerData, setRegisterData] = useState<TRegister>({ email: "", password: "", profile_name: "", lastName: "", firstName: "" });
   const { login, register } = useAuth(); // Destructure login from useAuth hook
+  const [loginErrors, setLoginErrors] = useState<{ email?: string; password?: string }>({});
+  const [registerErrors, setRegisterErrors] = useState<{
+    email?: string;
+    password?: string;
+    profile_name?: string;
+    lastName?: string;
+    firstName?: string;
+  }>({});
   const router = useRouter(); // For navigation after successful login
+
+  const validateLogin = () => {
+    const errors: { email?: string; password?: string } = {};
+    if (!loginData.email) errors.email = "Email is required.";
+    if (!loginData.password) errors.password = "Password is required.";
+    setLoginErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
+  const validateRegister = () => {
+    const errors: {
+      email?: string;
+      password?: string;
+      profile_name?: string;
+      lastName?: string;
+      firstName?: string;
+    } = {};
+    if (!registerData.email) errors.email = "Email is required.";
+    if (!registerData.password) errors.password = "Password is required.";
+    if (!registerData.profile_name) errors.profile_name = "Profile name is required.";
+    if (!registerData.firstName) errors.firstName = "First name is required.";
+    if (!registerData.lastName) errors.lastName = "Last name is required.";
+    setRegisterErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>, type: "login" | "register") => {
     const { id, value } = e.target;
@@ -40,6 +73,9 @@ const Sign_in = () => {
   };
 
   const handleLoginSubmit = () => {
+    if(!validateLogin()){
+      return;
+    }
     // Call the login function from useAuth
     login(loginData)
       .then((data) => {
@@ -95,10 +131,12 @@ const Sign_in = () => {
               <div className="space-y-1">
                 <Label htmlFor="email">FITmail</Label>
                 <Input id="email" type="email" value={loginData.email} onChange={(e) => handleInputChange(e, "login")} required />
+                {loginErrors.email && <p className="text-red-500 text-sm">{loginErrors.email}</p>}
               </div>
               <div className="space-y-1">
                 <Label htmlFor="password">FITpass</Label>
                 <Input id="password" type="password" onChange={(e) => handleInputChange(e, "login")} value={loginData.password} required />
+                {loginErrors.password && <p className="text-red-500 text-sm">{loginErrors.password}</p>}
               </div>
             </CardContent>
             <CardFooter>

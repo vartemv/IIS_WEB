@@ -24,6 +24,7 @@ import { useGroups } from "@/hooks/useGroups";
 import { GroupUser, GroupInfo } from "@/utils/types/fe_types";
 
 function Profile() {
+  const {user} = useUser();
   const { group } = useParams();
   const { get_group_posts } = usePosts();
   const { get_all_users, get_group_info, get_Pgroup_info } = useGroups();
@@ -65,7 +66,7 @@ function Profile() {
       <Separator className="my-1" />
     </div>
     <main className="p-4">
-      <PostGrid posts={post_data} />
+      <PostGrid posts={post_data} role={user?.role ? user.role : ""}/>
     </main>
   </>)
 
