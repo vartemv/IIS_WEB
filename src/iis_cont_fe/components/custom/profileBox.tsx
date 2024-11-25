@@ -1,31 +1,11 @@
 import { Avatar, AvatarImage, AvatarFallback } from '@radix-ui/react-avatar';
 import React, { useState } from 'react';
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuGroup,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuPortal,
-    DropdownMenuSeparator,
-    DropdownMenuShortcut,
-    DropdownMenuSub,
-    DropdownMenuSubContent,
-    DropdownMenuSubTrigger,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { Button } from "@/components/ui/button"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { Separator } from "@/components/ui/separator"
 import { useGroups } from '@/hooks/useGroups';
 import { GroupInfo, GroupUser } from '@/utils/types/fe_types';
-import { CSSProperties } from 'react';
 import { useEffect } from 'react';
 import { useUser } from "@/hooks/useUser";
-
-const tags = Array.from({ length: 50 }).map(
-    (_, i, a) => `v1.2.0-beta.${a.length - i}`
-)
 
 interface CenteredAvatarProps {
     users: GroupUser[];
@@ -73,8 +53,6 @@ const CenteredAvatar: React.FC<CenteredAvatarProps> = ({ users, group, pending_u
                 </div>
     
                 {/* Dropdown Menus */}
-                {/* Dropdown Menus separated vertically */}
-    {/* Dropdown Menu 1 */}
     <div className="item-start self-start mt-12">
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -91,7 +69,7 @@ const CenteredAvatar: React.FC<CenteredAvatarProps> = ({ users, group, pending_u
                                 <div className="flex items-center gap-3 py-2">
                                     <div className="h-10 w-10 rounded-full overflow-hidden border border-gray-300">
                                         <img
-                                            src={user.photo || "https://via.placeholder.com/150"} // Placeholder image if photo is missing
+                                            src={user.photo || "https://via.placeholder.com/150"}
                                             alt={`${user.profile_name}'s photo`}
                                             className="h-full w-full object-cover"
                                         />
@@ -125,7 +103,7 @@ const CenteredAvatar: React.FC<CenteredAvatarProps> = ({ users, group, pending_u
                                 <div className="flex items-center gap-3 py-2">
                                     <div className="h-10 w-10 rounded-full overflow-hidden border border-gray-300">
                                         <img
-                                            src={p_user.photo || "https://via.placeholder.com/150"} // Placeholder image if photo is missing
+                                            src={p_user.photo || "https://via.placeholder.com/150"}
                                             alt={`${p_user.profile_name}'s photo`}
                                             className="h-full w-full object-cover"
                                         />
