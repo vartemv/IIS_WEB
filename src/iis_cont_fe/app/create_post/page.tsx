@@ -104,9 +104,9 @@ const CreatePost = () => {
             
           }
         }else {
-          // Display error message from server
+          
           setErrorMessage(data.message || 'Failed to create post');
-          return; // Don't proceed with file upload if post creation failed
+          return;
         }
         
       }
@@ -117,7 +117,7 @@ const CreatePost = () => {
     }
   };
 
-  //todo
+  
   const isFormValid = () => {
     const { description, location, availability, allowedUsers, allowedGroups } = formData;
     if (description && location && file) {
