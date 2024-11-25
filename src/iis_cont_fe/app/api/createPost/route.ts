@@ -86,24 +86,21 @@ export async function POST(req: NextRequest) {
                 allowedUsers.push(username);
                 }
             }
-            console.log('hmm:', allowedUsers);
+
 
             for (const username of allowedUsers) {
-                console.log(username);
                 if (username && !allowedUsers.includes(username)) {
-                    console.log("here2");
                     const userExists = await prisma.users.findUnique({
                         where: { profile_name: username }
                     });
                     
                     if (!userExists) {
-                        console.log("here3");
+                        
                         return NextResponse.json({
                             success: false,
                             message: `User '${username}' does not exist`
                         }, { status: 400 });
                     }
-                    console.log(username);
                     allowedUsers.push(username);
                 }
             }
@@ -172,6 +169,13 @@ export async function POST(req: NextRequest) {
                     const userRecord = await prisma.users.findUnique({
                         where: { profile_name: username },
                     });
+
+                    if (!userRecord) {
+                        return NextResponse.json({
+                            success: false,
+                            message: `User '${username}' does not exist`
+                        }, { status: 400 });
+                    }
 
                     if (userRecord) {
                         await prisma.user_posts.create({

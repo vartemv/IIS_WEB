@@ -22,6 +22,23 @@ export async function GET(req: NextRequest) {
     }
 
     try {
+        // First check if user is in the group
+        const userInGroup = await prisma.user_groups.findFirst({
+            where: {
+                group_name: group,
+                id_of_user: sender.id,
+                status: 'Active'
+            },
+        });
+
+        if (!userInGroup) {
+            return NextResponse.json({
+                success: false,
+                data: [],
+                message: "User not in group",
+            });
+        }
+
         const groupPosts = await prisma.group_posts.findMany({
             where: {
                 group_name: group,
@@ -29,38 +46,62 @@ export async function GET(req: NextRequest) {
             include: {
                 posts: {
                     include: {
-                        comments: true,
+                        comments: {
+                            include: {
+                                users: {
+                                    select: {
+                                        photo: true,
+                                    },
+                                },
+                            },
+                        },
                         users: {
                             select: {
                                 profile_name: true,
+                                photo: true,
                             }
                         },
                         post_tags: {
                             include: {
-                              tags: true,
+                                tags: true,
                             },
-                        }
+                        },
+                        reactions: true,
                     },
                 },
             },
         });
 
-        const userInGroup = await prisma.user_groups.findFirst({
-            where: {
-                group_name: group,
-                id_of_user: sender.id,
-            },
-        });
+        // Add user reaction data for each post
+        const postsWithReactions = await Promise.all(
+            groupPosts.map(async (groupPost) => {
+                const userReaction = await prisma.user_reactions.findFirst({
+                    where: {
+                        id_of_user: sender.id,
+                        post_id: groupPost.posts.id,
+                    },
+                });
+
+                return {
+                    ...groupPost.posts,
+                    user_reaction: userReaction ? { reacted: true } : { reacted: false },
+                };
+            })
+        );
 
         const response = NextResponse.json({
             success: true,
-            data: groupPosts.map((groupPost) => groupPost.posts),
+            data: postsWithReactions,
             message: "Posts retrieved successfully",
         });
         return response;
     }
     catch (e) {
         console.log(e);
-        return new NextResponse();
+        return NextResponse.json({ 
+            success: false, 
+            data: null, 
+            message: "Error retrieving group posts" 
+        }, { status: 500 });
     }
-};
+}

@@ -201,6 +201,13 @@ export async function PUT(req: NextRequest) {
                         const userRecord = await prisma.users.findUnique({
                             where: { profile_name: username },
                         });
+                        if (!userRecord) {
+                            console.log("here3");
+                            return NextResponse.json({
+                                success: false,
+                                message: `User '${username}' does not exist`
+                            }, { status: 400 });
+                        }
 
                         if (userRecord) {
                             await prisma.user_posts.create({

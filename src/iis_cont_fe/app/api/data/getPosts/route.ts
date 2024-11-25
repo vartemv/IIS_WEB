@@ -9,7 +9,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ success: false, data: null, message: "No token provided" }, { status: 301 });
   }
 
-  const sender = await TokenService.verify(token.value)
+  const sender = await TokenService.verify(token.value);
 
   if (!sender) {
     return NextResponse.json({ success: false, data: null, message: "Invalid token" }, { status: 403 });
@@ -22,7 +22,6 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-
     const user_data = await prisma.users.findUnique({
       where: {
         profile_name: user,
@@ -36,6 +35,8 @@ export async function GET(req: NextRequest) {
     }
 
     let posts;
+
+    // If viewing own profile, show all posts including private ones
     if (sender.user === user) {
       posts = await prisma.posts.findMany({
         where: {
@@ -66,6 +67,7 @@ export async function GET(req: NextRequest) {
         },
       });
     } else {
+      
       posts = await prisma.posts.findMany({
         where: {
           user_id: user_data?.id,
@@ -97,10 +99,24 @@ export async function GET(req: NextRequest) {
       });
     }
 
+    // Add user reaction data for each post
+    const postsWithReactions = await Promise.all(posts.map(async (post) => {
+      const userReaction = await prisma.user_reactions.findFirst({
+        where: {
+          id_of_user: sender.id,
+          post_id: post.id,
+        },
+      });
+      
+      return {
+        ...post,
+        user_reaction: userReaction ? { reacted: true } : { reacted: false },
+      };
+    }));
 
     const response = NextResponse.json({
       success: true,
-      data: posts,
+      data: postsWithReactions,
       message: "Posts retrieved successfully",
     });
     return response;
@@ -109,4 +125,4 @@ export async function GET(req: NextRequest) {
     console.log(e);
     return new NextResponse();
   }
-};
+}

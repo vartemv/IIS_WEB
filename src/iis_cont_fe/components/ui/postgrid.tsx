@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { SocialPost } from "@/components/custom/postwindow"
 import { Post } from "@/utils/types/fe_types";
+import { useRouter } from "next/navigation";
 import {
   ContextMenu,
   ContextMenuContent,
@@ -16,29 +17,34 @@ interface ModalProps {
 
 interface PostGridProps {
   posts: Post[];
+  isProfilePage?: boolean;
+  canEdit?: boolean;
 }
 
-const PostGrid: React.FC<PostGridProps> = ({ posts }) => {
-
+const PostGrid: React.FC<PostGridProps> = ({ posts, isProfilePage = false, canEdit = false }) => {
   const [local_post, setPosts] = useState<Post[]>(posts);
   const { delete_post } = usePosts();
-  const [selectedPost, setSelectedPost] = useState<Post | null>(null); // Store selected post data
-  const [isModalOpen, setIsModalOpen] = useState(false); // Track modal visibility
+  const [selectedPost, setSelectedPost] = useState<Post | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const router = useRouter();
 
-  useEffect(()=>{
+  useEffect(() => {
     setPosts(posts);
-  },[posts])
+  }, [posts])
 
   const handlePhotoClick = (post: Post) => {
-    setSelectedPost(post); // Set the clicked post as the selected post
-    setIsModalOpen(true);  // Open the modal
+    setSelectedPost(post);
+    setIsModalOpen(true);
+  };
+
+  const handleEditClick = (postId: number) => {
+    router.push(`/edit_post/${postId}`);
   };
 
   const handlePostDelete = (post_id: number, post_mediafile: string) => {
     delete_post(post_id, post_mediafile).then(() => {
       setPosts((prevPost) => prevPost.filter((post) => post.id !== post_id));
-    })
-    
+    });
   };
 
   return (
@@ -49,13 +55,17 @@ const PostGrid: React.FC<PostGridProps> = ({ posts }) => {
           className="relative overflow-hidden rounded-lg bg-gray-200 group"
           onClick={() => handlePhotoClick(post)}>
           <ContextMenu>
-            <ContextMenuTrigger >
+            <ContextMenuTrigger>
               <img
                 src={post.mediafile}
                 alt={post.description}
                 className="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-105"
-              /></ContextMenuTrigger>
+              />
+            </ContextMenuTrigger>
             <ContextMenuContent onClick={(e) => e.stopPropagation()} className="z-[9999] overflow-visible bg-white shadow-lg">
+              {isProfilePage && canEdit && (
+                <ContextMenuItem onClick={() => handleEditClick(post.id)}>Edit</ContextMenuItem>
+              )}
               <ContextMenuItem onClick={() => handlePostDelete(post.id, post.mediafile)}>Delete</ContextMenuItem>
             </ContextMenuContent>
           </ContextMenu>
@@ -74,8 +84,6 @@ const PostGrid: React.FC<PostGridProps> = ({ posts }) => {
 
 const Modal: React.FC<ModalProps> = ({ post, onClose }) => {
   return (
-    // <div className="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center">
-    // <div className="bg-white max-w-md w-full relative">
     <div className="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center">
       <div className="bg-white w-[900px] h-[600px] max-w-full flex relative">
         <button
