@@ -11,7 +11,7 @@ const Navbar: React.FC = () => {
           FITstagram
         </a>
       </div>
-      <div className="flex-grow flex flex-row items-center justify-center gap-5">
+      <div className="flex-grow flex flex-row items-center justify-center gap-6">
           <a href={user ? homePath : "/info"} className="text-white hover:underline">
             Home
           </a>
