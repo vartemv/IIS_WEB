@@ -2,11 +2,11 @@ import React from 'react';
 import { useUser } from '@/hooks/useUser';
 
 const Navbar: React.FC = () => {
-  const {user} = useUser();
+  const { user } = useUser();
   const homePath = `/profile/${user?.user.profileName}`;
   return (
-    <nav className="flex justify-between items-center bg-gray-800 text-white p-4">
-      <div className="flex-shrink-0">
+    <nav className="flex flex-col items-center bg-gray-800 h-16 text-white ">
+      <div className="flex-shrink-0 absolute top-4 left-4">
         <a href="/info" className="text-xl font-bold text-white">
           FITstagram
         </a>
