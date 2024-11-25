@@ -14,7 +14,7 @@ export async function DELETE(req: NextRequest) {
 
         const sender = await TokenService.verify(token.value)
 
-        if (!sender || sender.role != "Admin") {
+        if (!sender || (sender.role !== "Admin" && sender.role !== "Mod")) {
             return NextResponse.json({ success: false, data: null, message: "Invalid token" }, { status: 403 });
         }
 

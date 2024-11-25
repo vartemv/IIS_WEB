@@ -19,9 +19,10 @@ interface ModalProps {
 
 interface GroupGridProps {
   groups: Group[];
+  role: string;
 }
 
-const GroupGrid: React.FC<GroupGridProps> = ({ groups }) => {
+const GroupGrid: React.FC<GroupGridProps> = ({ groups, role }) => {
   const { send_request, delete_group } = useGroups();
   const [allGroups, setGroups] = useState<Group[]>(groups);
   const router = useRouter();
@@ -49,7 +50,7 @@ const GroupGrid: React.FC<GroupGridProps> = ({ groups }) => {
   };
 
   const handleGroupDelete = async (group_name: string, photo: string) => {
-    delete_group(group_name, photo).then(()=>{
+    delete_group(group_name, photo).then(() => {
       setGroups((prevGroups) => prevGroups.filter((group) => group.group_name !== group_name));
     })
   };
@@ -78,9 +79,11 @@ const GroupGrid: React.FC<GroupGridProps> = ({ groups }) => {
                 </div>
               </div>
             </ContextMenuTrigger>
-            <ContextMenuContent onClick={(e) => e.stopPropagation()} className="z-[9999] overflow-visible bg-white shadow-lg">
-              <ContextMenuItem onClick={() => handleGroupDelete(group.group_name, group.photo)}>Delete</ContextMenuItem>
-            </ContextMenuContent>
+            {(role === "Admin" || role === "Mod") && (
+              <ContextMenuContent onClick={(e) => e.stopPropagation()} className="z-[9999] overflow-visible bg-white shadow-lg">
+                <ContextMenuItem onClick={() => handleGroupDelete(group.group_name, group.photo)}>Delete</ContextMenuItem>
+              </ContextMenuContent>)
+            }
           </ContextMenu>
           {/* Right side: Join button */}
           <div>
