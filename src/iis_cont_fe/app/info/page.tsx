@@ -28,13 +28,38 @@ export default function TextareaDemo() {
     });
 }, []);
 
-    const posts = [
-      { id: 1, image: "https://via.placeholder.com/300", caption: "Post 0", author: "Test" },
-      { id: 2, image: "https://via.placeholder.com/600", caption: "Post 1", author: "Test" },
-      { id: 3, image: "https://via.placeholder.com/300", caption: "Post 2", author: "Test" },
-      { id: 4, image: "https://via.placeholder.com/400", caption: "Post 3", author: "Test" },
-      { id: 5, image: "https://via.placeholder.com/400", caption: "Post 4", author: "Test" }
-    ];
+  useEffect(() => {
+    sortPosts(post_data);
+  }, [sortOrder, post_data, dateOrder]);
+
+  const sortPosts = ( posts: Post[] ) => {
+    let sortedPosts = [...posts];
+
+        if (sortOrder !== "none") {
+            sortedPosts = sortedPosts.sort((a, b) => {
+                const reactionCountA = a.reactions[0]?.amount || 0;
+                const reactionCountB = b.reactions[0]?.amount || 0;
+
+                return sortOrder === "most_popular" ? reactionCountB - reactionCountA : reactionCountA - reactionCountB;
+            });
+        }
+
+        if (dateOrder !== "none") {
+            sortedPosts = sortedPosts.sort((a, b) => {
+                const dateA = new Date(a.datetime);
+                const dateB = new Date(b.datetime);
+                return dateOrder === "newest" ? dateB.getTime() - dateA.getTime() : dateA.getTime() - dateB.getTime();
+            });
+        }
+
+        setSortedPosts(sortedPosts);
+};
+
+  const resetFilters = () => {
+    setSortOrder(defaultSortOrder);
+    setDateOrder(defaultDateOrder);
+  };
+
     // return <ResizablePanelGroup direction="horizontal">
     //             <ResizablePanel> Cookie-user: <pre>{JSON.stringify(user, undefined, 4)}</pre> </ResizablePanel>
     //         </ResizablePanelGroup>
@@ -84,7 +109,7 @@ export default function TextareaDemo() {
     </div>
     <main className="p-1">
       {/* Pass the posts to PostGrid */}
-      <PostGrid posts={post_data} />
+      <PostGrid posts={sortedPosts} />
       </main>
     </>)
   
