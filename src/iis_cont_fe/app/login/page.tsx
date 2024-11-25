@@ -20,10 +20,12 @@ import { useAuth } from "@/hooks/useAuth";
 import { useRouter } from "next/navigation";
 import { TLogin, TRegister } from "@/utils/types/auth";
 import { useState } from "react";
+import Image from 'next/image'
+import FITlogo from '@/app/public/logo.png'
 
 const Sign_in = () => {
   const [loginData, setLoginData] = useState<TLogin>({ email: "", password: "" });
-  const [registerData, setRegisterData] = useState<TRegister>({ email: "", password: "", profile_name: "", lastName: "", firstName: ""});
+  const [registerData, setRegisterData] = useState<TRegister>({ email: "", password: "", profile_name: "", lastName: "", firstName: "" });
   const { login, register } = useAuth(); // Destructure login from useAuth hook
   const router = useRouter(); // For navigation after successful login
 
@@ -56,7 +58,7 @@ const Sign_in = () => {
     register(registerData)
       .then((data) => {
         if (data?.success) {
-            router.push("/info"); // Redirect to the homepage (or any other page)
+          router.push("/info"); // Redirect to the homepage (or any other page)
         } else {
           console.log(data.message); // Handle error or failed login
         }
@@ -66,78 +68,82 @@ const Sign_in = () => {
       });
   };
 
-    return (
-        <div className="flex items-center justify-center min-h-screen">
-        <Tabs defaultValue="Login" className="w-[400px]">
-          <TabsList className="grid w-full grid-cols-2 bg-gray-200">
-            <TabsTrigger value="Login">
-                Login
-            </TabsTrigger>
-            <TabsTrigger value="Register">
-                Register
-            </TabsTrigger>
-          </TabsList>
-          <TabsContent value="Login">
-            <Card>
-              <CardHeader>
-                <CardTitle>Login</CardTitle>
-                <CardDescription>
-                  Login to your favorite FITstagram
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-2">
-                <div className="space-y-1">
-                  <Label htmlFor="email">FITmail</Label>
-                  <Input id="email" type = "email" value={loginData.email}  onChange={(e) => handleInputChange(e, "login")} required/>
-                </div>
-                <div className="space-y-1">
-                  <Label htmlFor="password">FITpass</Label>
-                  <Input id="password" type="password" onChange={(e) => handleInputChange(e, "login")} value={loginData.password} required/>
-                </div>
-              </CardContent>
-              <CardFooter>
-                <Button variant = {"default"} onClick={handleLoginSubmit} >Login</Button>
-              </CardFooter>
-            </Card>
-          </TabsContent>
-          <TabsContent value="Register">
-            <Card>
-              <CardHeader>
-                <CardTitle>Register</CardTitle>
-                <CardDescription>
-                  Create account at your going-to-be favorite FITstagram
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-2">
-                <div className="space-y-1">
-                  <Label htmlFor="firstName">Name </Label>
-                  <Input id="firstName" type="text" value={registerData.firstName}  onChange={(e) => handleInputChange(e, "register")} required/>
-                </div>
-                <div className="space-y-1">
-                  <Label htmlFor="lastName">Surname</Label>
-                  <Input id="lastName" type="text" value={registerData.lastName}  onChange={(e) => handleInputChange(e, "register")} required/>
-                </div>
-                <div className="space-y-1">
-                  <Label htmlFor="profile_name">FITname</Label>
-                  <Input id="profile_name" type="text" value={registerData.profile_name}  onChange={(e) => handleInputChange(e, "register")} required/>
-                </div>
-                <div className="space-y-1">
-                  <Label htmlFor="email">Email</Label>
-                  <Input id="email" type="email" value={registerData.email}  onChange={(e) => handleInputChange(e, "register")} required/>
-                </div>
-                <div className="space-y-1">
-                  <Label htmlFor="password">FITpass</Label>
-                  <Input id="password" type="password" value={registerData.password}  onChange={(e) => handleInputChange(e, "register")} required />
-                </div>
-              </CardContent>
-              <CardFooter>
-                <Button variant = {"default"} onClick={handleRegisterSubmit} type="submit">Register</Button>
-              </CardFooter>
-            </Card>
-          </TabsContent>
-        </Tabs>
-        </div>
-      );
+  return (
+    <div className="flex items-center justify-center min-h-screen flex-col">
+       <a href="/info" className="mb-8">
+      <Image src={FITlogo}  alt="Logo" className="mb-8" width={50}
+        height={50} />
+        </a>
+      <Tabs defaultValue="Login" className="w-[400px]">
+        <TabsList className="grid w-full grid-cols-2 bg-gray-200">
+          <TabsTrigger value="Login">
+            Login
+          </TabsTrigger>
+          <TabsTrigger value="Register">
+            Register
+          </TabsTrigger>
+        </TabsList>
+        <TabsContent value="Login">
+          <Card>
+            <CardHeader>
+              <CardTitle>Login</CardTitle>
+              <CardDescription>
+                Login to your favorite FITstagram
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-2">
+              <div className="space-y-1">
+                <Label htmlFor="email">FITmail</Label>
+                <Input id="email" type="email" value={loginData.email} onChange={(e) => handleInputChange(e, "login")} required />
+              </div>
+              <div className="space-y-1">
+                <Label htmlFor="password">FITpass</Label>
+                <Input id="password" type="password" onChange={(e) => handleInputChange(e, "login")} value={loginData.password} required />
+              </div>
+            </CardContent>
+            <CardFooter>
+              <Button variant={"default"} onClick={handleLoginSubmit} >Login</Button>
+            </CardFooter>
+          </Card>
+        </TabsContent>
+        <TabsContent value="Register">
+          <Card>
+            <CardHeader>
+              <CardTitle>Register</CardTitle>
+              <CardDescription>
+                Create account at your going-to-be favorite FITstagram
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-2">
+              <div className="space-y-1">
+                <Label htmlFor="firstName">Name </Label>
+                <Input id="firstName" type="text" value={registerData.firstName} onChange={(e) => handleInputChange(e, "register")} required />
+              </div>
+              <div className="space-y-1">
+                <Label htmlFor="lastName">Surname</Label>
+                <Input id="lastName" type="text" value={registerData.lastName} onChange={(e) => handleInputChange(e, "register")} required />
+              </div>
+              <div className="space-y-1">
+                <Label htmlFor="profile_name">FITname</Label>
+                <Input id="profile_name" type="text" value={registerData.profile_name} onChange={(e) => handleInputChange(e, "register")} required />
+              </div>
+              <div className="space-y-1">
+                <Label htmlFor="email">Email</Label>
+                <Input id="email" type="email" value={registerData.email} onChange={(e) => handleInputChange(e, "register")} required />
+              </div>
+              <div className="space-y-1">
+                <Label htmlFor="password">FITpass</Label>
+                <Input id="password" type="password" value={registerData.password} onChange={(e) => handleInputChange(e, "register")} required />
+              </div>
+            </CardContent>
+            <CardFooter>
+              <Button variant={"default"} onClick={handleRegisterSubmit} type="submit">Register</Button>
+            </CardFooter>
+          </Card>
+        </TabsContent>
+      </Tabs>
+    </div>
+  );
 }
 
 export default Sign_in;
