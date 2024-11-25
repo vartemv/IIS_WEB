@@ -64,6 +64,7 @@ export interface Group {
     photo: string;
     owner: number;
     datum: Date;
+    users: {profile_name: string};
   }
 
   interface GroupCreate {

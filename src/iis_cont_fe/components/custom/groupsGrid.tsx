@@ -74,7 +74,7 @@ const GroupGrid: React.FC<GroupGridProps> = ({ groups, role}) => {
                 </Avatar>
                 <div className="grid gap-1">
                   <p className="text-2xl font-bold leading-none">{group.group_name}</p>
-                  <p className="text-xl text-muted-foreground">{group.users.profile_name}</p>
+                  <p className="text-xl font-bold">{group.users.profile_name}</p>
                   <p className="text-lg text-muted-foreground">Subscribers: {group.pocet}</p>
                 </div>
               </div>
