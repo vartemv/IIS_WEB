@@ -35,6 +35,7 @@ import { Button } from "@/components/ui/button"
 import { useEffect, useState } from "react";
 import { useMediaUser } from "@/hooks/useUsers";
 import { User } from "@/utils/types/fe_types";
+import Navbar from "@/components/ui/navbar"
 
 export default function TableDemo() {
     const [users, setUsers] = useState<User[]>([]);
@@ -58,7 +59,8 @@ export default function TableDemo() {
             console.error('Failed to delete user:', response.message);
     };
 
-    return (
+    return (<>
+        <Navbar/>
         <Table>
             <TableCaption>All users of FITstagram</TableCaption>
             <TableHeader>
@@ -98,5 +100,6 @@ export default function TableDemo() {
                 </TableRow>
             </TableFooter>
         </Table>
+        </>
     )
 }

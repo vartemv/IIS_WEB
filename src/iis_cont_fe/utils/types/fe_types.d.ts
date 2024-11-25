@@ -65,6 +65,11 @@ export interface Group {
     datum: Date;
   }
 
+  interface GroupCreate {
+    group_name: string;
+    photo: string;
+  }
+
   interface UserStatus {
     user_id: number;
     status: string;

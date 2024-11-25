@@ -7,9 +7,10 @@ import { TokenService } from '@/app/utils/token';
 
 export async function POST(req: NextRequest) {
     const body = await req.json();
-    const { group_name } = body;
+    const { group_name, photo } = body;
     const token = req.cookies.get("user_token");
 
+    console.log(body);
 
     if (!group_name) {
         return NextResponse.json({ error: 'Email and password are required' }, { status: 400 });
@@ -34,7 +35,8 @@ export async function POST(req: NextRequest) {
             data: {
                 group_name,
                 datum,
-                owner
+                owner,
+                photo: photo
             },
         });
 
@@ -46,6 +48,6 @@ export async function POST(req: NextRequest) {
         return response;
     } catch (error) {
         console.log(` ${error} Error in POST handler:`);
-        return NextResponse.json({ error: 'Failed to create user' }, { status: 500 });
+        return NextResponse.json({ error: 'Failed to create group' }, { status: 500 });
     }
 }
