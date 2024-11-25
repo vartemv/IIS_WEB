@@ -21,7 +21,7 @@ export const useGroups = () => {
                 return res.data;
             })
             .catch((err) => {
-                return { success: false, data: null, message: "Failed to create group." };
+                return { success: false, data: null };
             })
     }
 
