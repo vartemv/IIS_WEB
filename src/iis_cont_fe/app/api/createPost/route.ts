@@ -43,7 +43,7 @@ export async function POST(req: NextRequest) {
                         }
                     });
 
-                    if (!userGroupStatus) {
+                    if (!userGroupStatus && groupRecord.owner !== user.id) {
                         return NextResponse.json({
                             success: false,
                             message: `You don't have permission to post in group '${groupName}'. You must be an active member.`
