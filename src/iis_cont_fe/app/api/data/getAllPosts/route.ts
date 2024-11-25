@@ -17,7 +17,7 @@ export async function GET(req: NextRequest) {
         },
         comments: {
           include: {
-            users: { // alias for related user details
+            users: { 
               select: {
                 photo: true,
               },
@@ -38,7 +38,7 @@ export async function GET(req: NextRequest) {
       const public_post = await Promise.all(posts.map(async (post) => {
         return post.availability ? post : null;
       }));
-      // console.log(public_post);
+      
       return NextResponse.json({ success: true, data: public_post.filter((post)=>post !== null), message: "Public posts" }, { status: 200 });
     }
 
