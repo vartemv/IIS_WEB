@@ -10,7 +10,7 @@ export async function POST(req: Request) {
       const {email , password } = body;
   
       if  (!email || !password) {
-        return NextResponse.json({ error: 'Email and password are required' }, { status: 400 });
+        return NextResponse.json({ success: false,error: 'Email and password are required' }, { status: 400 });
       }
       
       const result = await prisma.users.findUnique({
@@ -20,7 +20,7 @@ export async function POST(req: Request) {
       });
 
       if (!result){
-        return NextResponse.json({ error: 'Wrong password or email'}, { status: 401 });
+        return NextResponse.json({ success: false, message: 'Wrong password or email'}, { status: 401 });
       }
 
       if(! await PasswordProcessor.verifyPassword(result.hash_password, password)){

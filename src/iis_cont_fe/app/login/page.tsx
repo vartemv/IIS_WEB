@@ -28,6 +28,8 @@ const Sign_in = () => {
   const [registerData, setRegisterData] = useState<TRegister>({ email: "", password: "", profile_name: "", lastName: "", firstName: "" });
   const { login, register } = useAuth(); // Destructure login from useAuth hook
   const [loginErrors, setLoginErrors] = useState<{ email?: string; password?: string }>({});
+  const [loginErrorMessage, setLoginErrorMessage] = useState<string | null>(null); 
+  const [registerErrorMessage, setRegisterErrorMessage] = useState<string | null>(null);
   const [registerErrors, setRegisterErrors] = useState<{
     email?: string;
     password?: string;
@@ -82,7 +84,7 @@ const Sign_in = () => {
         if (data?.success) {
           router.push("/info"); // Redirect to the homepage (or any other page)
         } else {
-          console.log(data.message); // Handle error or failed login
+          setLoginErrorMessage(data.message || "Login failed. Please try again."); // Handle error or failed login
         }
       })
       .catch((err) => {
@@ -91,12 +93,15 @@ const Sign_in = () => {
   };
 
   const handleRegisterSubmit = () => {
+    if (!validateRegister()) {
+      return;
+    }
     register(registerData)
       .then((data) => {
         if (data?.success) {
           router.push("/info"); // Redirect to the homepage (or any other page)
         } else {
-          console.log(data.message); // Handle error or failed login
+          setRegisterErrorMessage(data.message || "Registration failed. Please try again.");
         }
       })
       .catch((err) => {
@@ -128,6 +133,7 @@ const Sign_in = () => {
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-2">
+            {loginErrorMessage && <p className="text-red-500 text-sm mb-2">{loginErrorMessage}</p>}
               <div className="space-y-1">
                 <Label htmlFor="email">FITmail</Label>
                 <Input id="email" type="email" value={loginData.email} onChange={(e) => handleInputChange(e, "login")} required />
@@ -153,6 +159,7 @@ const Sign_in = () => {
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-2">
+            {registerErrorMessage && <p className="text-red-500 text-sm mb-2">{registerErrorMessage}</p>}
               <div className="space-y-1">
                 <Label htmlFor="firstName">Name </Label>
                 <Input id="firstName" type="text" value={registerData.firstName} onChange={(e) => handleInputChange(e, "register")} required />

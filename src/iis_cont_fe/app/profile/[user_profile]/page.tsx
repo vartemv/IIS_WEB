@@ -21,23 +21,20 @@ import { usePosts } from "@/hooks/usePosts";
 import Navbar from "@/components/ui/navbar";
 
 function Profile() {
-  const { user } = useParams();
+  const {user} = useUser();
+  const { user_profile } = useParams();
   const { get_user_post } = usePosts();
   const [post_data, setPosts] = useState([]);
 
   useEffect(() => {
-    if (user && !Array.isArray(user)) {
-      get_user_post(user).then((data) => {
+    if (user_profile && !Array.isArray(user_profile)) {
+      get_user_post(user_profile).then((data) => {
         console.log(data.data)
         const posts = data.data ? data.data : [];
         setPosts(posts);
       });
     }
   }, []);
-
-  if (!user) {
-    return <p>Loading user...</p>;
-  }
   
   return (<>
     <Navbar/>
@@ -45,7 +42,7 @@ function Profile() {
       <Separator className="my-4" />
     </div>
     <main className="p-4">
-      <PostGrid posts={post_data} />
+      <PostGrid posts={post_data} role={user?.role ? user.role : ""}/>
     </main>
   </>)
 
