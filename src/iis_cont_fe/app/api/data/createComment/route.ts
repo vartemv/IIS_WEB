@@ -38,7 +38,14 @@ export async function POST(req: NextRequest) {
         const comments = await prisma.comments.findMany({
             where: {
                 post_id: post_id
-            }
+            },
+            include: {
+                users: {
+                    select: {
+                        photo: true,
+                    },
+                },
+            },
         });
         
         return NextResponse.json({success: true, message: "Comment created", data: comments});

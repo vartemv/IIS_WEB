@@ -14,7 +14,7 @@ const Navbar: React.FC = () => {
       <div className="flex-grow">
         <ul className="flex space-x-4 justify-center list-none m-0 p-0">
           <li>
-            <a href={homePath} className="text-white hover:underline">
+            <a href={user ? homePath : "/info"} className="text-white hover:underline">
               Home
             </a>
           </li>

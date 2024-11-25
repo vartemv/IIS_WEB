@@ -6,10 +6,9 @@ import { Comment, CommentUsersPhoto } from "@/utils/types/fe_types";
       {/* Avatar */}
       <img
         loading="lazy"
-        // src={comment.users.photo}
-        src="https://cdn.builder.io/api/v1/image/assets/TEMP/372cb138c0d17fe9aadf4e682f263f4b738a69cf9c6269dbdfea9d4343d386b0?apiKey=9822d2f548184319a14eb0b77089634c&"
-        // alt={`${userName}'s avatar`}
-        className="w-12 h-12 rounded-full object-cover"
+        src={comment.users.photo ? comment.users.photo : "/user.png"}
+        alt="user"
+        className="w-12 h-12 rounded-full object-cover image-rendering-auto"
       />
   
       {/* Content */}

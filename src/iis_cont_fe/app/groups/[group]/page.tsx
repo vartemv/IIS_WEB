@@ -1,18 +1,5 @@
 'use client';
 import { useUser } from "@/hooks/useUser";
-import Link from "next/link"
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuIndicator,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-  NavigationMenuViewport,
-} from "@/components/ui/navigation-menu"
-import { navigationMenuTriggerStyle } from "@/components/ui/navigation-menu"
-import { Input } from "@/components/ui/input"
 import { Separator } from "@/components/ui/separator"
 import PostGrid from "@/components/ui/postgrid";
 import { useEffect, useState } from "react";
@@ -24,6 +11,7 @@ import { useGroups } from "@/hooks/useGroups";
 import { GroupUser, GroupInfo } from "@/utils/types/fe_types";
 
 function Profile() {
+  const {user} = useUser();
   const { group } = useParams();
   const { get_group_posts } = usePosts();
   const { get_all_users, get_group_info, get_Pgroup_info } = useGroups();
@@ -36,6 +24,7 @@ function Profile() {
   useEffect(() => {
     if (group && !Array.isArray(group)) {
       get_group_posts(group).then((data) => {
+        console.log(data.data);
         setPosts(data.data ? data.data : [])
       });
       get_all_users(group).then((data) => {
@@ -55,9 +44,6 @@ function Profile() {
     return <p>Loading group...</p>;
   }
 
-  const posts = [
-    { image: "https://via.placeholder.com/300", caption: "Post 1", author: "test" }
-  ];
   return (<>
     <Navbar />
     {group_info && Pgroup_info && <CenteredAvatar users={users_in_group} group={group_info} pending_users={Pgroup_info} />}
@@ -65,7 +51,7 @@ function Profile() {
       <Separator className="my-1" />
     </div>
     <main className="p-4">
-      <PostGrid posts={post_data} />
+      <PostGrid posts={post_data} role={user?.role ? user.role : ""}/>
     </main>
   </>)
 
