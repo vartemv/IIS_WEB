@@ -21,6 +21,9 @@ const Navbar: React.FC = () => {
           <a href="/create_post" className="text-white hover:underline">
             Create Post
           </a>
+          <a href="/login" className="text-white hover:underline">
+            Login
+          </a>
       </div>
     </nav>
   );
