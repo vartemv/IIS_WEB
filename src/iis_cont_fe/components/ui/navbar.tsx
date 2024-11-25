@@ -11,28 +11,16 @@ const Navbar: React.FC = () => {
           FITstagram
         </a>
       </div>
-      <div className="flex-grow">
-        <ul className="flex space-x-4 justify-center list-none m-0 p-0">
-          <li>
-            <a href={user ? homePath : "/info"} className="text-white hover:underline">
-              Home
-            </a>
-          </li>
-          <li>
-          </li>
-          <li>
-            <a href="/groups" className="text-white hover:underline">
-              Groups
-            </a>
-          </li>
-          <li>
-          </li>
-          <li>
-            <a href="/create_post" className="text-white hover:underline">
-              Create Post
-            </a>
-          </li>
-        </ul>
+      <div className="flex-grow flex flex-row items-center justify-center gap-6">
+          <a href={user ? homePath : "/info"} className="text-white hover:underline">
+            Home
+          </a>
+          <a href="/groups" className="text-white hover:underline">
+            Groups
+          </a>
+          <a href="/create_post" className="text-white hover:underline">
+            Create Post
+          </a>
       </div>
     </nav>
   );
