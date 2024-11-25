@@ -28,7 +28,7 @@ const Sign_in = () => {
   const [registerData, setRegisterData] = useState<TRegister>({ email: "", password: "", profile_name: "", lastName: "", firstName: "" });
   const { login, register } = useAuth(); // Destructure login from useAuth hook
   const [loginErrors, setLoginErrors] = useState<{ email?: string; password?: string }>({});
-  const [loginErrorMessage, setLoginErrorMessage] = useState<string | null>(null); 
+  const [loginErrorMessage, setLoginErrorMessage] = useState<string | null>(null);
   const [registerErrorMessage, setRegisterErrorMessage] = useState<string | null>(null);
   const [registerErrors, setRegisterErrors] = useState<{
     email?: string;
@@ -75,7 +75,7 @@ const Sign_in = () => {
   };
 
   const handleLoginSubmit = () => {
-    if(!validateLogin()){
+    if (!validateLogin()) {
       return;
     }
     // Call the login function from useAuth
@@ -111,10 +111,10 @@ const Sign_in = () => {
 
   return (
     <div className="flex items-center justify-center min-h-screen flex-col">
-       <a href="/info" className="mb-8">
-      <Image src={FITlogo}  alt="Logo" className="mb-8" width={50}
-        height={50} />
-        </a>
+      <a href="/info" className="mb-8">
+        <Image src={FITlogo} alt="Logo" className="mb-8" width={50}
+          height={50} />
+      </a>
       <Tabs defaultValue="Login" className="w-[400px]">
         <TabsList className="grid w-full grid-cols-2 bg-gray-200">
           <TabsTrigger value="Login">
@@ -133,7 +133,7 @@ const Sign_in = () => {
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-2">
-            {loginErrorMessage && <p className="text-red-500 text-sm mb-2">{loginErrorMessage}</p>}
+              {loginErrorMessage && <p className="text-red-500 text-sm mb-2">{loginErrorMessage}</p>}
               <div className="space-y-1">
                 <Label htmlFor="email">FITmail</Label>
                 <Input id="email" type="email" value={loginData.email} onChange={(e) => handleInputChange(e, "login")} required />
@@ -159,26 +159,31 @@ const Sign_in = () => {
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-2">
-            {registerErrorMessage && <p className="text-red-500 text-sm mb-2">{registerErrorMessage}</p>}
+              {registerErrorMessage && <p className="text-red-500 text-sm mb-2">{registerErrorMessage}</p>}
               <div className="space-y-1">
                 <Label htmlFor="firstName">Name </Label>
                 <Input id="firstName" type="text" value={registerData.firstName} onChange={(e) => handleInputChange(e, "register")} required />
+                {registerErrors.firstName && <p className="text-red-500 text-sm">{registerErrors.firstName}</p>}
               </div>
               <div className="space-y-1">
                 <Label htmlFor="lastName">Surname</Label>
                 <Input id="lastName" type="text" value={registerData.lastName} onChange={(e) => handleInputChange(e, "register")} required />
+                {registerErrors.lastName && <p className="text-red-500 text-sm">{registerErrors.lastName}</p>}
               </div>
               <div className="space-y-1">
                 <Label htmlFor="profile_name">FITname</Label>
                 <Input id="profile_name" type="text" value={registerData.profile_name} onChange={(e) => handleInputChange(e, "register")} required />
+                {registerErrors.profile_name && <p className="text-red-500 text-sm">{registerErrors.profile_name}</p>}
               </div>
               <div className="space-y-1">
                 <Label htmlFor="email">Email</Label>
                 <Input id="email" type="email" value={registerData.email} onChange={(e) => handleInputChange(e, "register")} required />
+                {registerErrors.email && <p className="text-red-500 text-sm">{registerErrors.email}</p>}
               </div>
               <div className="space-y-1">
                 <Label htmlFor="password">FITpass</Label>
                 <Input id="password" type="password" value={registerData.password} onChange={(e) => handleInputChange(e, "register")} required />
+                {registerErrors.password && <p className="text-red-500 text-sm">{registerErrors.password}</p>}
               </div>
             </CardContent>
             <CardFooter>
