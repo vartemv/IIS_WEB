@@ -72,11 +72,11 @@ export const PostHeader: React.FC<{ post: Post }> = ({ post }) => {
       <div className="flex items-center gap-4">
         <img
           loading="lazy"
-          // src={post.users.profile_name}
-          src="https://cdn.builder.io/api/v1/image/assets/TEMP/102e7422fd1c50853b0be3dc7486ed3da3bc6ee5799b80aff3e03a8b53ce67ae?apiKey=9822d2f548184319a14eb0b77089634c&"
-          className="w-12 h-12 rounded-full object-cover"
+          src={post.users.photo ? post.users.photo : "/user.png"}
+          alt="user"
+          className="w-16 h-16 rounded-full object-cover image-rendering-auto"
         />
-        <span className="text-lg font-semibold">{post.users.profile_name}</span>
+        <span className="text-xl font-semibold">{post.users.profile_name}</span>
       </div>
 
       {/* Right side: Location and Timestamp */}

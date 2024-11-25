@@ -29,7 +29,8 @@ function Profile() {
     if (user && !Array.isArray(user)) {
       get_user_post(user).then((data) => {
         console.log(data.data)
-        setPosts(data.data)
+        const posts = data.data ? data.data : [];
+        setPosts(posts);
       });
     }
   }, []);
@@ -37,10 +38,7 @@ function Profile() {
   if (!user) {
     return <p>Loading user...</p>;
   }
-
-  const posts = [
-    { image: "https://via.placeholder.com/300", caption: "Post 1", author: "test" }
-  ];
+  
   return (<>
     <Navbar/>
     <div>
