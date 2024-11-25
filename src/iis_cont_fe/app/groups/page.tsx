@@ -17,6 +17,10 @@ export default function TextareaDemo() {
     const fileRef = useRef<HTMLInputElement>(null);
     const [imagePreview, setImagePreview] = useState<string | null>(null);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
+    const { get_all_groups, create_group, get_all_my_groups, get_all_in_groups } = useGroups();
+    const [group_data, setGroups] = useState<Group[]>([]);
+    const [my_group_data, setMyGroups] = useState<Group[]>([]);
+    const [in_group_data, setInGroups] = useState<Group[]>([]);
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files[0]) {
@@ -80,12 +84,6 @@ export default function TextareaDemo() {
         }
     };
 
-    const { get_all_groups, create_group, get_all_my_groups, get_all_in_groups } = useGroups();
-    const [group_data, setGroups] = useState<Group[]>([]);
-    const [my_group_data, setMyGroups] = useState<Group[]>([]);
-    const [in_group_data, setInGroups] = useState<Group[]>([]);
-
-
     useEffect(() => {
         get_all_groups().then((data) => {
             console.log("ALL GROUPS");
@@ -107,25 +105,6 @@ export default function TextareaDemo() {
 
     }, []);
 
-    // const handleCreateGroup = async () => {
-    //     if (!name) return; // Avoid submitting if name is empty
-
-    //      // Call the create_group function
-
-    //     if (response.success) {
-    //         // If the group is created successfully, refresh the groups
-    //         get_all_groups().then((data) => {
-    //             setGroups(data.data); // Update the group list after creating a new group
-    //         });
-    //     } else {
-    //         console.error("Failed to create group:", response.message);
-    //     }
-
-    //     setName(""); // Clear the input after creating a group
-    // };
-    // return <ResizablePanelGroup direction="horizontal">
-    //             <ResizablePanel> Cookie-user: <pre>{JSON.stringify(user, undefined, 4)}</pre> </ResizablePanel>
-    //         </ResizablePanelGroup>
     return (<>
         <div>
             <Navbar />
