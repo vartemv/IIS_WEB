@@ -1,18 +1,5 @@
 'use client';
 import { useUser } from "@/hooks/useUser";
-import Link from "next/link"
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuIndicator,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-  NavigationMenuViewport,
-} from "@/components/ui/navigation-menu"
-import { navigationMenuTriggerStyle } from "@/components/ui/navigation-menu"
-import { Input } from "@/components/ui/input"
 import { Separator } from "@/components/ui/separator"
 import PostGrid from "@/components/ui/postgrid";
 import { useEffect, useState } from "react";
@@ -37,6 +24,7 @@ function Profile() {
   useEffect(() => {
     if (group && !Array.isArray(group)) {
       get_group_posts(group).then((data) => {
+        console.log(data.data);
         setPosts(data.data ? data.data : [])
       });
       get_all_users(group).then((data) => {
@@ -55,7 +43,7 @@ function Profile() {
   if (!group) {
     return <p>Loading group...</p>;
   }
-  
+
   return (<>
     <Navbar />
     {group_info && Pgroup_info && <CenteredAvatar users={users_in_group} group={group_info} pending_users={Pgroup_info} />}
