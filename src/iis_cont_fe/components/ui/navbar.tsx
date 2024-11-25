@@ -18,6 +18,9 @@ const Navbar: React.FC = () => {
           <a href="/groups" className="text-white hover:underline">
             Groups
           </a>
+          <a href="/create_post" className="text-white hover:underline">
+            Create Post
+          </a>
       </div>
     </nav>
   );
