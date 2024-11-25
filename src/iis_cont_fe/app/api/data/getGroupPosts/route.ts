@@ -29,17 +29,27 @@ export async function GET(req: NextRequest) {
             include: {
                 posts: {
                     include: {
-                        comments: true,
+                        comments: {
+                            include: {
+                                users: {
+                                  select: {
+                                    photo: true,
+                                  },
+                                },
+                            },
+                        },
                         users: {
                             select: {
                                 profile_name: true,
+                                photo: true
                             }
                         },
                         post_tags: {
                             include: {
                               tags: true,
                             },
-                        }
+                        },
+                        reactions: true,
                     },
                 },
             },
@@ -52,9 +62,30 @@ export async function GET(req: NextRequest) {
             },
         });
 
+        const postsWithReactions = await Promise.all(groupPosts.map(async (groupPost) => {
+            const posts = groupPost.posts;
+
+            // Check if the user has reacted to each post
+            const userReaction = await prisma.user_reactions.findFirst({
+                where: {
+                    id_of_user: sender.id,
+                    post_id: posts.id,
+                },
+            });
+
+            // Attach the user reaction status to each post
+            const postWithUserReaction = {
+                ...posts,
+                user_reaction: userReaction ? { reacted: true } : { reacted: false },
+            };
+
+            return postWithUserReaction;
+        }));
+
         const response = NextResponse.json({
             success: true,
-            data: groupPosts.map((groupPost) => groupPost.posts),
+            data: postsWithReactions,
+            // data: groupPosts.map((groupPost) => groupPost.posts),
             message: "Posts retrieved successfully",
         });
         return response;

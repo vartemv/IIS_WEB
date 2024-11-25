@@ -55,10 +55,7 @@ function Profile() {
   if (!group) {
     return <p>Loading group...</p>;
   }
-
-  const posts = [
-    { image: "https://via.placeholder.com/300", caption: "Post 1", author: "test" }
-  ];
+  
   return (<>
     <Navbar />
     {group_info && Pgroup_info && <CenteredAvatar users={users_in_group} group={group_info} pending_users={Pgroup_info} />}
