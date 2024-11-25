@@ -8,16 +8,6 @@ export async function GET(req: NextRequest) {
     
     const token = req.cookies.get("user_token");
 
-    if (!token) {
-      return NextResponse.json({ success: false, data: null, message: "No token provided" }, { status: 301 });
-    }
-
-    const sender = await TokenService.verify(token.value);
-
-    if (!sender) {
-      return NextResponse.json({ success: false, data: null, message: "Invalid token" }, { status: 403 });
-    }
-
     posts = await prisma.posts.findMany({
       include: {
         post_tags: {
@@ -43,6 +33,20 @@ export async function GET(req: NextRequest) {
         reactions: true,
       },
     });
+
+    if (!token) {
+      const public_post = await Promise.all(posts.map(async (post) => {
+        return post.availability ? post : null;
+      }));
+      console.log(public_post);
+      return NextResponse.json({ success: true, data: public_post.filter((post)=>post !== null), message: "Public posts" }, { status: 200 });
+    }
+
+    const sender = await TokenService.verify(token.value);
+
+    if (!sender) {
+      return NextResponse.json({ success: false, data: null, message: "Invalid token" }, { status: 403 });
+    }
 
     const filteredPosts = await Promise.all(posts.map(async (post) => {
       if (post.availability) {
