@@ -16,8 +16,14 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ success: false, data: null, message: "Invalid token" }, { status: 403 });
     }
 
+    const { searchParams } = new URL(req.url);
+    let user_profile = "";
+    if (searchParams) {
+      user_profile = searchParams.get("user") ?? "";
+    }
+
     const user = await prisma.users.findUnique({
-        where: { id: sender.id },
+        where: { profile_name : user_profile },
       });
 
     if (!user) {

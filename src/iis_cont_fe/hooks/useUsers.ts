@@ -4,9 +4,9 @@ import { ChangeRole } from "@/utils/types/fe_types";
 
 export const useMediaUser = () => {
 
-    const get_user = async () => {
+    const get_user = async (profile_name: string) => {
         return await axios
-            .get(`/api/users/getUser`)
+            .get(`/api/users/getUser?user=${profile_name}`)
             .then((res) => {
                 return res.data;
             })

@@ -70,12 +70,16 @@ export const PostHeader: React.FC<{ post: Post }> = ({ post }) => {
     <div className="flex items-center justify-between gap-4 w-full">
       {/* Left side: Profile Image and Name */}
       <div className="flex items-center gap-4">
+
+      {/* <a href={user  homePath : "/info"}> */}
+      <a href={user ? `/profile/${post.users.profile_name}` : "/info"}>
         <img
           loading="lazy"
           src={post.users.photo ? post.users.photo : "/user.png"}
           alt="user"
           className="w-16 h-16 rounded-full object-cover image-rendering-auto"
         />
+        </a>
         <span className="text-xl font-semibold">{post.users.profile_name}</span>
       </div>
 

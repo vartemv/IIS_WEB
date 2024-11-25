@@ -25,7 +25,7 @@ function Profile() {
         setPosts(posts);
       });
       
-      get_user().then((data) => {
+      get_user(user_profile).then((data) => {
         console.log(data.data)
         const us_info = data.data ? data.data : [];
         setUser(us_info);
