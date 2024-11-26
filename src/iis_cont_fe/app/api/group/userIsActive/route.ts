@@ -40,11 +40,18 @@ export async function GET(req: NextRequest) {
             },
         });
 
+        const userIsOwner = await prisma.groups.findUnique({
+            where:{
+                owner: sender.id,
+                group_name: group
+            }
+        })
+
         const isUserInGroupAndActive = userInGroup?.status === "Active";
 
         return NextResponse.json({
             success: true,
-            data: isUserInGroupAndActive,
+            data: isUserInGroupAndActive || !!userIsOwner,
             message: "Check completed successfully",
         });
     } catch (error) {
