@@ -4,6 +4,17 @@ import { ChangeRole } from "@/utils/types/fe_types";
 
 export const useMediaUser = () => {
 
+    const get_user = async (profile_name: string) => {
+        return await axios
+            .get(`/api/users/getUser?user=${profile_name}`)
+            .then((res) => {
+                return res.data;
+            })
+            .catch((err) => {
+                return { success: false, data: null, message: "Failed to fetch posts." };
+            });
+    }
+
     const get_users = async () => {
         return await axios
             .get(`/api/users/getAllUsers`)
@@ -37,5 +48,5 @@ export const useMediaUser = () => {
             });
     }
 
-  return { get_users, change_role, delete_user };
+  return { get_user, get_users, change_role, delete_user };
 };

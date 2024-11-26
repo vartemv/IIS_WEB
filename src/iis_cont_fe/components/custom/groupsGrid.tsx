@@ -9,8 +9,6 @@ import {
   ContextMenuItem,
   ContextMenuTrigger,
 } from "@/components/ui/context-menu"
-import { usePosts } from "@/hooks/usePosts";
-
 
 interface ModalProps {
   group: Group;

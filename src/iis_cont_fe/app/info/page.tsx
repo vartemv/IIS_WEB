@@ -1,5 +1,4 @@
 'use client';
-
 import { useUser } from "@/hooks/useUser"
 import PostGrid from "../../components/ui/postgrid";
 import Navbar from "../../components/ui/navbar";

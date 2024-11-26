@@ -82,6 +82,7 @@ export interface Group {
     id: number;
     first_name: string;
     last_name: string;
+    photo: string;
     profile_name: string;
     sign_up_date: Date;
     hash_password: string;

@@ -1,1 +1,1 @@
-![image](pictures_readme/image.png)
+![image](pictures_readme/er.png)
